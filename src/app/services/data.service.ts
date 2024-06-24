@@ -19,7 +19,8 @@ export class DataService {
           return actions.map((a) => {
             const data: any = a.payload.doc.data();
             const id = a.payload.doc.id;
-            console.log(data)
+            console.log('data', data)
+            delete data.password
             const object = {
               name: data.name,
               bowl: data.bowl,
@@ -36,22 +37,6 @@ export class DataService {
   }
 
   // --------------------------------------- Trade API ---------------------------------------
-  // getTrades(): Observable<any> {
-  //   this.setUserId();
-
-  //   return this.firestore
-  //     .collection(`${this.api}/trades`)
-  //     .snapshotChanges()
-  //     .pipe(
-  //       map((actions) => {
-  //         return actions.map((a) => {
-  //           const data: any = a.payload.doc.data();
-  //           const id = a.payload.doc.id;
-  //           return { ...data, id };
-  //         });
-  //       })
-  //     );
-  // }
 
   async createTeam(payload: any) {
     this.setUserId();
@@ -64,18 +49,21 @@ export class DataService {
     return response
   }
 
-  // updateTrade(tradeId: string, payload: any) {
-  //   this.setUserId();
-  //   return this.firestore
-  //     .collection(`${this.api}/trades`)
-  //     .doc(tradeId)
-  //     .set(payload, { merge: true });
-  // }
-
-  // deleteTrade(tradeId: string) {
-  //   this.setUserId();
-  //   return this.firestore.collection(`${this.api}/trades`).doc(tradeId).delete();
-  // }
+  getMatch(matchId: string) {
+    this.setUserId();
+    return this.firestore.collection(`matches`).doc(matchId).snapshotChanges()
+    .pipe(
+      map((doc: any) => {
+        if (doc.payload.exists) {
+          const data = doc.payload.data();
+          const id = doc.payload.id;
+          return { id, ...data };
+        } else {
+          return null;
+        }
+      })
+    );;
+  }
 
   getTeams(): Observable<any> {
     this.setUserId();
@@ -109,6 +97,11 @@ export class DataService {
           });
         })
       );
+  }
+
+  updateMatch(payload: any) {
+    this.setUserId();
+    return this.firestore.collection(`/matches`).doc(payload.id).set(payload, {merge: true});
   }
 
   setUserId() {

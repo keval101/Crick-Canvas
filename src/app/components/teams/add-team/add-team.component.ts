@@ -24,10 +24,10 @@ export class AddTeamComponent {
       name: [''],
       logo: [''],
     })
-    this.getUsers();
+    this.getPlayers();
   }
 
-  getUsers() {
+  getPlayers() {
     this.dataService.getPlayers().subscribe(players => {
       this.players$.next(players)
     })

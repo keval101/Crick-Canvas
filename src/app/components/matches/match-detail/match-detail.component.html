@@ -1,0 +1,123 @@
+<ng-container>
+    <div class="match">
+        <div class="border p-4 border-gray-200 bg-gray-100 rounded-md">
+            <div class="match-team flex mb-4 gap-2 items-center">
+                <img [src]="match?.team1?.logo" alt="team" class="w-10 h-10 ml-2 rounded-full">
+                {{match?.team1?.name}}
+                <span class="match-score">0/0</span>
+                <span class="match-overs">({{match?.overs}} Overs)</span>
+            </div>
+    
+            <div class="match-team flex mb-4 gap-2 items-center">
+                <img [src]="match?.team2?.logo" alt="team" class="w-10 h-10 ml-2 rounded-full">
+                {{match?.team2?.name}}
+                <span class="match-score">0/0</span>
+                <span class="match-overs">({{match?.overs}} Overs)</span>
+            </div>
+            
+    
+            <button class="btn mt-2" (click)="openStriker()" *ngIf="!match?.isStarted">Start Match</button>
+        </div>
+    </div>
+    
+    <div class="score mt-5" *ngIf="match.striker || match.nonStriker || match.bowler">
+        <h1 class="text-3xl font-bold">Scores</h1>
+    
+        <div class="score-table" *ngIf="match.striker || match.nonStriker">
+            <div class="score-table-row !bg-transparent !border-none">
+                <p>Name</p>
+                <p>R</p>
+                <p>B</p>
+                <p>4s</p>
+                <p>6s</p>
+                <p>SR</p>
+            </div>
+            <div class="score-table-row">
+                <p>{{match.striker.name}}</p>
+                <p>{{match.striker.run ?? 0}}</p>
+                <p>{{match.striker.ball ?? 0}}</p>
+                <p>{{match.striker.fours ?? 0}}</p>
+                <p>{{match.striker.sixes ?? 0}}</p>
+                <p>{{calculateStrikeRate(match.striker.run, match.striker.ball)}}</p>
+            </div>
+            <div class="score-table-row">
+                <p>{{match.nonStriker.name}}</p>
+                <p>{{match.nonStriker.run ?? 0}}</p>
+                <p>{{match.nonStriker.ball ?? 0}}</p>
+                <p>{{match.nonStriker.fours ?? 0}}</p>
+                <p>{{match.nonStriker.sixes ?? 0}}</p>
+                <p>{{calculateStrikeRate(match.nonStriker.run, match.nonStriker.ball)}}</p>
+            </div>
+        </div>
+        <hr class="my-8" *ngIf="match.striker || match.nonStriker">
+        <div class="score-table" *ngIf="match.bowler">
+            <div class="score-table-row !bg-transparent !border-none">
+                <p>Name</p>
+                <p>O</p>
+                <p>M</p>
+                <p>R</p>
+                <p>W</p>
+                <p>ECO</p>
+            </div>
+            <div class="score-table-row">
+                <p>{{match.bowler.name}}</p>
+                <p>{{match.bowler.over > 0 ? match.bowler.over+'.'+currentBall : '0.'+currentBall}}</p>
+                <p>{{match.bowler.maiden ?? 0}}</p>
+                <p>{{match.bowler.runs ?? 0}}</p>
+                <p>{{match.bowler.wickets ?? 0}}</p>
+                <p>{{calculateEconomy(match.bowler.overs, match.bowler.runs)}}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bowling">
+        <p (click)="setBowling(0)">0</p>
+        <p (click)="setBowling(1)">1</p>
+        <p (click)="setBowling(2)">2</p>
+        <p (click)="setBowling(4)">4</p>
+        <p (click)="setBowling(6)">6</p>
+        <p (click)="setBowling('OUT')">OUT</p>
+    </div>
+    <p-dialog header="Header" [(visible)]="selectStriker" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+        <form [formGroup]="strikerForm">
+            <div>
+                <p class="mb-2 font-semibold">Please Striker</p>
+                <div class="flex items-center mb-4" *ngFor="let player of match.team1.players">
+                    <input formControlName="striker" type="radio" id="{{player.id}}-s" name="striker" [value]="player" class="hidden peer" required />
+                    <label for="{{player.id}}-s" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
+                        <div class="block">
+                            <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+    
+            <div>
+                <p class="mb-2 font-semibold">Please Non Striker</p>
+                <div class="flex items-center mb-4" *ngFor="let player of match.team1.players">
+                    <input formControlName="nonStriker" type="radio" id="{{player.id}}-n" name="nonStriker" [value]="player" class="hidden peer" required />
+                    <label for="{{player.id}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
+                        <div class="block">
+                            <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+    
+            <hr class="my-4">
+
+            <div>
+                <p class="mb-2 font-semibold">Please Bowler</p>
+                <div class="flex items-center mb-4" *ngFor="let player of match.team2.players">
+                    <input formControlName="bowler" type="radio" id="{{player.id}}-bw" name="bowler" [value]="player" class="hidden peer" required />
+                    <label for="{{player.id}}-bw" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
+                        <div class="block">
+                            <div class="w-full flex gap-2 items-center"><img src="./assets/icons/ball.png" alt="" class="w-6 h-6"> {{player.name}}</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="saveStriker()">Save</button>
+        </form>
+    </p-dialog>
+</ng-container>

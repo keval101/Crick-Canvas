@@ -6,7 +6,7 @@
  </div>
  <div class="matches mx-auto mt-10">
     <ng-container *ngFor="let match of (matches$ | async)">
-      <div class="match-card p-4 gap-8 border border-gray-200 rounded-lg">
+      <div class="match-card p-4 gap-8 border border-gray-200 rounded-lg" [routerLink]="[match.id]">
          <div class=" justify-between flex items-center">
            
            <div class="matches-team text-center">

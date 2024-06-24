@@ -28,6 +28,7 @@ import { CalendarModule } from 'primeng/calendar';
 
 import { AddMatchComponent } from './components/matches/add-match/add-match.component';
 import { DatePipe } from '@angular/common';
+import { MatchDetailComponent } from './components/matches/match-detail/match-detail.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -50,7 +51,8 @@ const firebaseConfig = {
     SidebarComponent,
     SignUpComponent,
     AddTeamComponent,
-    AddMatchComponent
+    AddMatchComponent,
+    MatchDetailComponent
   ],
   imports: [
     BrowserModule,

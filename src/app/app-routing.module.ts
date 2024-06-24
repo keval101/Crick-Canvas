@@ -7,6 +7,7 @@ import { PlayersComponent } from './components/players/players.component';
 import { MatchesComponent } from './components/matches/matches.component';
 import { AuthGuard } from './guard/auth.guard';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { MatchDetailComponent } from './components/matches/match-detail/match-detail.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,11 @@ const routes: Routes = [
   {
     path: 'matches',
     component: MatchesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'matches/:matchId',
+    component: MatchDetailComponent,
     canActivate: [AuthGuard]
   },
 ];

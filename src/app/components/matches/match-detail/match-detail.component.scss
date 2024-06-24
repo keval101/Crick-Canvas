@@ -1,0 +1,35 @@
+.match-score {
+    font-size: 20px;
+    margin-left: auto;
+}
+
+.match-overs {
+    @apply text-gray-500;
+    font-size: 12px;
+}
+
+
+.match-team {
+    width: 400px;
+}
+
+.score-table {
+    &-row {
+        @apply mt-4 px-2 py-3 bg-gray-100 border border-gray-200 rounded-lg;
+        display: grid;
+        grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+
+.bowling {
+    @apply flex gap-2 mt-12;
+    p {
+        @apply bg-gray-100 border cursor-pointer border-gray-200 p-4 px-6 rounded-md;
+        transition: all 0.2s ease;
+
+        &:hover {
+            @apply bg-gray-200;
+            transition: all 0.2s ease;
+        }
+    }
+}
