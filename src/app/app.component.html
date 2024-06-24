@@ -1,3 +1,6 @@
-<router-outlet></router-outlet>
-
-<H1></H1>
+<div [class.main]="!isLoginPage">
+    <app-sidebar *ngIf="!isLoginPage"></app-sidebar>
+    <div [ngClass]="{'main-content p-8': !isLoginPage}">
+        <router-outlet (activate)="checkForLoginPage()"></router-outlet>
+    </div>
+</div>

@@ -9,6 +9,17 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { LoginComponent } from './components/login/login.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { PlayersComponent } from './components/players/players.component';
+import { TeamsComponent } from './components/teams/teams.component';
+import { MatchesComponent } from './components/matches/matches.component';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -22,18 +33,33 @@ const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    DashboardComponent,
+    PlayersComponent,
+    TeamsComponent,
+    MatchesComponent,
+    SidebarComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     //Firebase
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

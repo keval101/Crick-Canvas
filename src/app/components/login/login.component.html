@@ -1,0 +1,69 @@
+<div class="flex justify-center items-center h-screen">
+    <div
+      id="back-div"
+      class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4 login-container"
+    >
+      <div
+        class="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-2 m-2"
+      >
+        <h1 class="pt-8 pb-6 font-bold text-5xl text-center cursor-default">
+          Log in
+        </h1>
+        <form [formGroup]="loginForm" class="space-y-4" (ngSubmit)="login()">
+          <div>
+            <label for="email" class="mb-2 text-lg">Email</label>
+            <input
+              id="email"
+              class="border p-2 shadow-mlg placeholder:text-base ease-in-out duration-300 border-gray-300 rounded-lg w-full"
+              type="email"
+              placeholder="Email"
+              required
+              formControlName="email"
+            />
+          </div>
+          <div>
+            <label for="password" class="mb-2  text-lg">Password</label>
+            <input
+              id="password"
+              class="border p-2 shadow-mlg placeholder:text-base ease-in-out duration-300 border-gray-300 rounded-lg w-full"
+              type="password"
+              placeholder="Password"
+              required
+              formControlName="password"
+            />
+          </div>
+          <a
+            class="group text-blue-400 transition-all duration-100 ease-in-out"
+            href="#"
+          >
+            <span
+              class="bg-left-bottom bg-gradient-to-r text-sm from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
+            >
+              Forget your password?
+            </span>
+          </a>
+          <button
+            class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"
+            type="submit"
+          >
+            LOG IN
+          </button>
+        </form>
+        <div class="flex flex-col mt-4 items-center justify-center text-sm">
+          <h3>
+            Don't have an account?
+            <a
+              class="group text-blue-400 transition-all duration-100 ease-in-out"
+              [routerLink]="'/signup'"
+            >
+              <span
+                class="bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
+              >
+                Sign Up
+              </span>
+            </a>
+          </h3>
+        </div>
+      </div>
+    </div>
+    </div>
