@@ -1,0 +1,58 @@
+import { DatePipe } from '@angular/common';
+import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { DataService } from 'src/app/services/data.service';
+
+@Component({
+  selector: 'app-add-match',
+  templateUrl: './add-match.component.html',
+  styleUrls: ['./add-match.component.scss'],
+  encapsulation: ViewEncapsulation.None
+})
+export class AddMatchComponent {
+  @Output() close = new EventEmitter();
+  players$ = new BehaviorSubject([]);
+  teams$ = new BehaviorSubject([]);
+  date = new Date();
+
+  matchForm: FormGroup
+  constructor(
+    private fb: FormBuilder,
+    private dataService: DataService,
+    private datepipe: DatePipe
+  ) {}
+
+  ngOnInit() {
+    this.matchForm = this.fb.group({
+      team1: [''],
+      team2: [''],
+      overs: [''],
+      oversPerBowler: [''],
+      date: ['']
+    })
+    this.getUsers();
+    this.getTeams();
+  }
+
+  getTeams() {
+    this.dataService.getTeams().subscribe(teams => {
+      console.log(teams)
+      this.teams$.next(teams)
+    })
+  }
+
+  getUsers() {
+    this.dataService.getPlayers().subscribe(players => {
+      this.players$.next(players)
+    })
+  }
+
+  async createTeam() {
+    let payload = this.matchForm.value
+    payload.date = this.datepipe.transform(this.date, 'dd/MM/yyyy'),
+    console.log(payload)
+    // await this.dataService.createMatch(payload)
+    this.close.emit();
+  }
+}

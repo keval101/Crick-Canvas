@@ -1,0 +1,12 @@
+.player-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+
+    &:hover {
+        @apply bg-gray-200;
+        transition: all 0.2s ease-in;
+    }
+}

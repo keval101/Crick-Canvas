@@ -10,9 +10,7 @@ export class DataService {
   api: string;
 
   // --------------------------------------- Players ---------------------------------------
-  getUsers(): Observable<any> {
-    // this.setUserId();
-
+  getPlayers(): Observable<any> {
     return this.firestore
       .collection(`/users`)
       .snapshotChanges()
@@ -21,7 +19,17 @@ export class DataService {
           return actions.map((a) => {
             const data: any = a.payload.doc.data();
             const id = a.payload.doc.id;
-            return { ...data, id };
+            console.log(data)
+            const object = {
+              name: data.name,
+              bowl: data.bowl,
+              email: data.email,
+              type: data.type,
+              bat: data.bat,
+              uid: data.uid,
+              id: data.id,
+            }
+            return { ...object, id };
           });
         })
       );
@@ -48,7 +56,11 @@ export class DataService {
   async createTeam(payload: any) {
     this.setUserId();
     const response = await this.firestore.collection(`${this.api}/teams`).add(payload);
-    console.log(response);
+    return response
+  }
+
+  async createMatch(payload: any) {
+    const response = await this.firestore.collection(`matches`).add(payload);
     return response
   }
 
@@ -65,9 +77,42 @@ export class DataService {
   //   return this.firestore.collection(`${this.api}/trades`).doc(tradeId).delete();
   // }
 
+  getTeams(): Observable<any> {
+    this.setUserId();
+
+    return this.firestore
+      .collection(`${this.api}/teams`)
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
+  }
+
+  getMatches(): Observable<any> {
+    this.setUserId();
+
+    return this.firestore
+      .collection(`/matches`)
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
+  }
+
   setUserId() {
     const userId = localStorage.getItem('userId');
-    console.log(userId)
     this.api = `users/${userId}`
   }
 

@@ -1,0 +1,10 @@
+.match-card {
+    @apply shadow-lg mx-auto cursor-pointer p-8;
+    width: 800px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        @apply bg-gray-50;
+        transition: all 0.2s ease;
+    }
+}

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -7,14 +8,19 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./players.component.scss']
 })
 export class PlayersComponent {
+  players$ = new BehaviorSubject([]);
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.getUsers();
+    this.getPlayers();
   }
 
-  getUsers() {
-    this.dataService.getUsers().subscribe(res => console.log(res))
+  getPlayers() {
+    this.dataService.getPlayers().subscribe(players => 
+      {
+        console.log(players)
+        this.players$.next(players);
+      })
   }
 }

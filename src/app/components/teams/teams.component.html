@@ -1,20 +1,24 @@
-<form class="w-96" [formGroup]="teamForm" (ngSubmit)="createTeam()">
-    <div class="mb-5">
-      <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-      <input type="name" id="name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Name" required />
-    </div>
 
-    <div>
-        <p class="mb-2">Please Select Players</p>
-        <div class="flex items-center mb-4" *ngFor="let player of (players$ | async)">
-            <input id="{{player.id}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-blue-600 focus:ring-2" (change)="addPlayers($event, player)">
-            <label for="{{player.id}}" class="ms-2 text-sm font-medium">{{player.name}}</label>
-        </div>
-    </div>
-    <button
-        class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"
-        type="submit"
-    >
-    Create Team
-    </button>
-</form>
+<div class="flex justify-between items-center">
+   <h1 class="text-3xl font-bold">Teams</h1>
+   <button type="button" class="btn" (click)="addTeam()">Add Teams</button>
+
+</div>
+<div class="teams mt-10">
+   <ng-container *ngFor="let team of (teams$ | async)">
+      <div class="team-card flex p-4 gap-8 border border-gray-200 rounded-lg">
+         <img [src]="team.logo" alt="team" class="w-20 h-20 rounded-full">
+         <div>
+            <p><strong>Name: </strong> {{team?.name}}</p>
+            <p><strong>Players: </strong> 
+            <ng-container *ngFor="let player of team.players">
+               <span>{{player?.name}}</span>,
+            </ng-container></p>
+         </div>
+      </div>
+   </ng-container>
+</div>
+
+<p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+   <app-add-team (close)="closeModal()"></app-add-team>
+</p-dialog>

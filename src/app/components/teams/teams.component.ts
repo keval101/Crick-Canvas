@@ -9,42 +9,29 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./teams.component.scss']
 })
 export class TeamsComponent {
-  players$ = new BehaviorSubject([]);
-  players = []
+  
+  teams$ = new BehaviorSubject([])
+  visible: boolean;
 
-  teamForm: FormGroup
-  constructor(
-    private fb: FormBuilder,
-    private dataService: DataService
-  ) {}
+  constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    this.teamForm = this.fb.group({
-      name: ['', Validators.required],
-      logo: ['', Validators.required],
-    })
-    this.getUsers();
+    this.getTeams();
   }
 
-  getUsers() {
-    this.dataService.getUsers().subscribe(players => {
-      this.players$.next(players)
+  getTeams() {
+    this.dataService.getTeams().subscribe(teams => {
+      console.log(teams)
+      this.teams$.next(teams)
     })
   }
 
-  addPlayers(e, player) {
-    const isChecked = e.target.checked
-    if(isChecked) {
-      this.players.push(player.id)
-    } else {
-      this.players = this.players.filter(x => x != player.id)
-    }
+  addTeam() {
+    this.visible = true;
   }
 
-  async createTeam() {
-    let payload = this.teamForm.value
-    payload = {...payload, players: this.players}
-    await this.dataService.createTeam(payload)
+  closeModal() {
+    this.visible = false;
+    this.getTeams();
   }
-
 }

@@ -1,1 +1,17 @@
-<p>players works!</p>
+<div class="players">
+    <ng-container *ngFor="let player of (players$ | async)">
+        <div class="player-card flex mb-5 border bg-gray-100 border-gray-200 rounded-md p-4">
+            {{player.name}}
+
+            <div class="flex gap-2 items-center">
+                <img src="./assets/icons/bat.png" alt="bat" width="30" height="30">
+                {{player.bat}}
+            </div>
+
+            <div class="flex gap-2 items-center">
+                <img src="./assets/icons/ball.png" alt="ball" width="30" height="30">
+                {{player.bowl}}
+            </div>
+        </div>
+    </ng-container>
+</div>

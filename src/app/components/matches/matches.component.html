@@ -1,0 +1,31 @@
+
+<div class="flex justify-between items-center">
+    <h1 class="text-3xl font-bold">Matches</h1>
+    <button type="button" class="btn" (click)="addTeam()">Add Match</button>
+ 
+ </div>
+ <div class="matches mx-auto mt-10">
+    <ng-container *ngFor="let match of (matches$ | async)">
+      <div class="match-card p-4 gap-8 border border-gray-200 rounded-lg">
+         <div class=" justify-between flex items-center">
+           
+           <div class="matches-team text-center">
+              <img [src]="match.team1.logo" alt="team" class="w-40 h-40 rounded-full">
+              <span class="text-2xl mt-4 block font-semibold">{{match.team1.name}} </span>
+           </div>
+  
+           <h1 class="text-3xl text-gray-300">VS</h1>
+  
+           <div class="matches-team text-center">
+              <img [src]="match.team2.logo" alt="team" class="w-40 h-40 rounded-full">
+              <span class="text-2xl mt-4 block font-semibold">{{match.team2.name}}</span>
+           </div>
+         </div>
+         <p class="text-center mt-4">{{ getDate(match.date) | date: 'MMM dd, YYYY'}}</p>
+      </div>
+    </ng-container>
+ </div>
+ 
+ <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <app-add-match (close)="closeModal()"></app-add-match>
+ </p-dialog>

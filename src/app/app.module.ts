@@ -19,7 +19,15 @@ import { TeamsComponent } from './components/teams/teams.component';
 import { MatchesComponent } from './components/matches/matches.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddTeamComponent } from './components/teams/add-team/add-team.component'
+
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+
+import { AddMatchComponent } from './components/matches/add-match/add-match.component';
+import { DatePipe } from '@angular/common';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -40,7 +48,9 @@ const firebaseConfig = {
     TeamsComponent,
     MatchesComponent,
     SidebarComponent,
-    SignUpComponent
+    SignUpComponent,
+    AddTeamComponent,
+    AddMatchComponent
   ],
   imports: [
     BrowserModule,
@@ -53,9 +63,15 @@ const firebaseConfig = {
     AngularFireStorageModule,
 
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    DialogModule,
+    DropdownModule,
+    CalendarModule
+    
   ],
   providers: [
+    DatePipe,
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
     }
