@@ -1,6 +1,6 @@
 <div class="players">
     <ng-container *ngFor="let player of (players$ | async)">
-        <div class="player-card flex mb-5 border bg-gray-100 border-gray-200 rounded-md p-4">
+        <div class="player-card flex mb-5 border bg-gray-100 border-gray-200 rounded-md p-4" [routerLink]="player.id">
             {{player.name}}
 
             <div class="flex gap-2 items-center">

@@ -62,7 +62,7 @@ export class DataService {
           return null;
         }
       })
-    );;
+    );
   }
 
   getTeams(): Observable<any> {
@@ -103,6 +103,26 @@ export class DataService {
     this.setUserId();
     return this.firestore.collection(`/matches`).doc(payload.id).set(payload, {merge: true});
   }
+
+  updatePlayer(payload: any) {
+    this.setUserId();
+    return this.firestore.collection(`/users`).doc(payload.id).set(payload, {merge: true});
+  }
+
+  getPlayer(playerId: any) {
+      return this.firestore.collection(`users`).doc(playerId).snapshotChanges()
+      .pipe(
+        map((doc: any) => {
+          if (doc.payload.exists) {
+            const data = doc.payload.data();
+            const id = doc.payload.id;
+            return { id, ...data };
+          } else {
+            return null;
+          }
+        })
+      );
+    }
 
   setUserId() {
     const userId = localStorage.getItem('userId');

@@ -51,8 +51,7 @@ export class AddMatchComponent {
   async createTeam() {
     let payload = this.matchForm.value
     payload.date = this.datepipe.transform(this.date, 'dd/MM/yyyy'),
-    console.log(payload)
-    // await this.dataService.createMatch(payload)
+    await this.dataService.createMatch(payload)
     this.close.emit();
   }
 }

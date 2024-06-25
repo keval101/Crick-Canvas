@@ -25,6 +25,7 @@ export class SignUpComponent {
       bowl: ['', Validators.required],
       password: ['', Validators.required],
       type: ['', Validators.required],
+      matches: [[]]
     })
   }
 

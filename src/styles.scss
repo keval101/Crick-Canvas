@@ -5,14 +5,14 @@
 
 
 .btn {
-    @apply text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2;
+    @apply px-4 bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg transition duration-300 ease-in-out;
 
     &:hover {
-        @apply bg-blue-800;
+        @apply from-purple-500 to-blue-500 transition duration-300 ease-in-out;
     }
 
     &:focus {
-        @apply ring-4 ring-blue-300 outline-none
+        @apply ring-4 ring-blue-300 outline-none;
     }
 }
 
