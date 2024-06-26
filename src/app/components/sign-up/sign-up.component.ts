@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -14,7 +15,8 @@ export class SignUpComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -43,15 +45,15 @@ export class SignUpComponent {
         data['uid'] = user.uid
         this.authService.storeUserData(user.uid, data)
         console.log(res)
-        // this.messageService.add({ severity: 'success', summary: 'Register', detail: 'Register Successfully!' });
+        this.messageService.add({ severity: 'success', summary: 'Register', detail: 'Register Successfully!' });
         this.router.navigate(['/dashboard']);
       }).catch(error => {
         if(error.message.includes('weak-password')) {
-          // this.messageService.add({ severity: 'error', summary: 'Week Password', detail: 'Password should be at least 6 characters' });
+          this.messageService.add({ severity: 'error', summary: 'Week Password', detail: 'Password should be at least 6 characters' });
         } else if(error.message.includes('invalid-email')) {
-          // this.messageService.add({ severity: 'error', summary: 'Invalid Email', detail: 'The email address is Invalid' });
+          this.messageService.add({ severity: 'error', summary: 'Invalid Email', detail: 'The email address is Invalid' });
         }  else if(error.message.includes('email-already-in-use')) {
-          // this.messageService.add({ severity: 'error', summary: 'Email Already In Use', detail: 'The email address is already in use by another account' });
+          this.messageService.add({ severity: 'error', summary: 'Email Already In Use', detail: 'The email address is already in use by another account' });
         }
       })
     }

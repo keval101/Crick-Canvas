@@ -1,4 +1,10 @@
 <ng-container *ngIf="match">
+    <div>
+        <button class="outline-btn flex gap-2 items-center mb-4 ml-auto" (click)="deleteMatch()">
+            <img src="./assets/icons/delete.png" alt="" width="20" width="20">
+            Delete Match
+        </button>
+    </div>
     <div class="match">
         <div class="border p-4 border-gray-200 bg-gray-100 rounded-md">
             <div class="match-team flex mb-4 gap-2 items-center">

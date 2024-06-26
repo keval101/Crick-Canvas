@@ -49,6 +49,10 @@ const routes: Routes = [
     component: MatchDetailComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: '**',
+    redirectTo: 'dashboard'
+  },
 ];
 
 @NgModule({

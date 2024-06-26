@@ -1,6 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 
@@ -20,7 +22,9 @@ export class AddMatchComponent {
   constructor(
     private fb: FormBuilder,
     private dataService: DataService,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -50,8 +54,10 @@ export class AddMatchComponent {
 
   async createTeam() {
     let payload = this.matchForm.value
-    payload.date = this.datepipe.transform(this.date, 'dd/MM/yyyy'),
-    await this.dataService.createMatch(payload)
+    payload.date = this.datepipe.transform(this.date, 'dd/MM/yyyy');
+    const response = await this.dataService.createMatch(payload)
+    this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Created Successfully!' });
+    this.router.navigate(['/matches', response.id])
     this.close.emit();
   }
 }

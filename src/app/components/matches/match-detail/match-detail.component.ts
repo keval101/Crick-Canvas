@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 
@@ -28,6 +29,8 @@ export class MatchDetailComponent {
   constructor(
     private dataService: DataService,
     private fb: FormBuilder,
+    private router: Router,
+    private messageService: MessageService,
     private route: ActivatedRoute) {
     
       this.strikerForm = this.fb.group({
@@ -235,4 +238,11 @@ export class MatchDetailComponent {
     return !isNaN(economy) ? economyRounded : 0;
   }
 
+  async deleteMatch() {
+    if (confirm('Are you sure to delte match?') == true) {
+      await this.dataService.deleteMatch(this.matchId);
+      this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Deleted Successfully!' });
+      this.router.navigate(['/matches'])
+    }
+  }
 }

@@ -25,12 +25,14 @@ import { AddTeamComponent } from './components/teams/add-team/add-team.component
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
+import { ToastModule } from 'primeng/toast';
 
 import { AddMatchComponent } from './components/matches/add-match/add-match.component';
 import { DatePipe } from '@angular/common';
 import { MatchDetailComponent } from './components/matches/match-detail/match-detail.component';
 import { CoinTossComponent } from './shared/components/coin-toss/coin-toss.component';
 import { PlayerDetailComponent } from './components/players/player-detail/player-detail.component';
+import { MessageService } from 'primeng/api';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -73,11 +75,13 @@ const firebaseConfig = {
 
     DialogModule,
     DropdownModule,
-    CalendarModule
+    CalendarModule,
+    ToastModule
     
   ],
   providers: [
     DatePipe,
+    MessageService,
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
     }

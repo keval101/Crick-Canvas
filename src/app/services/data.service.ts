@@ -105,12 +105,11 @@ export class DataService {
   }
 
   updatePlayer(payload: any) {
-    this.setUserId();
     return this.firestore.collection(`/users`).doc(payload.id).set(payload, {merge: true});
   }
 
   getPlayer(playerId: any) {
-      return this.firestore.collection(`users`).doc(playerId).snapshotChanges()
+      return this.firestore.collection(`/users`).doc(playerId).snapshotChanges()
       .pipe(
         map((doc: any) => {
           if (doc.payload.exists) {
@@ -124,6 +123,9 @@ export class DataService {
       );
     }
 
+  async deleteMatch(matchId: string) {
+    return await this.firestore.collection(`/matches`).doc(matchId).delete();
+  }
   setUserId() {
     const userId = localStorage.getItem('userId');
     this.api = `users/${userId}`
