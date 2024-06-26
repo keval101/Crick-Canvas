@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { Teams } from 'src/app/enums/teams.enum';
 import { DataService } from 'src/app/services/data.service';
@@ -18,7 +19,8 @@ export class AddTeamComponent {
   teamForm: FormGroup
   constructor(
     private fb: FormBuilder,
-    private dataService: DataService
+    private dataService: DataService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -48,6 +50,7 @@ export class AddTeamComponent {
     let payload = this.teamForm.value
     payload = {...payload, players: this.players}
     await this.dataService.createTeam(payload)
+    this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Created Successfully!' });
     this.teamForm.reset();
     this.close.emit();
   }

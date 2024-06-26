@@ -84,7 +84,19 @@ export class MatchDetailComponent {
   }
 
   saveTheToss() {
-    const payload = { ...this.match, toss: { ...this.tossForm.value } };
+
+    const winningTossTeam = this.tossForm.value.winTheToss;
+    const lossingTossTeam = this.tossForm.value.winTheToss === 'team1' ? 'team2' : 'team1';
+    this.battingTeam =
+      this.tossForm.value.selected == 'Bat First'
+        ? winningTossTeam
+        : lossingTossTeam;
+    this.bowlingTeam =
+      this.tossForm.value.selected == 'Bowl First'
+        ? winningTossTeam
+        : lossingTossTeam;
+
+    const payload = { ...this.match, toss: { ...this.tossForm.value }, battingTeam: this.battingTeam, bowlingTeam: this.bowlingTeam };
     payload['isStarted'] = true;
     this.dataService.updateMatch(payload);
     this.getMatchDetail();
@@ -110,19 +122,10 @@ export class MatchDetailComponent {
         }
       }
 
-      if (this.match.toss) {
-        const winningTossTeam = this.match.toss.winTheToss;
-        const lossingTossTeam =
-          this.match.toss.winTheToss === 'team1' ? 'team2' : 'team1';
-        this.battingTeam =
-          this.match.toss.selected == 'Bat First'
-            ? winningTossTeam
-            : lossingTossTeam;
-        this.bowlingTeam =
-          this.match.toss.selected == 'Bowl First'
-            ? winningTossTeam
-            : lossingTossTeam;
-      }
+      this.battingTeam = this.match.battingTeam
+      this.bowlingTeam = this.match.bowlingTeam
+
+      console.log('this.match', this.match)
 
       this.setTeamScores();
     });
