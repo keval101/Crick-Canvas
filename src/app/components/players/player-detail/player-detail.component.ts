@@ -24,20 +24,27 @@ export class PlayerDetailComponent {
 
    getPlayerDetail() {
     this.dataService.getPlayer(this.playerId).subscribe(player => {
-      console.log(player)
       const stats = {
-        balls: player.matches.reduce((acc, curr) => typeof curr.balls === 'number' ? curr.balls + acc : acc, 0),
-        runs: player.matches.reduce((acc, curr) => typeof curr.runs === 'number' ? curr.runs + acc : acc, 0),
-        sixes: player.matches.reduce((acc, curr) => typeof curr.sixes === 'number' ? curr.sixes + acc : acc, 0),
-        fours: player.matches.reduce((acc, curr) => typeof curr.fours === 'number' ? curr.fours + acc : acc, 0),
-        catches: player.matches.reduce((acc, curr) => typeof curr.catches === 'number' ? curr.catches + acc : acc, 0),
-        bowled: player.matches.reduce((acc, curr) => typeof curr.bowled === 'number' ? curr.bowled + acc : acc, 0),
-        wickets: player.matches.reduce((acc, curr) => typeof curr.wickets === 'number' ? curr.wickets + acc : acc, 0),
-        overs: player.matches.reduce((acc, curr) => typeof curr.overs === 'number' ? curr.overs + acc : acc, 0),
-        highScore: player.matches.reduce((max, curr) => (curr.runs > max) ? curr.runs : max, player.matches[0].runs),
+        balls: player.matches.reduce((acc, curr) => typeof curr?.balls === 'number' ? curr?.balls + acc : acc, 0),
+        runs: player.matches.reduce((acc, curr) => typeof curr?.runs === 'number' ? curr?.runs + acc : acc, 0),
+        sixes: player.matches.reduce((acc, curr) => typeof curr?.sixes === 'number' ? curr?.sixes + acc : acc, 0),
+        fours: player.matches.reduce((acc, curr) => typeof curr?.fours === 'number' ? curr?.fours + acc : acc, 0),
+        catches: player.matches.reduce((acc, curr) => typeof curr?.catches === 'number' ? curr?.catches + acc : acc, 0),
+        bowled: player.matches.reduce((acc, curr) => typeof curr?.bowled === 'number' ? curr?.bowled + acc : acc, 0),
+        concededRuns: player.matches.reduce((acc, curr) => typeof curr?.concededRuns === 'number' ? curr?.concededRuns + acc : acc, 0),
+        wickets: player.matches.reduce((acc, curr) => typeof curr?.wickets === 'number' ? curr?.wickets + acc : acc, 0),
+        maidens: player.matches.reduce((acc, curr) => typeof curr?.maidens === 'number' ? curr?.maidens + acc : acc, 0),
+        overs: player.matches.reduce((acc, curr) => typeof curr?.overs === 'number' ? curr?.overs + acc : acc, 0),
+        outs: player.matches.reduce((acc, curr) => {
+          if (curr.out) {
+            return acc + 1;
+        } else {
+            return acc;
+        }
+        }, 0),
+        highScore: player.matches.reduce((max, curr) => (curr?.runs > max) ? curr?.runs : max, player.matches[0]?.runs),
         innigs: player.matches.length ?? 0,
       }
-      console.log(stats)
       player = {...player, stats}
 
       this.player$.next(player)
@@ -49,10 +56,17 @@ export class PlayerDetailComponent {
     return !isNaN((totalRuns / totalBallsFaced) * 100) ? ((totalRuns / totalBallsFaced) * 100).toFixed(2) : 0;
   }
 
-  calculateBattingAverage(totalRuns, totalIng) {
-    if (totalIng === 0) { return 0;}
-    return !isNaN((totalRuns / totalIng) * 100) ? ((totalRuns / totalIng) * 100).toFixed(2) : 0;
+  calculateBattingAverage(totalRuns, timesOut) {
+    if (timesOut === 0) { return 0;}
+    return !isNaN((totalRuns / timesOut)) ? ((totalRuns / timesOut)).toFixed(2) : 0;
   }
+
+  calculateBowlingAverage(runsConceded, wicketsTaken) {
+    if (wicketsTaken === 0) {
+        return '0'; // Handling division by zero scenario
+    }
+    return (runsConceded / wicketsTaken).toFixed(2);
+}
 
   calculateEconomy(overs, runs) {
     const oversFloat = parseFloat(overs);

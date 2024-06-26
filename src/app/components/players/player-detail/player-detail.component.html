@@ -1,7 +1,7 @@
 <ng-container *ngIf="(player$ | async) as player">
     <h1 class="text-3xl font-bold">{{player.name}}</h1>
 
-    <div class="card-container">
+    <div class="card-container" *ngIf="player.stats">
         <div class="card rounded-md mt-10 border border-gray-200 p-4">
             <h1 class="font-bold text-2xl text-blue-600 uppercase mb-3 text-center">batting</h1>
         
@@ -9,14 +9,14 @@
 
             <div class="card-row mt-4 flex justify-between items-center">
                 <p class="font-semibold capitalize">total runs</p>
-                <p class="text-xl">{{player.stats.runs}}</p>
+                <p class="text-xl">{{player.stats.runs ?? 0}}</p>
             </div>
 
             <hr class="my-2">
 
             <div class="card-row mt-4 flex justify-between items-center">
                 <p class="font-semibold capitalize">batting avg</p>
-                <p class="text-xl">{{calculateBattingAverage(player.stats.runs, player.stats.innigs)}}</p>
+                <p class="text-xl">{{calculateBattingAverage(player.stats.runs, player.stats.outs)}}</p>
             </div>
 
             <hr class="my-2">
@@ -30,7 +30,32 @@
 
             <div class="card-row mt-4 flex justify-between items-center">
                 <p class="font-semibold capitalize">Highest Score</p>
-                <p class="text-xl">{{player.stats.highScore}}</p>
+                <p class="text-xl">{{player.stats.highScore ?? 0}}</p>
+            </div>
+        </div>
+
+        <div class="card rounded-md mt-10 border border-gray-200 p-4">
+            <h1 class="font-bold text-2xl text-blue-600 uppercase mb-3 text-center">bowling</h1>
+        
+            <hr class="my-2">
+
+            <div class="card-row mt-4 flex justify-between items-center">
+                <p class="font-semibold capitalize">total wickets</p>
+                <p class="text-xl">{{player.stats.wickets ?? 0}}</p>
+            </div>
+
+            <hr class="my-2">
+
+            <div class="card-row mt-4 flex justify-between items-center">
+                <p class="font-semibold capitalize">bowling avg</p>
+                <p class="text-xl">{{calculateBowlingAverage(player.stats.concededRuns, player.stats.wickets)}}</p>
+            </div>
+
+            <hr class="my-2">
+
+            <div class="card-row mt-4 flex justify-between items-center">
+                <p class="font-semibold capitalize">maidens</p>
+                <p class="text-xl">{{player.stats.maidens}}</p>
             </div>
         </div>
     </div>

@@ -10,14 +10,14 @@
             <div class="match-team flex mb-4 gap-2 items-center">
                 <img [src]="match?.team1?.logo" alt="team" class="w-10 h-10 ml-2 rounded-full">
                 {{match?.team1?.name}}
-                <span class="match-score">{{match?.team1Score ?? 0}}/0</span>
+                <span class="match-score">{{matchRunsDetail.team1.runs ?? 0}}/{{matchRunsDetail.team1.wickets ?? 0}}</span>
                 <span class="match-overs">({{match?.overs}} Overs)</span>
             </div>
     
             <div class="match-team flex mb-4 gap-2 items-center">
                 <img [src]="match?.team2?.logo" alt="team" class="w-10 h-10 ml-2 rounded-full">
                 {{match?.team2?.name}}
-                <span class="match-score">0/0</span>
+                <span class="match-score">{{matchRunsDetail.team2.runs ?? 0}}/{{matchRunsDetail.team2.wickets ?? 0}}</span>
                 <span class="match-overs">({{match?.overs}} Overs)</span>
             </div>
             
@@ -27,7 +27,7 @@
     </div>
 
     <div class="flex gap-3" *ngIf="match.isStarted">
-        <button class="btn mt-2" (click)="openStriker()" *ngIf="!match.striker || !match.nonStriker">Select The Batsman</button>
+        <button class="btn mt-2" (click)="openStriker()" *ngIf="!match?.striker?.id || !match?.nonStriker?.id">Select The Batsman</button>
         <button class="btn mt-2" (click)="openBowler()" *ngIf="!match.bowler">Select The Bowler</button>
     </div>
     
@@ -43,7 +43,7 @@
                 <p>6s</p>
                 <p>SR</p>
             </div>
-            <div class="score-table-row">
+            <div class="score-table-row" *ngIf="match.striker.id">
                 <p>{{match.striker.name}}<span class="text-red-500 text-xl font-semibold">*</span></p>
                 <p class="font-semibold">{{match.striker.runs ?? 0}}</p>
                 <p>{{match.striker.balls ?? 0}}</p>
@@ -51,7 +51,7 @@
                 <p>{{match.striker.sixes ?? 0}}</p>
                 <p>{{calculateStrikeRate(match.striker.runs, match.striker.balls)}}</p>
             </div>
-            <div class="score-table-row">
+            <div class="score-table-row" *ngIf="match.nonStriker.id">
                 <p>{{match.nonStriker.name}}</p>
                 <p class="font-semibold">{{match.nonStriker.runs ?? 0}}</p>
                 <p>{{match.nonStriker.balls ?? 0}}</p>
@@ -74,7 +74,7 @@
                 <p>{{match.bowler.name}}</p>
                 <p>{{match.bowler.over ?? '0.0'}}</p>
                 <p>{{match.bowler.maiden ?? 0}}</p>
-                <p>{{match.bowler.runs ?? 0}}</p>
+                <p>{{match.bowler.concededRuns ?? 0}}</p>
                 <p>{{match.bowler.wickets ?? 0}}</p>
                 <p>{{calculateEconomy(match.bowler.over, match.bowler.runs)}}</p>
             </div>
@@ -85,8 +85,8 @@
         <p (click)="setBowling(0)">0</p>
         <p (click)="setBowling(1)">1</p>
         <p (click)="setBowling(2)">2</p>
-        <p (click)="setBowling(4)">4</p>
-        <p (click)="setBowling(6)">6</p>
+        <p (click)="openRunsModal(4)">4</p>
+        <p (click)="openRunsModal(6)">6</p>
         <p (click)="setBowling('OUT')">OUT</p>
     </div>
 
@@ -155,7 +155,7 @@
                 <p class="mb-2 font-semibold">Please Non Striker</p>
                 <div class="flex items-center mb-4" *ngFor="let player of match[battingTeam].players">
                     <input formControlName="nonStriker" type="radio" id="{{player.uid}}-n" name="nonStriker" [value]="player" class="hidden peer" required />
-                    <label for="{{player.uid}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
+                    <label for="{{player.uid}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100" [class.bg-red-500]="match.outBatsman.includes(player.id)">                           
                         <div class="block">
                             <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
                         </div>
@@ -184,5 +184,14 @@
             </div>
         <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="saveBowler()">Save</button>
         </form>
+    </p-dialog>
+
+    <!-- Select Bowler -->
+    <p-dialog [header]="'Hit ' + selectedRuns + ' Runs'" [(visible)]="selectRuns" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false">
+        <div class="mx-auto">
+            <img class="mx-auto" src="./assets/icons/6runs.png" alt="" width="250" height="250" *ngIf="selectedRuns === 6">
+            <img class="mx-auto" src="./assets/icons/4runs.png" alt="" width="250" height="250" *ngIf="selectedRuns === 4"> 
+            <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="setBowling(selectedRuns)">Save</button>
+        </div>
     </p-dialog>
 </ng-container>

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import { Teams } from 'src/app/enums/teams.enum';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class AddTeamComponent {
   @Output() close = new EventEmitter();
   players$ = new BehaviorSubject([]);
   players = []
+  Teams = Teams
 
   teamForm: FormGroup
   constructor(
@@ -46,7 +48,12 @@ export class AddTeamComponent {
     let payload = this.teamForm.value
     payload = {...payload, players: this.players}
     await this.dataService.createTeam(payload)
+    this.teamForm.reset();
     this.close.emit();
+  }
+
+  setLogoUrl(url) {
+    this.teamForm.get('logo').setValue(url);
   }
 
 }

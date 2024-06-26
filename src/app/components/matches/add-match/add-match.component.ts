@@ -33,7 +33,8 @@ export class AddMatchComponent {
       team2: [''],
       overs: [''],
       oversPerBowler: [''],
-      date: ['']
+      date: [''],
+      outBatsman: [[]]
     })
     this.getUsers();
     this.getTeams();
@@ -41,7 +42,6 @@ export class AddMatchComponent {
 
   getTeams() {
     this.dataService.getTeams().subscribe(teams => {
-      console.log(teams)
       this.teams$.next(teams)
     })
   }

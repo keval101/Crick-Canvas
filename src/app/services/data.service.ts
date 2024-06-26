@@ -19,7 +19,6 @@ export class DataService {
           return actions.map((a) => {
             const data: any = a.payload.doc.data();
             const id = a.payload.doc.id;
-            console.log('data', data)
             delete data.password
             const object = {
               name: data.name,
@@ -29,6 +28,7 @@ export class DataService {
               bat: data.bat,
               uid: data.uid,
               id: data.id,
+              matches: data.matches,
             }
             return { ...object, id };
           });
@@ -106,6 +106,11 @@ export class DataService {
 
   updatePlayer(payload: any) {
     return this.firestore.collection(`/users`).doc(payload.id).set(payload, {merge: true});
+  }
+
+  updateTeam(payload: any) {
+    this.setUserId();
+    return this.firestore.collection(`${this.api}/teams`).doc(payload.id).set(payload, {merge: true});
   }
 
   getPlayer(playerId: any) {

@@ -18,13 +18,20 @@ export class MatchDetailComponent {
   match: any;
   selectStriker = false;
   selectBowler = false;
+  selectRuns = false;
+  selectedRuns: number;
   toss = false;
   currentBall = 0;
+  maidenBallCount = 0;
   battingTeam: string;
   bowlingTeam: string;
   strikerForm: FormGroup;
   bowlerForm: FormGroup;
   tossForm: FormGroup;
+  matchRunsDetail = {
+    team1: {runs: 0, wickets: 0},
+    team2: {runs: 0, wickets: 0},
+  };
 
   constructor(
     private dataService: DataService,
@@ -86,6 +93,11 @@ export class MatchDetailComponent {
     this.toss = false;
   }
 
+  openRunsModal(score) {
+    this.selectRuns = true;
+    this.selectedRuns = score;
+  }
+
   getMatchDetail() {
     this.dataService.getMatch(this.matchId).subscribe(match => {
       this.match = match;
@@ -104,8 +116,7 @@ export class MatchDetailComponent {
         this.bowlingTeam = this.match.toss.selected == 'Bowl First' ? winningTossTeam : lossingTossTeam;
       }
 
-      console.log(this.match)
-
+      this.setTeamScores();
     })
   }
 
@@ -113,6 +124,32 @@ export class MatchDetailComponent {
     this.dataService.getPlayers().subscribe(players => {
       this.players$.next(players)
     })
+  }
+
+  setTeamScores() {
+    let team1 = {runs: 0, wickets: 0};
+    let team2 = {runs: 0, wickets: 0};
+    this.match.team1.players.map(x => {
+      if(x.matches.length) {
+        const matchIndex = x.matches.findIndex(x => x.matchId === this.matchId);
+        team1.runs =  x.matches[matchIndex]?.runs ? x.matches[matchIndex].runs + team1.runs : team1.runs;
+        team2.wickets =  x.matches[matchIndex]?.wickets ? x.matches[matchIndex].wickets + team2.wickets : team2.wickets;
+      }
+    })
+
+    this.match.team2.players.map(x => {
+      if(x.matches.length) {
+        const matchIndex = x.matches.findIndex(x => x.matchId === this.matchId);
+        team2.runs =  x.matches[matchIndex]?.runs ? x.matches[matchIndex].runs + team2.runs : team2.runs;
+        team1.wickets =  x.matches[matchIndex]?.wickets ? x.matches[matchIndex].wickets + team1.wickets : team1.wickets;
+      }
+    })
+
+    this.matchRunsDetail = {
+      team1: team1,
+      team2: team2,
+    }
+
   }
 
 
@@ -125,29 +162,32 @@ export class MatchDetailComponent {
     const bowler = this.match.bowler;
     const bowlerIndex = this.match[this.bowlingTeam].players.findIndex(x => x.uid === bowler.uid);
 
+    let strikerRuns = {};
     // handle bowlers runs
-    const strikerMatch = this.match[this.battingTeam].players[strikerIndex]?.matches?.filter(x => x.matchId === this.match.id) ?? [];
-    const strikerDetail = strikerMatch.length ? strikerMatch[0] : {};
-    const strikerRuns = {
-      ...strikerDetail,
-      matchId: this.match.id,
-      runs: strikerDetail.runs > 0 ? strikerDetail.runs + +score : score, 
-      balls: strikerDetail.balls > 0 ? strikerDetail.balls + 1 : 1,
-    }
-
-    if(score === 6) {
-      strikerRuns['sixes'] = strikerDetail.sixes > 0 ? strikerDetail.sixes + 1 : 1;
-    } else if(score === 4) {
-      strikerRuns['fours'] = strikerDetail.fours > 0 ? strikerDetail.fours + 1 : 1;
-    }
-
-    const matchIndex = this.match[this.battingTeam].players[strikerIndex]?.matches?.findIndex(x => x.matchId === this.match.id);
-
-    if(matchIndex != -1 && matchIndex >= 0) {
-      this.match[this.battingTeam].players[strikerIndex].matches[matchIndex] = strikerRuns;
-    } else {
-      this.match[this.battingTeam].players[strikerIndex]['matches'] = [strikerRuns];
-    }
+    this.maidenBallCount = score === 0 ? this.maidenBallCount + 1 : 0;
+      const strikerMatch = this.match[this.battingTeam].players[strikerIndex]?.matches?.filter(x => x.matchId === this.match.id) ?? [];
+      const strikerDetail = strikerMatch.length ? strikerMatch[0] : {};
+      strikerRuns = {
+        ...strikerDetail,
+        matchId: this.match.id,
+        runs: score != 'OUT' ? strikerDetail.runs > 0 ? strikerDetail.runs + +score : score : strikerDetail.runs, 
+        balls: strikerDetail.balls > 0 ? strikerDetail.balls + 1 : 1,
+        out: score === 'OUT'
+      }
+  
+      if(score === 6) {
+        strikerRuns['sixes'] = strikerDetail.sixes > 0 ? strikerDetail.sixes + 1 : 1;
+      } else if(score === 4) {
+        strikerRuns['fours'] = strikerDetail.fours > 0 ? strikerDetail.fours + 1 : 1;
+      }
+  
+      const matchIndex = this.match[this.battingTeam].players[strikerIndex]?.matches?.findIndex(x => x.matchId === this.match.id);
+  
+      if(matchIndex != -1 && matchIndex >= 0) {
+        this.match[this.battingTeam].players[strikerIndex].matches[matchIndex] = strikerRuns;
+      } else {
+        this.match[this.battingTeam].players[strikerIndex].matches.push(strikerRuns);
+      }
 
 
    // handle bowlers runs/balls
@@ -159,7 +199,6 @@ export class MatchDetailComponent {
    const bowlerRuns = {
     ...bowlerDetail,
     matchId: this.match.id,
-    runs: bowlerDetail.runs > 0 ? bowlerDetail.runs + +score : score, 
     balls: bowlerDetail.balls > 0 ? bowlerDetail.balls + 1 : 1,
   }
 
@@ -167,14 +206,19 @@ export class MatchDetailComponent {
       bowler['wickets'] = bowler?.wicket ? +bowler.wicket + 1 : 1; 
       bowlerRuns.wickets = bowler.wickets;
     } else {
-      bowler['runs'] = bowler?.runs > 0 ? bowler.runs + +score : score;
-      bowlerRuns.runs = bowler.runs;
+      bowler['concededRuns'] = bowler?.concededRuns > 0 ? bowler.concededRuns + +score : score;
+      bowlerRuns.concededRuns = bowler.concededRuns;
     }
 
     if(this.currentBall === 6) {
       const over = this.match.bowler?.over?.split('.')?.[0] ?? 0
       bowler['over'] = bowler.over > 0 ? `${+over + 1}.0` : '1.0';
       bowlerRuns.over =  bowler.over;
+      if(this.maidenBallCount === 6) {
+        bowler['maidens'] = bowler?.maidens > 0 ? bowler.maidens + 1 : 1;
+        bowlerRuns.maidens = bowler.maidens;
+      }
+
     } else {
       const over = this.match.bowler?.over?.split('.')?.[0] ?? 0
       bowler['over'] = bowler.over > 0 ? `${over}.${this.currentBall}` : `0.${this.currentBall}`;
@@ -186,7 +230,7 @@ export class MatchDetailComponent {
     if(matchBwIndex != -1 && matchBwIndex >= 0) {
       this.match[this.bowlingTeam].players[bowlerIndex].matches[matchBwIndex] = bowlerRuns
     } else {
-      this.match[this.bowlingTeam].players[bowlerIndex]['matches'] = [bowlerRuns];
+      this.match[this.bowlingTeam].players[bowlerIndex].matches.push(bowlerRuns);
     }
     
 
@@ -201,9 +245,12 @@ export class MatchDetailComponent {
     //   this.match.team1.players[strikerIndex].fours = this.match.team1.players[strikerIndex].fours > 0 ? this.match.team1.players[strikerIndex].fours + 1 : 1;
     // }
 
-    if(score === 1 || this.currentBall === 6) {
+    if(score === 1 || this.currentBall === 6 && score != 'OUT') {
       this.match.nonStriker = this.match.striker;
       this.match.striker = nonStriker;
+    } else if(score === 'OUT') {
+      this.match['outBatsman'] = this.match?.outBatsman ? [...this.match.outBatsman, this.match.striker.id] : [this.match.striker.id]
+      this.match.striker = {};
     }
 
     this.currentBall = this.currentBall === 6 ? 0 : this.currentBall;
@@ -214,13 +261,14 @@ export class MatchDetailComponent {
     const batsmanPlayer = this.match[this.battingTeam].players[strikerIndex];
     const bowlingPlayer = this.match[this.bowlingTeam].players[bowlerIndex];
 
-    // this.dataService.updatePlayer(batsmanPlayer)
-    // this.dataService.updatePlayer(bowlingPlayer)
+    this.dataService.updatePlayer(batsmanPlayer)
+    this.dataService.updatePlayer(bowlingPlayer)
+    this.dataService.updateTeam(this.match[this.battingTeam])
+    this.dataService.updateTeam(this.match[this.bowlingTeam])
 
-    console.log('strikerIndex', {batsmanPlayer, bowlingPlayer})
-    console.log('------', payload)
-
-    // this.dataService.updateMatch(payload)
+    this.selectRuns = false;
+    this.setTeamScores();
+    this.dataService.updateMatch(payload)
   }
 
 
@@ -239,7 +287,7 @@ export class MatchDetailComponent {
   }
 
   async deleteMatch() {
-    if (confirm('Are you sure to delte match?') == true) {
+    if (confirm('Are you sure to delete match?') == true) {
       await this.dataService.deleteMatch(this.matchId);
       this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Deleted Successfully!' });
       this.router.navigate(['/matches'])

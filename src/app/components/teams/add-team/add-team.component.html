@@ -6,8 +6,14 @@
 
     <div class="mb-5">
         <label for="logo" class="block mb-2 text-sm font-medium text-gray-900">Logo</label>
-        <input type="text" id="logo" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Name" formControlName="logo" required />
-      </div>
+        <input type="text" id="logo" class="shadow-sm bg-gray-50 hidden border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Name" formControlName="logo" required />
+
+        <div class="logos">
+            <ng-container *ngFor="let item of Teams | keyvalue">
+                <img [src]="item.value" alt="" (click)="setLogoUrl(item.value)">
+            </ng-container>
+        </div>
+    </div>
 
     <div>
         <p class="mb-2">Please Select Players</p>

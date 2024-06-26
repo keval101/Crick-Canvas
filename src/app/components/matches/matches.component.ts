@@ -19,7 +19,6 @@ export class MatchesComponent {
 
   getMatches() {
     this.dataService.getMatches().subscribe(teams => {
-      console.log(teams)
       this.matches$.next(teams)
     })
   }

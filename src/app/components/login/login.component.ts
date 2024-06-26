@@ -29,7 +29,6 @@ export class LoginComponent {
       this.authService.signIn(this.loginForm.value).then((res: any) => {
         const token = res.user.multiFactor.user.accessToken
         const userId = res.user.multiFactor.user.uid
-        console.log(userId)
         localStorage.setItem('userId', userId);
         localStorage.setItem('token', token);
         // this.messageService.add({ severity: 'success', summary: 'Logged In', detail: 'Logged In Successfully!' });

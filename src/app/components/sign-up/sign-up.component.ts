@@ -32,19 +32,16 @@ export class SignUpComponent {
   }
 
   signup() {
-    console.log(this.signupForm.valid)
     if(this.signupForm.valid) {
       const payload = {
         email: this.signupForm.value.email,
         password: this.signupForm.value.password
       }
-      console.log(payload)
       this.authService.signup(payload.email, payload.password).then(res => {
         const user = res.user.multiFactor.user;
         const data = this.signupForm.value;
         data['uid'] = user.uid
         this.authService.storeUserData(user.uid, data)
-        console.log(res)
         this.messageService.add({ severity: 'success', summary: 'Register', detail: 'Register Successfully!' });
         this.router.navigate(['/dashboard']);
       }).catch(error => {

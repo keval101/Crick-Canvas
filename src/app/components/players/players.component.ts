@@ -19,7 +19,6 @@ export class PlayersComponent {
   getPlayers() {
     this.dataService.getPlayers().subscribe(players => 
       {
-        console.log(players)
         this.players$.next(players);
       })
   }
