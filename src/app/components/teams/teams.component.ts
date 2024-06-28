@@ -12,6 +12,7 @@ export class TeamsComponent {
   
   teams$ = new BehaviorSubject([])
   visible: boolean;
+  selectedTeam: any;
 
   constructor(private dataService: DataService) {}
 
@@ -25,12 +26,25 @@ export class TeamsComponent {
     })
   }
 
+  selectTeam(team) {
+    this.visible = true;
+    this.selectedTeam = team
+  }
+
   addTeam() {
     this.visible = true;
   }
 
+  async deleteTeam(team, e: Event) {
+    e.stopPropagation();
+    if(confirm(`Are you want to delete team ${team.name}`) === true) {
+      await this.dataService.deleteTeam(team.id)
+    }
+  }
+
   closeModal() {
     this.visible = false;
+    this.selectedTeam = undefined;
     this.getTeams();
   }
 }

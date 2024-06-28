@@ -3,7 +3,24 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 
+    @media screen and (max-width: 1400px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     @media screen and (max-width: 768px) {
         grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+.btn-delete {
+    position: absolute;
+    border: none;
+    top: -10px;
+    right: -10px;
+    padding: 0;
+
+    img {
+        width: 30px;
+        height: 30px;
     }
 }

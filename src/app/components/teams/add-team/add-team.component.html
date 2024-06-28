@@ -10,7 +10,7 @@
 
         <div class="logos">
             <ng-container *ngFor="let item of Teams | keyvalue">
-                <img [src]="item.value" alt="" (click)="setLogoUrl(item.value)">
+                <img [src]="item.value" alt="" (click)="setLogoUrl(item.value)" [class.active-logo]="item.value === teamForm.value.logo">
             </ng-container>
         </div>
     </div>
@@ -18,7 +18,7 @@
     <div>
         <p class="mb-2">Please Select Players</p>
         <div class="flex items-center mb-4" *ngFor="let player of (players$ | async)">
-            <input id="{{player.id}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-blue-600 focus:ring-2" (change)="addPlayers($event, player)">
+            <input id="{{player.id}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-blue-600 focus:ring-2" (change)="addPlayers($event, player)" [checked]="playersIds.includes(player.id)">
             <label for="{{player.id}}" class="ms-2 text-sm font-medium">{{player.name}}</label>
         </div>
     </div>

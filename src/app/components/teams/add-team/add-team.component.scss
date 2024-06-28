@@ -13,3 +13,9 @@
         }
     }
 }
+
+.active-logo {
+    @apply border;
+    border-width: 5px;
+    border-color: #a855f7;
+}

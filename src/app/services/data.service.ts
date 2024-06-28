@@ -41,6 +41,7 @@ export class DataService {
   async createTeam(payload: any) {
     this.setUserId();
     const response = await this.firestore.collection(`${this.api}/teams`).add(payload);
+    console.log(response)
     return response
   }
 
@@ -131,6 +132,13 @@ export class DataService {
   async deleteMatch(matchId: string) {
     return await this.firestore.collection(`/matches`).doc(matchId).delete();
   }
+
+  async deleteTeam(teamId: string) {
+    this.setUserId();
+    const response = await this.firestore.collection(`${this.api}/teams`).doc(teamId).delete();
+    return response;
+  }
+  
   setUserId() {
     const userId = localStorage.getItem('userId');
     this.api = `users/${userId}`
