@@ -100,7 +100,7 @@ export class DataService {
   }
 
   updateMatch(payload: any) {
-    this.setUserId();
+    console.log(payload)
     return this.firestore.collection(`/matches`).doc(payload.id).set(payload, {merge: true});
   }
 

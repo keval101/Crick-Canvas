@@ -65,11 +65,14 @@ export class MatchDetailComponent {
 
   openStriker() {
     this.selectStriker = true;
+    this.strikerForm.patchValue({striker: this.match.striker, nonStriker: this.match.nonStriker})
+    console.log(this.strikerForm)
   }
 
   saveStriker() {
     const payload = { ...this.match, ...this.strikerForm.value };
-    this.dataService.updateMatch(payload);
+    this.match = payload;
+    // this.dataService.updateMatch(payload);
     this.selectStriker = false;
   }
 
@@ -79,7 +82,18 @@ export class MatchDetailComponent {
 
   saveBowler() {
     const payload = { ...this.match, ...this.bowlerForm.value };
-    this.dataService.updateMatch(payload);
+    this.match = payload;
+    console.log(payload, this.bowlerForm.value);
+
+    const playerIndex = this.match[this.bowlingTeam].players.findIndex(x => x.id === this.bowlerForm.value.bowler.id);
+    console.log(this.match[this.bowlingTeam].players[playerIndex])
+    const matchIndex = this.match[this.bowlingTeam].players[playerIndex]?.matches?.findIndex(x => x.matchId === this.matchId);
+    console.log(matchIndex)
+    if(matchIndex != -1 && matchIndex >=0 ) {
+      this.match.bowler = {...this.match.bowler, ...this.match[this.bowlingTeam].players[playerIndex].matches[matchIndex]}
+    }
+    console.log(payload);
+    // this.dataService.updateMatch(payload);
     this.selectBowler = false;
   }
 
@@ -113,19 +127,22 @@ export class MatchDetailComponent {
 
   openWicketModal() {
     this.displayWicket = true;
+    this.wicketType = 'Bowled';
+    this.selectedPlayer = this.match.bowler
   }
 
   selectWicketType(type) {
     this.wicketType = type;
 
     if(this.wicketType === 'Bowled') {
-      this.selectedPlayer = undefined;
+      this.selectedPlayer = this.match.bowler
     }
   }
 
   getMatchDetail() {
     this.dataService.getMatch(this.matchId).subscribe((match) => {
       this.match = match;
+      this.match['outBatsman'] = [];
       console.log(this.match)
 
       if (this.match.bowler) {
@@ -191,10 +208,39 @@ export class MatchDetailComponent {
   }
 
   setBowling(score) {
+    this.displayWicket = false;
+    this.selectRuns = false;
+
     if(score === 'OUT') {
-      console.log('wicketType', this.wicketType)
-      console.log('selectedPlayer', this.selectedPlayer)
+      if(this.wicketType != 'Bowled') {
+        let type = this.wicketType === 'Catch' ? 'catch' : this.wicketType === 'Stump' ? 'stump' : 'runout';
+        const playerIndex = this.match[this.bowlingTeam].players.findIndex(
+          (x) => x.uid === this.selectedPlayer.uid
+        );
+
+        const matchIndex = this.match[this.bowlingTeam].players[playerIndex]?.matches?.findIndex((x) => x.matchId === this.match.id);
+        let player = this.match[this.bowlingTeam].players[playerIndex];
+
+        if(player.matches[matchIndex]?.matchId) {
+          player.matches[matchIndex][type] = player.matches[matchIndex]?.[type] ? player.matches[matchIndex]?.[type] + 1 : 1;
+        } else {
+          player.matches.push({
+            matchId: this.match.id
+          })
+
+          const matchIndex = this.match[this.bowlingTeam].players[playerIndex]?.matches?.findIndex((x) => x.matchId === this.match.id);
+          player.matches[matchIndex][type] = player.matches[matchIndex]?.[type] ? player.matches[matchIndex]?.[type] + 1 : 1;
+        }
+
+        console.log('apy', this.match[this.bowlingTeam].players[playerIndex])
+         // this.dataService.updatePlayer(batsmanPlayer);
+        // this.dataService.updatePlayer(bowlingPlayer);
+        // this.dataService.updateTeam(this.match[this.battingTeam]);
+        // this.dataService.updateTeam(this.match[this.bowlingTeam]);
+
+      }
     }
+
     const striker = this.match.striker;
     const nonStriker = JSON.parse(JSON.stringify(this.match.nonStriker));
     const strikerIndex = this.match[this.battingTeam].players.findIndex(
@@ -209,7 +255,7 @@ export class MatchDetailComponent {
     );
 
     let strikerRuns = {};
-    // handle bowlers runs
+    // handle striker runs
     this.maidenBallCount = score === 0 ? this.maidenBallCount + 1 : 0;
     const strikerMatch =
       this.match[this.battingTeam].players[strikerIndex]?.matches?.filter(
@@ -224,7 +270,7 @@ export class MatchDetailComponent {
           ? strikerDetail.runs > 0
             ? strikerDetail.runs + +score
             : score
-          : strikerDetail.runs,
+          : (strikerDetail.runs ?? 0),
       balls: strikerDetail.balls > 0 ? strikerDetail.balls + 1 : 1,
       out: score === 'OUT',
     };
@@ -235,6 +281,16 @@ export class MatchDetailComponent {
     } else if (score === 4) {
       strikerRuns['fours'] =
         strikerDetail.fours > 0 ? strikerDetail.fours + 1 : 1;
+    }
+
+    if(score === 'OUT') {
+      strikerRuns['outData'] = {
+        type: this.wicketType
+      }
+
+      if(this.selectedPlayer?.id) {
+        strikerRuns['outData'].player = this.selectedPlayer
+      }
     }
 
     const matchIndex = this.match[this.battingTeam].players[
@@ -317,7 +373,6 @@ export class MatchDetailComponent {
       this.match.striker = {};
     }
 
-    this.currentBall = this.currentBall === 6 ? 0 : this.currentBall;
 
     this.match['team1Score'] =
       this.match['team1Score'] > 0 ? +this.match['team1Score'] + 1 : 0;
@@ -326,12 +381,21 @@ export class MatchDetailComponent {
     const batsmanPlayer = this.match[this.battingTeam].players[strikerIndex];
     const bowlingPlayer = this.match[this.bowlingTeam].players[bowlerIndex];
 
+    console.log({batsmanPlayer, bowlingPlayer}, this.match)
+
     // this.dataService.updatePlayer(batsmanPlayer);
     // this.dataService.updatePlayer(bowlingPlayer);
     // this.dataService.updateTeam(this.match[this.battingTeam]);
     // this.dataService.updateTeam(this.match[this.bowlingTeam]);
 
-    this.selectRuns = false;
+    console.log(this.currentBall)
+    if(this.currentBall === 6) {
+      this.match.bowler = {};
+      console.log(this.currentBall, this.match)
+    }
+
+    this.currentBall = this.currentBall === 6 ? 0 : this.currentBall;
+
     this.setTeamScores();
     // this.dataService.updateMatch(payload);
   }

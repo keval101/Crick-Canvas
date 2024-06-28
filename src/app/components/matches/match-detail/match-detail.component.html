@@ -29,13 +29,13 @@
 
     <div class="flex gap-3" *ngIf="match.isStarted">
         <button class="btn mt-2" (click)="openStriker()" *ngIf="!match?.striker?.id || !match?.nonStriker?.id">Select The Batsman</button>
-        <button class="btn mt-2" (click)="openBowler()" *ngIf="!match.bowler">Select The Bowler</button>
+        <button class="btn mt-2" (click)="openBowler()" *ngIf="!match.bowler?.id">Select The Bowler</button>
     </div>
     
-    <div class="score mt-5" *ngIf="match?.striker || match?.nonStriker || match?.bowler">
+    <div class="score mt-5" *ngIf="match?.striker?.id || match?.nonStriker?.id || match?.bowler?.id">
         <h1 class="section-heading">Scores</h1>
     
-        <div class="score-table" *ngIf="match.striker || match.nonStriker">
+        <div class="score-table" *ngIf="match.striker?.id || match.nonStriker?.id">
             <div class="score-table-row !bg-transparent !border-none">
                 <p>Name</p>
                 <p>R</p>
@@ -61,8 +61,8 @@
                 <p>{{calculateStrikeRate(match.nonStriker.runs, match.nonStriker.balls)}}</p>
             </div>
         </div>
-        <hr class="my-8" *ngIf="match?.striker || match?.nonStriker">
-        <div class="score-table" *ngIf="match?.bowler">
+        <hr class="my-8" *ngIf="match?.striker?.id || match?.nonStriker?.id">
+        <div class="score-table" *ngIf="match?.bowler?.id">
             <div class="score-table-row !bg-transparent !border-none">
                 <p>Name</p>
                 <p>O</p>
@@ -83,13 +83,15 @@
     </div>
     
     <div class="bowling" *ngIf="match.bowler">
-        <p (click)="setBowling(0)">0</p>
-        <p (click)="setBowling(1)">1</p>
-        <p (click)="setBowling(2)">2</p>
-        <p (click)="openRunsModal(4)">4</p>
-        <p (click)="openRunsModal(6)">6</p>
-        <p (click)="openWicketModal()">OUT</p>
+        <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(0)">0</p>
+        <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(1)">1</p>
+        <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(2)">2</p>
+        <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="openRunsModal(4)">4</p>
+        <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="openRunsModal(6)">6</p>
+        <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="openWicketModal()">OUT</p>
     </div>
+    <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.striker?.id">Please select striker</p>
+    <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.bowler?.id">Please select bowler</p>
 
     <!-- TOSS -->
     <p-dialog header="Header" [(visible)]="toss" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
@@ -138,38 +140,40 @@
     </p-dialog>
 
     <!-- Select Batsman -->
-    <p-dialog header="Header" [(visible)]="selectStriker" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match.toss">
+    <p-dialog header="Header" [(visible)]="selectStriker" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match.toss && selectStriker">
         <form [formGroup]="strikerForm">
-            <div>
+            <div *ngIf="!match?.striker?.id">
                 <p class="mb-2 font-semibold">Please Striker</p>
-                <div class="flex items-center mb-4" *ngFor="let player of match[battingTeam].players">
-                    <input formControlName="striker" type="radio" id="{{player.uid}}-s" name="striker" [value]="player" class="hidden peer" required />
-                    <label for="{{player.uid}}-s" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
-                        <div class="block">
-                            <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
-                        </div>
-                    </label>
-                </div>
+                <ng-container  *ngFor="let player of match[battingTeam].players">
+                    <div class="flex items-center mb-4" *ngIf="!match?.striker?.id && !match.outBatsman.includes(player?.id) && player?.id != match?.nonStriker?.id">
+                        <input formControlName="striker" type="radio" id="{{player.uid}}-s" name="striker" [value]="player" class="hidden peer" required />
+                        <label for="{{player.uid}}-s" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
+                            <div class="block">
+                                <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
+                            </div>
+                        </label>
+                    </div>
+                </ng-container>
             </div>
     
-            <div>
+            <div *ngIf="!match?.nonStriker?.id">
                 <p class="mb-2 font-semibold">Please Non Striker</p>
-                <div class="flex items-center mb-4" *ngFor="let player of match[battingTeam].players">
+                <div class="flex items-center mb-4" *ngFor="let player of match[battingTeam].players" [class.disabled-player]="match.outBatsman.includes(player?.id)"
+                [class.playing-player]="match?.nonStriker?.id === player?.id || match?.stiker?.id === player?.id">
                     <input formControlName="nonStriker" type="radio" id="{{player.uid}}-n" name="nonStriker" [value]="player" class="hidden peer" required />
-                    <label for="{{player.uid}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100" [class.bg-red-500]="match.outBatsman.includes(player.id)">                           
+                    <label for="{{player.uid}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100" [class.bg-red-500]="match.outBatsman.includes(player?.id)">                           
                         <div class="block">
                             <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
                         </div>
                     </label>
                 </div>
             </div>
-
-        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="saveStriker()">Save</button>
+        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" [disabled]="!strikerForm?.value?.striker?.id && !strikerForm?.value?.nonStriker?.id" (click)="saveStriker()">Save</button>
         </form>
     </p-dialog>
 
     <!-- Select Bowler -->
-    <p-dialog header="Header" [(visible)]="selectBowler" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match.toss">
+    <p-dialog header="Header" [(visible)]="selectBowler" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match.toss && selectBowler">
 
         <form [formGroup]="bowlerForm">
             <div>
@@ -183,7 +187,7 @@
                     </label>
                 </div>
             </div>
-        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="saveBowler()">Save</button>
+        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"[disabled]="!bowlerForm?.value?.bowler?.id" (click)="saveBowler()">Save</button>
         </form>
     </p-dialog>
 

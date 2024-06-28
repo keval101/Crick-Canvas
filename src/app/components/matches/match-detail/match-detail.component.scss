@@ -106,3 +106,14 @@
         margin-bottom: 200px;
     }
 }
+
+.disable-bowling {
+    @apply text-gray-400 cursor-not-allowed pointer-events-none;
+}
+
+.disabled-player label{
+    @apply text-white bg-red-500 cursor-not-allowed pointer-events-none;
+}
+.playing-player label{
+    @apply text-white bg-blue-500 cursor-not-allowed pointer-events-none;
+}
