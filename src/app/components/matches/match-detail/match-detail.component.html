@@ -82,7 +82,7 @@
         </div>
     </div>
     
-    <div class="bowling" *ngIf="match.bowler">
+    <div class="bowling" *ngIf="match.bowler?.id">
         <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(0)">0</p>
         <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(1)">1</p>
         <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(2)">2</p>
@@ -145,7 +145,7 @@
             <div *ngIf="!match?.striker?.id">
                 <p class="mb-2 font-semibold">Please Striker</p>
                 <ng-container  *ngFor="let player of match[battingTeam].players">
-                    <div class="flex items-center mb-4" *ngIf="!match?.striker?.id && !match.outBatsman.includes(player?.id) && player?.id != match?.nonStriker?.id">
+                    <div class="flex items-center mb-4" *ngIf="!match?.striker?.id && !match.outBatsman.includes(player?.id) && player?.id != match?.nonStriker?.id && player?.id != strikerForm.value?.nonStriker?.id">
                         <input formControlName="striker" type="radio" id="{{player.uid}}-s" name="striker" [value]="player" class="hidden peer" required />
                         <label for="{{player.uid}}-s" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
                             <div class="block">
@@ -158,15 +158,16 @@
     
             <div *ngIf="!match?.nonStriker?.id">
                 <p class="mb-2 font-semibold">Please Non Striker</p>
-                <div class="flex items-center mb-4" *ngFor="let player of match[battingTeam].players" [class.disabled-player]="match.outBatsman.includes(player?.id)"
-                [class.playing-player]="match?.nonStriker?.id === player?.id || match?.stiker?.id === player?.id">
-                    <input formControlName="nonStriker" type="radio" id="{{player.uid}}-n" name="nonStriker" [value]="player" class="hidden peer" required />
-                    <label for="{{player.uid}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100" [class.bg-red-500]="match.outBatsman.includes(player?.id)">                           
-                        <div class="block">
-                            <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
-                        </div>
-                    </label>
-                </div>
+                <ng-container *ngFor="let player of match[battingTeam].players">
+                    <div class="flex items-center mb-4"  *ngIf="!match?.nonStriker?.id && !match.outBatsman.includes(player?.id) && player?.id != match?.striker?.id && player?.id != strikerForm.value?.striker?.id">
+                        <input formControlName="nonStriker" type="radio" id="{{player.uid}}-n" name="nonStriker" [value]="player" class="hidden peer" required />
+                        <label for="{{player.uid}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100" [class.bg-red-500]="match.outBatsman.includes(player?.id)">                           
+                            <div class="block">
+                                <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
+                            </div>
+                        </label>
+                    </div>
+                </ng-container>
             </div>
         <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" [disabled]="!strikerForm?.value?.striker?.id && !strikerForm?.value?.nonStriker?.id" (click)="saveStriker()">Save</button>
         </form>

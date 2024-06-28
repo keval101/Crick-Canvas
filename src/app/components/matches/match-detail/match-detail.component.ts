@@ -192,6 +192,7 @@ export class MatchDetailComponent {
         const matchIndex = x.matches.findIndex(
           (x) => x.matchId === this.matchId
         );
+        console.log(team1.wickets, x.matches[matchIndex]?.wickets)
         team2.runs = x.matches[matchIndex]?.runs
           ? x.matches[matchIndex].runs + team2.runs
           : team2.runs;
@@ -232,8 +233,7 @@ export class MatchDetailComponent {
           player.matches[matchIndex][type] = player.matches[matchIndex]?.[type] ? player.matches[matchIndex]?.[type] + 1 : 1;
         }
 
-        console.log('apy', this.match[this.bowlingTeam].players[playerIndex])
-         this.dataService.updatePlayer(this.match[this.bowlingTeam].players[playerIndex]);
+        //  this.dataService.updatePlayer(this.match[this.bowlingTeam].players[playerIndex]);
       }
     }
 
@@ -318,7 +318,7 @@ export class MatchDetailComponent {
     };
 
     if (score === 'OUT') {
-      bowler['wickets'] = bowler?.wicket ? +bowler.wicket + 1 : 1;
+      bowler['wickets'] = bowler?.wickets ? +bowler.wickets + 1 : 1;
       bowlerRuns.wickets = bowler.wickets;
     } else {
       bowler['concededRuns'] =
@@ -379,12 +379,11 @@ export class MatchDetailComponent {
 
     console.log({batsmanPlayer, bowlingPlayer}, this.match)
 
-    this.dataService.updatePlayer(batsmanPlayer);
-    this.dataService.updatePlayer(bowlingPlayer);
-    this.dataService.updateTeam(this.match[this.battingTeam]);
-    this.dataService.updateTeam(this.match[this.bowlingTeam]);
+    // this.dataService.updatePlayer(batsmanPlayer);
+    // this.dataService.updatePlayer(bowlingPlayer);
+    // this.dataService.updateTeam(this.match[this.battingTeam]);
+    // this.dataService.updateTeam(this.match[this.bowlingTeam]);
 
-    console.log(this.currentBall)
     if(this.currentBall === 6) {
       this.match.bowler = {};
       console.log(this.currentBall, this.match)
@@ -392,8 +391,36 @@ export class MatchDetailComponent {
 
     this.currentBall = this.currentBall === 6 ? 0 : this.currentBall;
 
+
+    console.log(this.match)
+
+    let totalBalls = +this.match.overs * 6;
+    let totalFacedBalls = 0;
+
+    this.match[this.bowlingTeam].players.map(x => {
+      const matchIndex = x.matches.findIndex(x => x.matchId === this.matchId);
+      totalFacedBalls = 1 + (x.matches[matchIndex]?.balls ?? 0)
+    })
+
     this.setTeamScores();
-    this.dataService.updateMatch(payload);
+
+    console.log('totalBalls', this.matchRunsDetail[this.battingTeam].wickets, this.match[this.battingTeam].players.length - 1)
+
+    if(this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length - 1) {
+      this.match.striker = nonStriker;
+      this.match.nonStriker = {};
+    }
+    if(this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length || totalBalls === totalFacedBalls) {
+      this.match.battingTeam = this.match.battingTeam === 'team1' ? 'team2' : 'team1';
+      this.match.bowlingTeam = this.match.bowlingTeam === 'team1' ? 'team2' : 'team1';
+      this.match.striker = {};
+      this.match.nonStriker = {};
+      this.match.bowler = {};
+      this.battingTeam =  this.match.battingTeam
+      this.bowlingTeam =  this.match.bowlingTeam;
+    }
+    
+    // this.dataService.updateMatch(payload);
   }
 
   calculateStrikeRate(totalRuns, totalBallsFaced) {
