@@ -233,11 +233,7 @@ export class MatchDetailComponent {
         }
 
         console.log('apy', this.match[this.bowlingTeam].players[playerIndex])
-         // this.dataService.updatePlayer(batsmanPlayer);
-        // this.dataService.updatePlayer(bowlingPlayer);
-        // this.dataService.updateTeam(this.match[this.battingTeam]);
-        // this.dataService.updateTeam(this.match[this.bowlingTeam]);
-
+         this.dataService.updatePlayer(this.match[this.bowlingTeam].players[playerIndex]);
       }
     }
 
@@ -383,10 +379,10 @@ export class MatchDetailComponent {
 
     console.log({batsmanPlayer, bowlingPlayer}, this.match)
 
-    // this.dataService.updatePlayer(batsmanPlayer);
-    // this.dataService.updatePlayer(bowlingPlayer);
-    // this.dataService.updateTeam(this.match[this.battingTeam]);
-    // this.dataService.updateTeam(this.match[this.bowlingTeam]);
+    this.dataService.updatePlayer(batsmanPlayer);
+    this.dataService.updatePlayer(bowlingPlayer);
+    this.dataService.updateTeam(this.match[this.battingTeam]);
+    this.dataService.updateTeam(this.match[this.bowlingTeam]);
 
     console.log(this.currentBall)
     if(this.currentBall === 6) {
@@ -397,7 +393,7 @@ export class MatchDetailComponent {
     this.currentBall = this.currentBall === 6 ? 0 : this.currentBall;
 
     this.setTeamScores();
-    // this.dataService.updateMatch(payload);
+    this.dataService.updateMatch(payload);
   }
 
   calculateStrikeRate(totalRuns, totalBallsFaced) {
