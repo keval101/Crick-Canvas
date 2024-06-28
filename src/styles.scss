@@ -31,3 +31,11 @@ input {
         @apply ring-4 ring-blue-300 outline-none;
     }
 }
+
+.section-heading {
+    @apply text-3xl font-bold;
+
+    @media screen and (max-width: 600px) {
+        @apply text-xl;
+    }
+}

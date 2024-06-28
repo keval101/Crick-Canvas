@@ -1,3 +1,4 @@
+<div class="match-container">
 <ng-container *ngIf="match">
     <div>
         <button class="outline-btn flex gap-2 items-center mb-4 ml-auto" (click)="deleteMatch()">
@@ -6,7 +7,7 @@
         </button>
     </div>
     <div class="match">
-        <div class="border p-4 border-gray-200 bg-gray-100 rounded-md">
+        <div class="border border-gray-200 bg-gray-100 rounded-md p-2 sm:p-4">
             <div class="match-team flex mb-4 gap-2 items-center">
                 <img [src]="match?.team1?.logo" alt="team" class="w-10 h-10 ml-2 rounded-full">
                 {{match?.team1?.name}}
@@ -32,7 +33,7 @@
     </div>
     
     <div class="score mt-5" *ngIf="match?.striker || match?.nonStriker || match?.bowler">
-        <h1 class="text-3xl font-bold">Scores</h1>
+        <h1 class="section-heading">Scores</h1>
     
         <div class="score-table" *ngIf="match.striker || match.nonStriker">
             <div class="score-table-row !bg-transparent !border-none">
@@ -224,3 +225,4 @@
         </div>
     </p-dialog>
 </ng-container>
+</div>

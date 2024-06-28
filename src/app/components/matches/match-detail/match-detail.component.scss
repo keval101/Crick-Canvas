@@ -11,6 +11,16 @@
 
 .match-team {
     width: 400px;
+
+    @media screen and (max-width: 600px) {
+        width: 300px;
+        font-size: 16px;
+
+        img {
+            width: 30px;
+            height: 30px
+        }
+    }
 }
 
 .score-table {
@@ -18,18 +28,28 @@
         @apply mt-4 px-2 py-3 bg-gray-100 border border-gray-200 rounded-lg;
         display: grid;
         grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr;
+
+        @media screen and (max-width: 600px) {
+            @apply py-2;
+            font-size: 14px;
+        }
     }
 }
 
 .bowling {
-    @apply flex gap-2 mt-12;
+    @apply flex gap-2 mt-12 flex-wrap;
     p {
-        @apply bg-gray-100 border cursor-pointer border-gray-200 p-4 px-6 rounded-md;
+        @apply bg-gray-100 border font-semibold cursor-pointer border-gray-200 p-4 px-6 rounded-md;
         transition: all 0.2s ease;
 
         &:hover {
             @apply bg-gray-200;
             transition: all 0.2s ease;
+        }
+
+        @media screen and (max-width: 600px) {
+            @apply p-3 px-4;
+            font-size: 16px;
         }
     }
 }
@@ -78,5 +98,11 @@
         @apply grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
+    }
+}
+
+.match-container {
+    @media screen and (max-width: 600px) {
+        margin-bottom: 200px;
     }
 }
