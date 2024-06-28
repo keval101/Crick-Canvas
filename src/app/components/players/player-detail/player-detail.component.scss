@@ -1,7 +1,15 @@
 .card-container {
     @apply flex gap-4;
+
+    @media screen and (max-width: 600px) {
+        @apply flex-col;
+    }
 }
 
 .card {
     width: 450px;
+
+    @media screen and (max-width: 600px) {
+        @apply w-full;
+    }
 }

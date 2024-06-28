@@ -87,7 +87,7 @@
         <p (click)="setBowling(2)">2</p>
         <p (click)="openRunsModal(4)">4</p>
         <p (click)="openRunsModal(6)">6</p>
-        <p (click)="setBowling('OUT')">OUT</p>
+        <p (click)="openWicketModal()">OUT</p>
     </div>
 
     <!-- TOSS -->
@@ -186,12 +186,41 @@
         </form>
     </p-dialog>
 
-    <!-- Select Bowler -->
+    <!-- Select Runs -->
     <p-dialog [header]="'Hit ' + selectedRuns + ' Runs'" [(visible)]="selectRuns" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false">
         <div class="mx-auto">
             <img class="mx-auto" src="./assets/icons/6runs.png" alt="" width="250" height="250" *ngIf="selectedRuns === 6">
             <img class="mx-auto" src="./assets/icons/4runs.png" alt="" width="250" height="250" *ngIf="selectedRuns === 4"> 
             <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="setBowling(selectedRuns)">Save</button>
+        </div>
+    </p-dialog>
+
+    <!-- Select Wickets -->
+    <p-dialog [header]="'Wicket'" [(visible)]="displayWicket" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="displayWicket">
+        <div class="mx-auto wickets">
+            <div class="wickets-container">
+                <div class="flex justify-center items-center flex-col" [class.active-wicket]="wicketType === 'Bowled'">
+                    <img class="mx-auto cursor-pointer" src="./assets/icons/bowled.png" alt="" width="200" height="200" (click)="selectWicketType('Bowled')">
+                    <p class="font-semibold">Bowled</p>
+                </div>
+                <div class="flex justify-center items-center flex-col" [class.active-wicket]="wicketType === 'Catch'">
+                    <img class="mx-auto cursor-pointer" src="./assets/icons/catch.png" alt="" width="200" height="200" (click)="selectWicketType('Catch')">
+                    <p class="font-semibold">Catch Out</p>
+                </div>
+                <div class="flex justify-center items-center flex-col" [class.active-wicket]="wicketType === 'Stump'">
+                    <img class="mx-auto cursor-pointer" src="./assets/icons/stump-out.png" alt="" width="200" height="200" (click)="selectWicketType('Stump')">
+                    <p class="font-semibold">Stump Out</p>
+                </div>
+                <div class="flex justify-center items-center flex-col" [class.active-wicket]="wicketType === 'Runout'">
+                    <img class="mx-auto cursor-pointer" src="./assets/icons/runout.png" alt="" width="200" height="200" (click)="selectWicketType('Runout')">
+                    <p class="font-semibold">Run Out</p>
+                </div>
+            </div>
+            <div class="mb-5" *ngIf="wicketType != 'Bowled'">
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                <p-dropdown [options]="match[bowlingTeam].players" optionLabel="name" [appendTo]="'body'" placeholder="Select Player" [(ngModel)]="selectedPlayer"></p-dropdown>
+            </div>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="setBowling('OUT')">Save</button>
         </div>
     </p-dialog>
 </ng-container>

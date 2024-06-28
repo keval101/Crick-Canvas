@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -9,6 +9,7 @@ import { DataService } from 'src/app/services/data.service';
   selector: 'app-match-detail',
   templateUrl: './match-detail.component.html',
   styleUrls: ['./match-detail.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MatchDetailComponent {
   players$ = new BehaviorSubject([]);
@@ -18,6 +19,9 @@ export class MatchDetailComponent {
   selectStriker = false;
   selectBowler = false;
   selectRuns = false;
+  displayWicket = false;
+  wicketType = 'Bowled';
+  selectedPlayer: any;
   selectedRuns: number;
   toss = false;
   currentBall = 0;
@@ -84,7 +88,6 @@ export class MatchDetailComponent {
   }
 
   saveTheToss() {
-
     const winningTossTeam = this.tossForm.value.winTheToss;
     const lossingTossTeam = this.tossForm.value.winTheToss === 'team1' ? 'team2' : 'team1';
     this.battingTeam =
@@ -108,9 +111,22 @@ export class MatchDetailComponent {
     this.selectedRuns = score;
   }
 
+  openWicketModal() {
+    this.displayWicket = true;
+  }
+
+  selectWicketType(type) {
+    this.wicketType = type;
+
+    if(this.wicketType === 'Bowled') {
+      this.selectedPlayer = undefined;
+    }
+  }
+
   getMatchDetail() {
     this.dataService.getMatch(this.matchId).subscribe((match) => {
       this.match = match;
+      console.log(this.match)
 
       if (this.match.bowler) {
         const balls =
@@ -175,6 +191,10 @@ export class MatchDetailComponent {
   }
 
   setBowling(score) {
+    if(score === 'OUT') {
+      console.log('wicketType', this.wicketType)
+      console.log('selectedPlayer', this.selectedPlayer)
+    }
     const striker = this.match.striker;
     const nonStriker = JSON.parse(JSON.stringify(this.match.nonStriker));
     const strikerIndex = this.match[this.battingTeam].players.findIndex(
@@ -306,14 +326,14 @@ export class MatchDetailComponent {
     const batsmanPlayer = this.match[this.battingTeam].players[strikerIndex];
     const bowlingPlayer = this.match[this.bowlingTeam].players[bowlerIndex];
 
-    this.dataService.updatePlayer(batsmanPlayer);
-    this.dataService.updatePlayer(bowlingPlayer);
-    this.dataService.updateTeam(this.match[this.battingTeam]);
-    this.dataService.updateTeam(this.match[this.bowlingTeam]);
+    // this.dataService.updatePlayer(batsmanPlayer);
+    // this.dataService.updatePlayer(bowlingPlayer);
+    // this.dataService.updateTeam(this.match[this.battingTeam]);
+    // this.dataService.updateTeam(this.match[this.bowlingTeam]);
 
     this.selectRuns = false;
     this.setTeamScores();
-    this.dataService.updateMatch(payload);
+    // this.dataService.updateMatch(payload);
   }
 
   calculateStrikeRate(totalRuns, totalBallsFaced) {

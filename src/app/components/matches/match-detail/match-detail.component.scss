@@ -33,3 +33,50 @@
         }
     }
 }
+
+.active-wicket {
+    @apply border border-gray-200 rounded-lg;
+}
+
+.p-dropdown,
+.p-calendar {
+    @apply shadow-sm flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5;
+
+    &:focus {
+        @apply ring-blue-500 border-blue-500;
+    }
+}
+
+.p-dropdown-label {
+    @apply w-full p-0;
+    font-size: 14px
+}
+
+.p-inputtext {
+    @apply bg-transparent rounded-none shadow-none;
+}
+
+
+.p-dialog {
+    @media screen and (max-width: 600px) {
+        width: 80vw !important;
+    }
+}
+.wickets {
+    img {
+        @media screen and (max-width: 600px) {
+            width: 150px;
+            height: 150px;
+        }
+    }
+}
+
+.wickets-container {
+    @apply flex justify-center gap-4 flex-wrap;
+
+    @media screen and (max-width: 600px) {
+        @apply grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}

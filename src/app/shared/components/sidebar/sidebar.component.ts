@@ -9,6 +9,40 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SidebarComponent {
 
+  
+  navigations = [
+    {
+      name: 'Dashboard',
+      route: 'dashboard',
+      icon: '/assets/icons/dashboard.svg'
+    },
+    {
+      name: 'Account',
+      route: 'account',
+      icon: '/assets/icons/account.svg'
+    },
+    {
+      name: 'Trades',
+      route: 'trades',
+      icon: '/assets/icons/swap.svg'
+    },
+    {
+      name: 'Sheet',
+      route: 'sheet',
+      icon: '/assets/icons/sheet.svg'
+    },
+    {
+      name: 'Analytics',
+      route: 'analytics',
+      icon: '/assets/icons/analytics.svg'
+    },
+    {
+      name: 'Market Holidays',
+      route: 'market-holidays',
+      icon: '/assets/icons/sleeping-facecom.svg'
+    }
+  ]
+
   constructor(
     private authService: AuthService,
     private router: Router) {}

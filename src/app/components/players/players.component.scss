@@ -1,6 +1,6 @@
 .player-card {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     cursor: pointer;
     transition: all 0.2s ease-in;
@@ -8,5 +8,9 @@
     &:hover {
         @apply bg-gray-200;
         transition: all 0.2s ease-in;
+    }
+
+    @media screen and (max-width: 600px) {
+        grid-template-columns: repeat(1, 1fr);
     }
 }

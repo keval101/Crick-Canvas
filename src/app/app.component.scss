@@ -4,5 +4,9 @@
     &-content {
         width: calc(100% - 16rem);
         margin-left: auto;
+
+        @media screen and (max-width: 768px) {
+            width: 100%;
+        }
     }
 }

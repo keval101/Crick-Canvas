@@ -3,14 +3,16 @@
         <div class="player-card flex mb-5 border bg-gray-100 border-gray-200 rounded-md p-4" [routerLink]="player.id">
             {{player.name}}
 
-            <div class="flex gap-2 items-center">
-                <img src="./assets/icons/bat.png" alt="bat" width="30" height="30">
-                {{player.bat}}
-            </div>
-
-            <div class="flex gap-2 items-center">
-                <img src="./assets/icons/ball.png" alt="ball" width="30" height="30">
-                {{player.bowl}}
+            <div class="flex gap-2 w-full justify-between">
+                <div class="flex gap-2 items-center">
+                    <img src="./assets/icons/bat.png" alt="bat" width="30" height="30">
+                    {{player.bat}}
+                </div>
+    
+                <div class="flex gap-2 items-center">
+                    <img src="./assets/icons/ball.png" alt="ball" width="30" height="30">
+                    {{player.bowl}}
+                </div>
             </div>
         </div>
     </ng-container>

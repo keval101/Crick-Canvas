@@ -5,3 +5,59 @@
     justify-content: center;
     align-items: center;
 }
+
+.menu-button {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+.hide-in-mobile {
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar-width {
+        width: 100%;
+        height: fit-content;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .sidebar-container {
+        height: fit-content;
+    }
+
+    .nav-item {
+        &:hover {
+            border: none;
+        }
+    }
+
+    .sidebar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+
+
+        ul {
+            @apply flex-row justify-between p-0 border-t border-gray-200;
+        }
+
+        li {
+            @apply border-l border-gray-200 block w-full;
+            height: 50px;
+        }
+
+        .nav-text {
+            display: none;
+        }
+
+        .side-nav{
+            @apply flex justify-center items-center;
+        }
+    }
+}
