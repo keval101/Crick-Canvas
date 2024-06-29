@@ -36,7 +36,8 @@ export class MatchDetailComponent {
     team2: { runs: 0, wickets: 0, overs: 0 },
   };
   userId: string;
-  selectedTab: string = 'match-detail';
+  selectedTab: string = 'commentry';
+  matchResult: string;
 
   constructor(
     private dataService: DataService,
@@ -410,6 +411,15 @@ export class MatchDetailComponent {
       this.match.nonStriker = {};
     }
 
+    if(this.match?.isFirstInnigCompelted && (this.matchRunsDetail[this.battingTeam]?.runs > this.matchRunsDetail[this.bowlingTeam]?.runs)) {
+      this.match['isCompletedMatch'] = true;
+      this.findMatchResult(this.match.toss, this.matchRunsDetail, this.match[this.battingTeam].players.length)
+      this.match['matchResult'] = this.matchResult;
+      this.match.striker = {};
+      this.match.nonStriker = {};
+      this.match.bowler = {};
+    }
+
     if(totalBalls === totalFacedBalls || this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length) {
       this.match.battingTeam = this.match.battingTeam === 'team1' ? 'team2' : 'team1';
       this.match.bowlingTeam = this.match.bowlingTeam === 'team1' ? 'team2' : 'team1';
@@ -419,6 +429,8 @@ export class MatchDetailComponent {
       console.log('this.match?.isFirstInnigCompelted',this.match?.isFirstInnigCompelted)
       if(this.match?.isFirstInnigCompelted) {
         this.match['isCompletedMatch'] = true;
+        this.findMatchResult(this.match.toss, this.matchRunsDetail, this.match[this.battingTeam].players.length)
+        this.match['matchResult'] = this.matchResult;
       } else {
         this.match['isFirstInnigCompelted'] = true;
       }
@@ -495,6 +507,86 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
     this.selectedTab = tab;
   }
 
+
+
+  // ----------------------------------------------------------- Find Match Result
+  findMatchResult(toss, matchRunsDetail, totalWickets) {
+    const { winTheToss, selected } = toss;
+    const { team1, team2 } = matchRunsDetail;
+  
+    // Extract scores and wickets
+    const runsTeam1 = team1.runs;
+    const runsTeam2 = team2.runs;
+    const wicketsTeam2 = team2.wickets;
+    const wicketsTeam1 = team1.wickets;
+  
+    // Determine the winner and construct the result message
+    let winner = '';
+    let losser = '';
+    let resultMessage = '';
+
+    if(runsTeam1 > runsTeam2) {
+      winner = 'team1'
+      losser = 'team2'
+    } else if(runsTeam2 > runsTeam1) {
+      winner = 'team2'
+      losser = 'team1'
+    } else {
+      resultMessage = 'Match tied';
+    }
+
+    if(winTheToss === 'team1' && selected === 'Bat First' && winner === 'team1') {
+        resultMessage = `${this.match.team1.name} won by ${runsTeam1 - runsTeam2} runs`;
+    } else if(winTheToss === 'team1' && selected === 'Bowl First' && winner === 'team1') {
+        resultMessage = `${this.match.team1.name} won by ${totalWickets - wicketsTeam1} wickets`;
+    }
+
+    if(winTheToss === 'team2' && selected === 'Bat First' && winner === 'team2') {
+      resultMessage = `${this.match.team2.name} won by ${wicketsTeam2 - runsTeam1} runs`;
+    } else if(winTheToss === 'team2' && selected === 'Bowl First' && winner === 'team2') {
+        resultMessage = `${this.match.team2.name} won by ${totalWickets - wicketsTeam2} wickets`;
+    }
+
+    if(winTheToss != 'team1' && selected === 'Bat First' && winner === 'team1') {
+      resultMessage = `${this.match.team1.name} won by ${totalWickets - wicketsTeam1} wickets`;
+    } else if(winTheToss != 'team1' && selected === 'Bowl First' && winner === 'team1') {
+      resultMessage = `${this.match.team1.name} won by ${runsTeam1 - runsTeam2} runs`;
+    }
+
+    if(winTheToss != 'team2' && selected === 'Bat First' && winner === 'team2') {
+      resultMessage = `${this.match.team2.name} won by ${totalWickets - wicketsTeam2} wickets`;
+    } else if(winTheToss != 'team1' && selected === 'Bowl First' && winner === 'team2') {
+      resultMessage = `${this.match.team2.name} won by ${runsTeam2 - runsTeam1} runs`;
+    }
+  
+    // if (runsTeam1 > runsTeam2) {
+    //   winner = 'team1';
+    //   losser = 'team2';
+    //   if (winTheToss === 'team1' && selected === 'Bat First') {
+    //     resultMessage = `${this.match[winner].name} won by ${runsTeam1 - runsTeam2} runs`;
+    //   } else if (winTheToss === 'team1' && selected === 'Bowl First') {
+    //     resultMessage = `${this.match[winner].name} won by ${totalWickets - wicketsTeam2} wickets`;
+    //   } else {
+    //     resultMessage = `${this.match[losser].name} won by ${runsTeam1 - runsTeam2} runs`;
+    //   }
+    // } else if (runsTeam2 > runsTeam1) {
+    //   winner = 'team2';
+    //   losser = 'team1';
+    //   if (winTheToss === 'team2' && selected === 'Bowl First') {
+    //     resultMessage = `${this.match[winner].name} won by ${runsTeam2 - runsTeam1} runs`;
+    //   } else if (winTheToss === 'team2' && selected === 'Bat First') {
+    //     resultMessage = `${this.match[winner].name} won by ${totalWickets - wicketsTeam2} wickets`;
+    //   } else {
+    //     resultMessage = `${this.match[losser].name} won by ${runsTeam2 - runsTeam1} runs`;
+    //   }
+    // } else {
+    //   resultMessage = 'Match tied';
+    // }
+
+    this.matchResult = resultMessage
+  
+    return resultMessage;
+  }
 
 
 

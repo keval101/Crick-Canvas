@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="runrate mt-4 p-2 sm:p-4 rounded-md bg-yellow-50 border-yellow-300 border`">
+        <div class="runrate mt-4 p-2 sm:p-4 rounded-md bg-orange-50 border-orange-300 border`" *ngIf="!match?.matchResult">
             <span class="pr-8"> CRR: {{calculateRunRate(matchRunsDetail[match.battingTeam].runs, matchRunsDetail[match.battingTeam].overs)}} </span>
             <span *ngIf="match?.isFirstInnigCompelted && match?.striker?.id">RR: {{
             calculateRequiredRunRate(
@@ -36,6 +36,10 @@
                 match.overs, 
                 matchRunsDetail[match.battingTeam]?.runs, 
                 matchRunsDetail[match.battingTeam]?.overs)}}</span>
+        </div>
+
+        <div class="runrate mt-4 p-2 sm:p-4 rounded-md bg-green-100 border-green-300 border`" *ngIf="match?.matchResult">
+            {{match?.matchResult}}
         </div>
 
     
@@ -117,12 +121,12 @@
             
             <ng-container *ngIf="userId === match.userId">
                 <div class="bowling" *ngIf="match.bowler?.id">
-                    <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(0)">0</p>
-                    <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(1)">1</p>
-                    <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="setBowling(2)">2</p>
-                    <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="openRunsModal(4)">4</p>
-                    <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="openRunsModal(6)">6</p>
-                    <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="openWicketModal()">OUT</p>
+                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="setBowling(0)">0</p>
+                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="setBowling(1)">1</p>
+                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="setBowling(2)">2</p>
+                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="openRunsModal(4)">4</p>
+                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="openRunsModal(6)">6</p>
+                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="openWicketModal()">OUT</p>
                 </div>
             </ng-container>
         
@@ -168,6 +172,18 @@
                         </div>
                         <div class="inline-flex items-center text-base font-semibold text-gray-900">
                             <img [src]="match[match?.toss?.winTheToss].logo" width="30" height="30" class="rounded-full mr-2"> {{match[match?.toss?.winTheToss].name}} elected to {{match.toss.selected}}
+                        </div>
+                    </div>
+                </li>
+                <li class="py-3 sm:py-4" *ngIf="match.matchResult">
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-gray-700 truncat">
+                                Match Result
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                            {{match?.matchResult}}
                         </div>
                     </div>
                 </li>
