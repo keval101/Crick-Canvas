@@ -131,13 +131,56 @@
                 <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.bowler?.id && !match?.isCompletedMatch">Please select bowler</p>
             </ng-container>
         </ng-container>
+
+        <ng-container *ngIf="selectedTab === 'match-detail'">
+            
+            <ul class="max-w-xl divide-y match-detail divide-gray-200">
+                <li class="py-3 sm:py-4">
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-gray-700 truncat">
+                                Venue
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                            {{match.venue}}
+                        </div>
+                    </div>
+                </li>
+                <li class="py-3 sm:py-4">
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-gray-700 truncat">
+                                Date
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                            {{match.date}}
+                        </div>
+                    </div>
+                </li>
+                <li class="py-3 sm:py-4" *ngIf="match.toss">
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-gray-700 truncat">
+                                Toss
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                            <img [src]="match[match?.toss?.winTheToss].logo" width="30" height="30" class="rounded-full mr-2"> {{match[match?.toss?.winTheToss].name}} elected to {{match.toss.selected}}
+                        </div>
+                    </div>
+                </li>
+            </ul>
+ 
+        </ng-container>
     </ng-container>
 </div>
 
 
 
     <!-- TOSS -->
-    <p-dialog header="Header" [(visible)]="toss" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <p-dialog header="Header" [(visible)]="toss" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match && toss">
         <app-coin-toss></app-coin-toss>
 
         <form [formGroup]="tossForm">
@@ -183,7 +226,7 @@
     </p-dialog>
 
     <!-- Select Batsman -->
-    <p-dialog header="Header" [(visible)]="selectStriker" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match.toss && selectStriker">
+    <p-dialog header="Header" [(visible)]="selectStriker" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match && match.toss && selectStriker">
         <form [formGroup]="strikerForm">
             <div *ngIf="!match?.striker?.id">
                 <p class="mb-2 font-semibold">Please Select Striker</p>
@@ -217,7 +260,7 @@
     </p-dialog>
 
     <!-- Select Bowler -->
-    <p-dialog header="Header" [(visible)]="selectBowler" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match.toss && selectBowler">
+    <p-dialog header="Header" [(visible)]="selectBowler" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="match && match.toss && selectBowler">
 
         <form [formGroup]="bowlerForm">
             <div>
@@ -245,7 +288,7 @@
     </p-dialog>
 
     <!-- Select Wickets -->
-    <p-dialog [header]="'Wicket'" [(visible)]="displayWicket" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="displayWicket">
+    <p-dialog [header]="'Wicket'" [(visible)]="displayWicket" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="displayWicket && match.toss">
         <div class="mx-auto wickets">
             <div class="wickets-container">
                 <div class="flex justify-center items-center flex-col" [class.active-wicket]="wicketType === 'Bowled'">

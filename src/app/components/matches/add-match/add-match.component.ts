@@ -36,6 +36,7 @@ export class AddMatchComponent {
       overs: [''],
       oversPerBowler: [''],
       date: [''],
+      venue: [''],
       outBatsman: [[]]
     })
     this.getUsers();

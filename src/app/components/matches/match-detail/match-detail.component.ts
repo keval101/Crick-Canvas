@@ -36,7 +36,7 @@ export class MatchDetailComponent {
     team2: { runs: 0, wickets: 0, overs: 0 },
   };
   userId: string;
-  selectedTab: string = 'commentry';
+  selectedTab: string = 'match-detail';
 
   constructor(
     private dataService: DataService,
@@ -494,4 +494,42 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
   selectTab(tab) {
     this.selectedTab = tab;
   }
+
+
+
+
+
+
+
+
+  // ----------------------------------------------------------- Player Of The Match
+  // Example data representing players and their match statistics
+players = [
+  { name: "Player A", runsScored: 78, wicketsTaken: 2, catches: 1 },
+  { name: "Player B", runsScored: 102, wicketsTaken: 1, catches: 2 },
+  { name: "Player C", runsScored: 64, wicketsTaken: 3, catches: 0 },
+  { name: "Player D", runsScored: 91, wicketsTaken: 0, catches: 3 },
+  { name: "Player E", runsScored: 85, wicketsTaken: 2, catches: 2 }
+];
+
+// Function to calculate a combined score for each player and determine the player of the match
+findPlayerOfTheMatch(players) {
+  let maxScore = -1; // Initialize maximum score to a very low number
+  let playerOfTheMatch = '';
+
+  // Iterate through players to calculate a combined score
+  players.forEach(player => {
+    // Define a combined score (you can adjust weights as needed)
+    const combinedScore = player.runsScored * 0.5 + player.wicketsTaken * 10 + player.catches * 5;
+
+    // Check if this player has a higher combined score
+    if (combinedScore > maxScore) {
+      maxScore = combinedScore;
+      playerOfTheMatch = player.name;
+    }
+  });
+
+  return playerOfTheMatch;
+}
+
 }
