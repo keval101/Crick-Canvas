@@ -32,9 +32,10 @@ export class MatchDetailComponent {
   bowlerForm: FormGroup;
   tossForm: FormGroup;
   matchRunsDetail = {
-    team1: { runs: 0, wickets: 0 },
-    team2: { runs: 0, wickets: 0 },
+    team1: { runs: 0, wickets: 0, overs: 0 },
+    team2: { runs: 0, wickets: 0, overs: 0 },
   };
+  userId: string;
 
   constructor(
     private dataService: DataService,
@@ -61,6 +62,7 @@ export class MatchDetailComponent {
   ngOnInit() {
     this.matchId = this.route.snapshot.params['matchId'];
     this.getMatchDetail();
+    this.userId = localStorage.getItem('userId');
   }
 
   openStriker() {
@@ -141,8 +143,8 @@ export class MatchDetailComponent {
 
       if (this.match.bowler) {
         const balls =
-          this.match.bowler.over > 0
-            ? this.match.bowler.over.split('.')?.[1]
+          this.match.bowler.overs > 0
+            ? this.match.bowler.overs.split('.')?.[1]
             : 0;
         if (balls) {
           this.currentBall = +balls;
@@ -164,8 +166,8 @@ export class MatchDetailComponent {
   }
 
   setTeamScores() {
-    let team1 = { runs: 0, wickets: 0 };
-    let team2 = { runs: 0, wickets: 0 };
+    let team1 = { runs: 0, wickets: 0, overs: 0 };
+    let team2 = { runs: 0, wickets: 0, overs: 0 };
     this.match.team1.players.map((x) => {
       if (x.matches.length) {
         const matchIndex = x.matches.findIndex(
@@ -177,6 +179,10 @@ export class MatchDetailComponent {
         team2.wickets = x.matches[matchIndex]?.wickets
           ? x.matches[matchIndex].wickets + team2.wickets
           : team2.wickets;
+        console.log(x.matches[matchIndex])
+        team2.overs = x.matches[matchIndex]?.overs
+          ? +x.matches[matchIndex].overs + team2.overs
+          : team2.overs;
       }
     });
 
@@ -191,6 +197,10 @@ export class MatchDetailComponent {
         team1.wickets = x.matches[matchIndex]?.wickets
           ? x.matches[matchIndex].wickets + team1.wickets
           : team1.wickets;
+        console.log(x.matches[matchIndex])
+        team1.overs = x.matches[matchIndex]?.overs
+          ? +x.matches[matchIndex].overs + team1.overs
+          : team1.overs;
       }
     });
 
@@ -198,6 +208,7 @@ export class MatchDetailComponent {
       team1: team1,
       team2: team2,
     };
+    console.log(this.matchRunsDetail)
   }
 
   setBowling(score) {
@@ -319,20 +330,20 @@ export class MatchDetailComponent {
     }
 
     if (this.currentBall === 6) {
-      const over = this.match.bowler?.over?.split('.')?.[0] ?? 0;
-      bowler['over'] = bowler.over > 0 ? `${+over + 1}.0` : '1.0';
-      bowlerRuns.over = bowler.over;
+      const overs = this.match.bowler?.overs?.split('.')?.[0] ?? 0;
+      bowler['overs'] = bowler.overs > 0 ? `${+overs + 1}.0` : '1.0';
+      bowlerRuns.overs = bowler.overs;
       if (this.maidenBallCount === 6) {
         bowler['maidens'] = bowler?.maidens > 0 ? bowler.maidens + 1 : 1;
         bowlerRuns.maidens = bowler.maidens;
       }
     } else {
-      const over = this.match.bowler?.over?.split('.')?.[0] ?? 0;
-      bowler['over'] =
-        bowler.over > 0
-          ? `${over}.${this.currentBall}`
+      const overs = this.match.bowler?.overs?.split('.')?.[0] ?? 0;
+      bowler['overs'] =
+        bowler.overs > 0
+          ? `${overs}.${this.currentBall}`
           : `0.${this.currentBall}`;
-      bowlerRuns.over = bowler.over;
+      bowlerRuns.overs = bowler.overs;
     }
 
     const matchBwIndex = this.match[this.bowlingTeam].players[
@@ -386,10 +397,8 @@ export class MatchDetailComponent {
     let totalBalls = +this.match.overs * 6;
     let totalFacedBalls = 0;
 
-    console.log('this.match[this.bowlingTeam].players', this.match[this.bowlingTeam].players)
     this.match[this.bowlingTeam].players.map(x => {
       const matchIndex = x.matches.findIndex(x => x.matchId === this.matchId);
-      console.log(x.matches[matchIndex]?.balls)
       totalFacedBalls = totalFacedBalls + (x.matches[matchIndex]?.balls ?? 0)
     })
 
@@ -400,14 +409,13 @@ export class MatchDetailComponent {
       this.match.nonStriker = {};
     }
 
-    console.log(totalBalls, totalFacedBalls)
-
     if(totalBalls === totalFacedBalls || this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length) {
       this.match.battingTeam = this.match.battingTeam === 'team1' ? 'team2' : 'team1';
       this.match.bowlingTeam = this.match.bowlingTeam === 'team1' ? 'team2' : 'team1';
       this.match.striker = {};
       this.match.nonStriker = {};
       this.match.bowler = {};
+      console.log('this.match?.isFirstInnigCompelted',this.match?.isFirstInnigCompelted)
       if(this.match?.isFirstInnigCompelted) {
         this.match['isCompletedMatch'] = true;
       } else {
@@ -415,7 +423,6 @@ export class MatchDetailComponent {
       }
       this.battingTeam =  this.match.battingTeam
       this.bowlingTeam =  this.match.bowlingTeam;
-
       console.log('Inning End')
     }
 
@@ -438,6 +445,38 @@ export class MatchDetailComponent {
     const economyRounded = economy.toFixed(2);
     return !isNaN(economy) ? economyRounded : 0;
   }
+
+  calculateRunRate(totalRuns, totalOvers) {
+    // Convert totalOvers from overs and balls to decimal format (e.g., 0.2 -> 0.3333)
+    let overs = Math.floor(totalOvers); // Get the whole number of overs
+    let balls = (totalOvers - overs) * 10; // Convert remaining balls to a decimal fraction of an over
+    let oversDecimal = overs + (balls / 6); // Combine overs and balls into a decimal format
+
+    // Calculate run rate
+    let runRate = totalRuns / oversDecimal;
+
+    return !isNaN(runRate) ? runRate.toFixed(2) : 0;
+}
+
+calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
+  // Convert oversBowled from overs and balls to decimal format (e.g., 5.5 -> 5.8333)
+  let overs = Math.floor(oversBowled); // Get the whole number of overs
+  let balls = (oversBowled - overs) * 10; // Convert remaining balls to a decimal fraction of an over
+  let oversDecimal = overs + (balls / 6); // Combine overs and balls into a decimal format
+
+  // Calculate remaining overs
+  let remainingOvers = totalOvers - oversDecimal;
+
+  // Calculate remaining target runs
+  let remainingTarget = targetRuns - runsScored;
+
+  console.log(remainingOvers, remainingTarget, targetRuns, runsScored)
+
+  // Calculate required run rate
+  let requiredRunRate = remainingTarget / remainingOvers;
+
+  return !isNaN(requiredRunRate) ? requiredRunRate.toFixed(2) : 0;
+}
 
   async deleteMatch() {
     if (confirm('Are you sure to delete match?') == true) {
