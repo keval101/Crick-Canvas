@@ -1,6 +1,6 @@
 <div class="match-container">
 <ng-container *ngIf="match">
-    <div>
+    <div *ngIf="!match?.isCompletedMatch">
         <button class="outline-btn flex gap-2 items-center mb-4 ml-auto" (click)="deleteMatch()">
             <img src="./assets/icons/delete.png" alt="" width="20" width="20">
             Delete Match
@@ -23,11 +23,11 @@
             </div>
             
     
-            <button class="btn mt-2" (click)="openTheToss()" *ngIf="!match?.isStarted">Start Match</button>
+            <button class="btn mt-2" (click)="openTheToss()" *ngIf="!match?.isStarted && !match?.isCompletedMatch">Start Match</button>
         </div>
     </div>
 
-    <div class="flex gap-3" *ngIf="match.isStarted">
+    <div class="flex gap-3" *ngIf="match.isStarted && !match?.isCompletedMatch">
         <button class="btn mt-2" (click)="openStriker()" *ngIf="!match?.striker?.id || !match?.nonStriker?.id">Select The Batsman</button>
         <button class="btn mt-2" (click)="openBowler()" *ngIf="!match.bowler?.id">Select The Bowler</button>
     </div>
@@ -47,18 +47,18 @@
             <div class="score-table-row" *ngIf="match.striker.id">
                 <p>{{match.striker.name}}<span class="text-red-500 text-xl font-semibold">*</span></p>
                 <p class="font-semibold">{{match.striker.runs ?? 0}}</p>
-                <p>{{match.striker.balls ?? 0}}</p>
+                <p>{{match.striker.facedBalls ?? 0}}</p>
                 <p>{{match.striker.fours ?? 0}}</p>
                 <p>{{match.striker.sixes ?? 0}}</p>
-                <p>{{calculateStrikeRate(match.striker.runs, match.striker.balls)}}</p>
+                <p>{{calculateStrikeRate(match.striker.runs, match.striker.facedBalls)}}</p>
             </div>
             <div class="score-table-row" *ngIf="match.nonStriker.id">
                 <p>{{match.nonStriker.name}}</p>
                 <p class="font-semibold">{{match.nonStriker.runs ?? 0}}</p>
-                <p>{{match.nonStriker.balls ?? 0}}</p>
+                <p>{{match.nonStriker.facedBalls ?? 0}}</p>
                 <p>{{match.nonStriker.fours ?? 0}}</p>
                 <p>{{match.nonStriker.sixes ?? 0}}</p>
-                <p>{{calculateStrikeRate(match.nonStriker.runs, match.nonStriker.balls)}}</p>
+                <p>{{calculateStrikeRate(match.nonStriker.runs, match.nonStriker.facedBalls)}}</p>
             </div>
         </div>
         <hr class="my-8" *ngIf="match?.striker?.id || match?.nonStriker?.id">
@@ -90,8 +90,8 @@
         <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="openRunsModal(6)">6</p>
         <p [class.disable-bowling]="!match.striker.id || !match.bowler.id" (click)="openWicketModal()">OUT</p>
     </div>
-    <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.striker?.id">Please select striker</p>
-    <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.bowler?.id">Please select bowler</p>
+    <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.striker?.id && !match?.isCompletedMatch">Please select striker</p>
+    <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.bowler?.id && !match?.isCompletedMatch">Please select bowler</p>
 
     <!-- TOSS -->
     <p-dialog header="Header" [(visible)]="toss" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">

@@ -66,7 +66,6 @@ export class MatchDetailComponent {
   openStriker() {
     this.selectStriker = true;
     this.strikerForm.patchValue({striker: this.match.striker, nonStriker: this.match.nonStriker})
-    console.log(this.strikerForm)
   }
 
   saveStriker() {
@@ -83,16 +82,12 @@ export class MatchDetailComponent {
   saveBowler() {
     const payload = { ...this.match, ...this.bowlerForm.value };
     this.match = payload;
-    console.log(payload, this.bowlerForm.value);
 
     const playerIndex = this.match[this.bowlingTeam].players.findIndex(x => x.id === this.bowlerForm.value.bowler.id);
-    console.log(this.match[this.bowlingTeam].players[playerIndex])
     const matchIndex = this.match[this.bowlingTeam].players[playerIndex]?.matches?.findIndex(x => x.matchId === this.matchId);
-    console.log(matchIndex)
     if(matchIndex != -1 && matchIndex >=0 ) {
       this.match.bowler = {...this.match.bowler, ...this.match[this.bowlingTeam].players[playerIndex].matches[matchIndex]}
     }
-    console.log(payload);
     // this.dataService.updateMatch(payload);
     this.selectBowler = false;
   }
@@ -143,7 +138,6 @@ export class MatchDetailComponent {
     this.dataService.getMatch(this.matchId).subscribe((match) => {
       this.match = match;
       this.match['outBatsman'] = [];
-      console.log(this.match)
 
       if (this.match.bowler) {
         const balls =
@@ -158,7 +152,6 @@ export class MatchDetailComponent {
       this.battingTeam = this.match.battingTeam
       this.bowlingTeam = this.match.bowlingTeam
 
-      console.log('this.match', this.match)
 
       this.setTeamScores();
     });
@@ -192,7 +185,6 @@ export class MatchDetailComponent {
         const matchIndex = x.matches.findIndex(
           (x) => x.matchId === this.matchId
         );
-        console.log(team1.wickets, x.matches[matchIndex]?.wickets)
         team2.runs = x.matches[matchIndex]?.runs
           ? x.matches[matchIndex].runs + team2.runs
           : team2.runs;
@@ -267,7 +259,7 @@ export class MatchDetailComponent {
             ? strikerDetail.runs + +score
             : score
           : (strikerDetail.runs ?? 0),
-      balls: strikerDetail.balls > 0 ? strikerDetail.balls + 1 : 1,
+      facedBalls: strikerDetail.facedBalls > 0 ? strikerDetail.facedBalls + 1 : 1,
       out: score === 'OUT',
     };
 
@@ -377,7 +369,6 @@ export class MatchDetailComponent {
     const batsmanPlayer = this.match[this.battingTeam].players[strikerIndex];
     const bowlingPlayer = this.match[this.bowlingTeam].players[bowlerIndex];
 
-    console.log({batsmanPlayer, bowlingPlayer}, this.match)
 
     // this.dataService.updatePlayer(batsmanPlayer);
     // this.dataService.updatePlayer(bowlingPlayer);
@@ -386,40 +377,49 @@ export class MatchDetailComponent {
 
     if(this.currentBall === 6) {
       this.match.bowler = {};
-      console.log(this.currentBall, this.match)
     }
 
     this.currentBall = this.currentBall === 6 ? 0 : this.currentBall;
 
 
-    console.log(this.match)
 
     let totalBalls = +this.match.overs * 6;
     let totalFacedBalls = 0;
 
+    console.log('this.match[this.bowlingTeam].players', this.match[this.bowlingTeam].players)
     this.match[this.bowlingTeam].players.map(x => {
       const matchIndex = x.matches.findIndex(x => x.matchId === this.matchId);
-      totalFacedBalls = 1 + (x.matches[matchIndex]?.balls ?? 0)
+      console.log(x.matches[matchIndex]?.balls)
+      totalFacedBalls = totalFacedBalls + (x.matches[matchIndex]?.balls ?? 0)
     })
 
     this.setTeamScores();
-
-    console.log('totalBalls', this.matchRunsDetail[this.battingTeam].wickets, this.match[this.battingTeam].players.length - 1)
 
     if(this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length - 1) {
       this.match.striker = nonStriker;
       this.match.nonStriker = {};
     }
-    if(this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length || totalBalls === totalFacedBalls) {
+
+    console.log(totalBalls, totalFacedBalls)
+
+    if(totalBalls === totalFacedBalls || this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length) {
       this.match.battingTeam = this.match.battingTeam === 'team1' ? 'team2' : 'team1';
       this.match.bowlingTeam = this.match.bowlingTeam === 'team1' ? 'team2' : 'team1';
       this.match.striker = {};
       this.match.nonStriker = {};
       this.match.bowler = {};
+      if(this.match?.isFirstInnigCompelted) {
+        this.match['isCompletedMatch'] = true;
+      } else {
+        this.match['isFirstInnigCompelted'] = true;
+      }
       this.battingTeam =  this.match.battingTeam
       this.bowlingTeam =  this.match.bowlingTeam;
+
+      console.log('Inning End')
     }
-    
+
+    console.log('this', this.match)
     // this.dataService.updateMatch(payload);
   }
 
