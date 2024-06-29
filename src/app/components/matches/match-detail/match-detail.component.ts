@@ -36,6 +36,7 @@ export class MatchDetailComponent {
     team2: { runs: 0, wickets: 0, overs: 0 },
   };
   userId: string;
+  selectedTab: string = 'commentry';
 
   constructor(
     private dataService: DataService,
@@ -488,5 +489,9 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
       });
       this.router.navigate(['/matches']);
     }
+  }
+
+  selectTab(tab) {
+    this.selectedTab = tab;
   }
 }

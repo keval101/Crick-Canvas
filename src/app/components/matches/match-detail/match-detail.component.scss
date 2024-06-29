@@ -121,3 +121,7 @@
 .playing-player label{
     @apply text-white bg-blue-500 cursor-not-allowed pointer-events-none;
 }
+
+.active-tab {
+    @apply text-blue-600 border-b-2 border-blue-600;
+}
