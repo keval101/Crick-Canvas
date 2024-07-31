@@ -29,7 +29,7 @@
         </div>
 
         <div class="runrate mt-4 p-2 sm:p-4 rounded-md bg-orange-50 border-orange-300 border`" *ngIf="!match?.matchResult">
-            <span class="pr-8"> CRR: {{calculateRunRate(matchRunsDetail[match.battingTeam].runs, matchRunsDetail[match.battingTeam].overs)}} </span>
+            <span class="pr-8"> CRR: {{calculateRunRate(matchRunsDetail[match?.battingTeam]?.runs, matchRunsDetail[match?.battingTeam]?.overs)}} </span>
             <span *ngIf="match?.isFirstInnigCompelted && match?.striker?.id">RR: {{
             calculateRequiredRunRate(
                 matchRunsDetail[match.bowlingTeam]?.runs, 

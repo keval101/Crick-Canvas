@@ -4,24 +4,40 @@
     <button type="button" class="btn" (click)="addTeam()">Add Match</button>
  
  </div>
- <div class="matches mx-auto mt-10">
+ <div class="matches mt-10">
     <ng-container *ngFor="let match of (matches$ | async)">
       <div class="match-card p-4 gap-8 border border-gray-200 rounded-lg" [routerLink]="[match.id]">
-         <div class=" justify-between flex items-center">
-           
-           <div class="matches-team text-center">
-              <img [src]="match.team1.logo" alt="team" class="w-40 h-40 rounded-full">
-              <span class="text-2xl mt-4 block font-semibold">{{match.team1.name}} </span>
-           </div>
+         <div class="gap-2 flex items-center match-card-container">           
+            <div class="matches-team text-center">
+               <img [src]="match.team1.logo" alt="team" class="rounded-sm">
+               <span class="text-2xl block font-semibold">{{match.team1.name}} </span>
+            </div>
   
-           <h1 class="text-3xl text-gray-300 vs-text">VS</h1>
+            <div class="flex gap-8 mx-auto justify-between items-center">
+               <!-- <div>
+                  <p class="match-card-score">137/8</p>
+                  <p class="match-card-over">20.0 Overs</p>
+               </div> -->
+               <div>
+                  <img src="https://scores.bcci.tv/matchcentre/mcv3/images/versus-v2.png?v=1" alt="" class="h-24 max-w-none">
+               </div>
+               <!-- <div>
+                  <p class="match-card-score">137/8</p>
+                  <p class="match-card-over">20.0 Overs</p>
+               </div> -->
+            </div>
   
            <div class="matches-team text-center">
-              <img [src]="match.team2.logo" alt="team" class="w-40 h-40 rounded-full">
-              <span class="text-2xl mt-4 block font-semibold">{{match.team2.name}}</span>
+              <img [src]="match.team2.logo" alt="team" class="rounded-sm">
+              <span class="text-2xl block font-semibold">{{match.team2.name}}</span>
            </div>
+
          </div>
-         <p class="text-center mt-4 date-text">{{ getDate(match.date) | date: 'MMM dd, YYYY'}}</p>
+         <div class="matches-detail justify-center mt-4 flex gap-2 text-center">
+             <p class="text-left mb-2 date-text">{{ getDate(match.date) | date: 'MMM dd, YYYY'}}</p>
+             <p class="text-left mb-2 date-text">{{match.venue}}</p>
+          </div>
+         
       </div>
     </ng-container>
  </div>

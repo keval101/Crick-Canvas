@@ -1,12 +1,31 @@
 .match-card {
-    @apply shadow-lg mx-auto cursor-pointer p-8;
-    width: 800px;
+    @apply shadow-sm mx-auto cursor-pointer;
+    width: 100%;
+    // height: 180px;
     transition: all 0.2s ease;
 
     &:hover {
         @apply bg-gray-50;
         transition: all 0.2s ease;
     }
+
+    .matches-team {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        
+        img {
+            width: 60px;
+            height: 60px;
+        }
+
+        span {
+            font-size: 20px;
+        }
+    }
+
 
     @media screen and (max-width: 768px) {
         width: 100%;
@@ -17,8 +36,8 @@
             justify-content: center;
             align-items: center;
             img {
-                width: 50px;
-                height: 50px;
+                width: 30px;
+                height: 30px;
             }
 
             span {
@@ -55,4 +74,26 @@
     @media screen and (max-width: 600px) {
         font-size: 18px;
     }
+}
+
+.matches-detail {
+    @apply text-gray-500;
+}
+
+.match-card-score {
+    @apply font-bold text-3xl;
+}
+.match-card-over {
+    @apply text-gray-400 text-sm;
+}
+
+.match-card-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+}
+
+.matches {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
