@@ -39,6 +39,8 @@ export class MatchDetailComponent {
   selectedTab: string = 'commentry';
   matchResult: string;
   isAdmin = false;
+  team1Players = [];
+  team2Players = [];
 
   constructor(
     private dataService: DataService,
@@ -67,6 +69,45 @@ export class MatchDetailComponent {
     this.getMatchDetail();
     this.userId = localStorage.getItem('userId');
     this.isAdmin = this.userId === 'qQsEQGrKWpUp36dkTAcqEhkCcCO2';
+  }
+
+  getTeamScore() {
+    this.team1Players = []
+    this.team2Players = []
+
+    this.match.team1.players.map(x => {
+      const match = x.matches.find(m => m.matchId === this.matchId)
+      let playerDetail: any = {
+        name: x.name,
+        id: x.id,
+        uid: x.uid,
+      };
+      if(match) {
+        playerDetail = {
+        ...playerDetail,
+        match: match,
+        }
+      }
+      this.team1Players.push(playerDetail)
+    })
+
+    this.match.team2.players.map(x => {
+      const match = x.matches.find(m => m.matchId === this.matchId)
+      let playerDetail: any = {
+        name: x.name,
+        id: x.id,
+        uid: x.uid,
+      };
+      if(match) {
+        playerDetail = {
+        ...playerDetail,
+        match: match,
+        }
+      }
+      this.team2Players.push(playerDetail)
+    })
+
+    console.log(this.team1Players, this.team2Players)
   }
 
   openStriker() {
@@ -507,6 +548,8 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
 
   selectTab(tab) {
     this.selectedTab = tab;
+    this.team1Players = []
+    this.team2Players = []
   }
 
 

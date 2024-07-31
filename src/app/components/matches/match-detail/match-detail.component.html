@@ -50,7 +50,7 @@
                     <a class="inline-block cursor-pointer p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                     [class.active-tab]="selectedTab === 'commentry'">Commentry</a>
                 </li>
-                <li class="me-2" (click)="selectTab('scorecard')">
+                <li class="me-2" (click)="selectTab('scorecard'); getTeamScore()">
                     <a class="inline-block cursor-pointer p-4 rounded-t-lg" aria-current="page" 
                     [class.active-tab]="selectedTab === 'scorecard'">Scorecard</a>
                 </li>
@@ -134,6 +134,54 @@
                 <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.striker?.id && !match?.isCompletedMatch">Please select striker</p>
                 <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.bowler?.id && !match?.isCompletedMatch">Please select bowler</p>
             </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="'scorecard'">
+            <div class="score mt-5" *ngIf="team1Players.length">
+                <h1 class="section-heading">Scores</h1>
+            
+                <div class="score-table">
+                    <div class="score-table-row !bg-transparent !border-none">
+                        <p>Name</p>
+                        <p>R</p>
+                        <p>B</p>
+                        <p>4s</p>
+                        <p>6s</p>
+                        <p>SR</p>
+                    </div>
+                    <ng-container *ngFor="let player of team1Players">
+                        <div class="score-table-row" *ngIf="player?.match?.facedBalls">
+                            <p>{{player.name}}</p>
+                            <p class="font-semibold">{{player?.match?.runs ?? 0}}</p>
+                            <p>{{player?.match?.facedBalls ?? 0}}</p>
+                            <p>{{player?.match?.fours ?? 0}}</p>
+                            <p>{{player?.match?.sixes ?? 0}}</p>
+                            <p>{{calculateStrikeRate(player?.match?.runs ?? 0, player?.match?.facedBalls ?? 0)}}</p>
+                        </div>
+                    </ng-container>
+                </div>
+                <hr class="my-8 " *ngIf="team2Players.length">
+                <div class="score-table">
+                    <div class="score-table-row !bg-transparent !border-none">
+                        <p>Name</p>
+                        <p>O</p>
+                        <p>M</p>
+                        <p>R</p>
+                        <p>W</p>
+                        <p>ECO</p>
+                    </div>
+                    <ng-container *ngFor="let player of team2Players">
+                        <div class="score-table-row" *ngIf="player?.match?.overs && player?.match?.overs != '0.0'">
+                            <p>{{player.name}}</p>
+                            <p>{{player?.match?.overs ?? '0.0'}}</p>
+                            <p>{{player?.match?.maiden ?? 0}}</p>
+                            <p>{{player?.match?.concededRuns ?? 0}}</p>
+                            <p>{{player?.match?.wickets ?? 0}}</p>
+                            <p>{{calculateEconomy(player?.match?.over ?? 0, player?.match?.runs ?? 0)}}</p>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
         </ng-container>
 
         <ng-container *ngIf="selectedTab === 'match-detail'">
