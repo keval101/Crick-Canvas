@@ -19,7 +19,7 @@
                     <img [src]="match?.team2?.logo" alt="team" class="w-10 h-10 ml-2 rounded-full">
                     {{match?.team2?.name}}
                     <span class="match-score">{{matchRunsDetail.team2.runs ?? 0}}/{{matchRunsDetail.team2.wickets ?? 0}}</span>
-                    <span class="match-overs">({{matchRunsDetail.team1.overs}} Overs / {{match.overs}} Overs)</span>
+                    <span class="match-overs">({{matchRunsDetail.team2.overs}} Overs / {{match.overs}} Overs)</span>
                 </div>
                 
                 <ng-container *ngIf="userId === match.userId">
