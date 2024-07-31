@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
@@ -6,7 +7,9 @@ import { Observable, map } from 'rxjs';
 })
 export class DataService {
 
-  constructor(private firestore: AngularFirestore) {}
+  constructor(
+    private firestore: AngularFirestore,
+    private http: HttpClient) {}
   api: string;
 
   // --------------------------------------- Players ---------------------------------------
@@ -64,6 +67,10 @@ export class DataService {
         }
       })
     );
+  }
+
+  getMatchDetail(matchId: string) {
+    return this.http.get(`https://firestore.googleapis.com/v1/projects/cricketscore-562db/databases/(default)/documents/matches/${matchId}.json`)
   }
 
   getTeams(): Observable<any> {

@@ -25,7 +25,9 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(request);
       }),
       catchError(error => {
-        this.router.navigate(['/login'])
+        if(!this.router.url.includes('/matches')) {
+          this.router.navigate(['/login'])
+        }
         // Handle any errors here
         return throwError(error);
       })
