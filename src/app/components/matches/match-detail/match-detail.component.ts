@@ -41,6 +41,7 @@ export class MatchDetailComponent {
   isAdmin = false;
   team1Players = [];
   team2Players = [];
+  activeScorecard: string;
 
   constructor(
     private dataService: DataService,
@@ -71,11 +72,12 @@ export class MatchDetailComponent {
     this.isAdmin = this.userId === 'qQsEQGrKWpUp36dkTAcqEhkCcCO2';
   }
 
-  getTeamScore() {
+  getTeamScore(team?: string) {
+    this.activeScorecard = team;
     this.team1Players = []
     this.team2Players = []
 
-    this.match.team1.players.map(x => {
+    this.match[team === 'team1' ? 'team1' : 'team2'].players.map(x => {
       const match = x.matches.find(m => m.matchId === this.matchId)
       let playerDetail: any = {
         name: x.name,
@@ -84,14 +86,14 @@ export class MatchDetailComponent {
       };
       if(match) {
         playerDetail = {
-        ...playerDetail,
-        match: match,
+          ...playerDetail,
+          match: match,
         }
       }
       this.team1Players.push(playerDetail)
     })
 
-    this.match.team2.players.map(x => {
+    this.match[team === 'team2' ? 'team1' : 'team2'].players.map(x => {
       const match = x.matches.find(m => m.matchId === this.matchId)
       let playerDetail: any = {
         name: x.name,
@@ -100,8 +102,8 @@ export class MatchDetailComponent {
       };
       if(match) {
         playerDetail = {
-        ...playerDetail,
-        match: match,
+          ...playerDetail,
+          match: match,
         }
       }
       this.team2Players.push(playerDetail)
@@ -512,27 +514,27 @@ export class MatchDetailComponent {
     let runRate = totalRuns / oversDecimal;
 
     return !isNaN(runRate) ? runRate.toFixed(2) : 0;
-}
+  }
 
-calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
-  // Convert oversBowled from overs and balls to decimal format (e.g., 5.5 -> 5.8333)
-  let overs = Math.floor(oversBowled); // Get the whole number of overs
-  let balls = (oversBowled - overs) * 10; // Convert remaining balls to a decimal fraction of an over
+  calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
+    // Convert oversBowled from overs and balls to decimal format (e.g., 5.5 -> 5.8333)
+    let overs = Math.floor(oversBowled); // Get the whole number of overs
+    let balls = (oversBowled - overs) * 10; // Convert remaining balls to a decimal fraction of an over
   let oversDecimal = overs + (balls / 6); // Combine overs and balls into a decimal format
 
-  // Calculate remaining overs
-  let remainingOvers = totalOvers - oversDecimal;
+    // Calculate remaining overs
+    let remainingOvers = totalOvers - oversDecimal;
 
-  // Calculate remaining target runs
-  let remainingTarget = targetRuns - runsScored;
+    // Calculate remaining target runs
+    let remainingTarget = targetRuns - runsScored;
 
   console.log(remainingOvers, remainingTarget, targetRuns, runsScored)
 
-  // Calculate required run rate
-  let requiredRunRate = remainingTarget / remainingOvers;
+    // Calculate required run rate
+    let requiredRunRate = remainingTarget / remainingOvers;
 
-  return !isNaN(requiredRunRate) ? requiredRunRate.toFixed(2) : 0;
-}
+    return !isNaN(requiredRunRate) ? requiredRunRate.toFixed(2) : 0;
+  }
 
   async deleteMatch() {
     if (confirm('Are you sure to delete match?') == true) {
@@ -547,6 +549,7 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
   }
 
   selectTab(tab) {
+    this.activeScorecard = undefined
     this.selectedTab = tab;
     this.team1Players = []
     this.team2Players = []
@@ -558,13 +561,13 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
   findMatchResult(toss, matchRunsDetail, totalWickets) {
     const { winTheToss, selected } = toss;
     const { team1, team2 } = matchRunsDetail;
-  
+
     // Extract scores and wickets
     const runsTeam1 = team1.runs;
     const runsTeam2 = team2.runs;
     const wicketsTeam2 = team2.wickets;
     const wicketsTeam1 = team1.wickets;
-  
+
     // Determine the winner and construct the result message
     let winner = '';
     let losser = '';
@@ -603,7 +606,7 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
     } else if(winTheToss != 'team1' && selected === 'Bowl First' && winner === 'team2') {
       resultMessage = `${this.match.team2.name} won by ${runsTeam2 - runsTeam1} runs`;
     }
-  
+
     // if (runsTeam1 > runsTeam2) {
     //   winner = 'team1';
     //   losser = 'team2';
@@ -629,7 +632,7 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
     // }
 
     this.matchResult = resultMessage
-  
+
     return resultMessage;
   }
 
@@ -641,32 +644,32 @@ calculateRequiredRunRate(targetRuns, totalOvers, runsScored, oversBowled) {
 
   // ----------------------------------------------------------- Player Of The Match
   // Example data representing players and their match statistics
-players = [
+  players = [
   { name: "Player A", runsScored: 78, wicketsTaken: 2, catches: 1 },
   { name: "Player B", runsScored: 102, wicketsTaken: 1, catches: 2 },
   { name: "Player C", runsScored: 64, wicketsTaken: 3, catches: 0 },
   { name: "Player D", runsScored: 91, wicketsTaken: 0, catches: 3 },
   { name: "Player E", runsScored: 85, wicketsTaken: 2, catches: 2 }
-];
+  ];
 
-// Function to calculate a combined score for each player and determine the player of the match
-findPlayerOfTheMatch(players) {
-  let maxScore = -1; // Initialize maximum score to a very low number
-  let playerOfTheMatch = '';
+  // Function to calculate a combined score for each player and determine the player of the match
+  findPlayerOfTheMatch(players) {
+    let maxScore = -1; // Initialize maximum score to a very low number
+    let playerOfTheMatch = '';
 
-  // Iterate through players to calculate a combined score
+    // Iterate through players to calculate a combined score
   players.forEach(player => {
-    // Define a combined score (you can adjust weights as needed)
+      // Define a combined score (you can adjust weights as needed)
     const combinedScore = player.runsScored * 0.5 + player.wicketsTaken * 10 + player.catches * 5;
 
-    // Check if this player has a higher combined score
-    if (combinedScore > maxScore) {
-      maxScore = combinedScore;
-      playerOfTheMatch = player.name;
-    }
-  });
+      // Check if this player has a higher combined score
+      if (combinedScore > maxScore) {
+        maxScore = combinedScore;
+        playerOfTheMatch = player.name;
+      }
+    });
 
-  return playerOfTheMatch;
-}
+    return playerOfTheMatch;
+  }
 
 }
