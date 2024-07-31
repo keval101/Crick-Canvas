@@ -47,7 +47,6 @@ const routes: Routes = [
   {
     path: 'matches/:matchId',
     component: MatchDetailComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: '**',

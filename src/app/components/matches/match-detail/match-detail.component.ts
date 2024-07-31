@@ -70,6 +70,7 @@ export class MatchDetailComponent {
     this.getMatchDetail();
     this.userId = localStorage.getItem('userId');
     this.isAdmin = this.userId === 'qQsEQGrKWpUp36dkTAcqEhkCcCO2';
+    this.getProjectDetail();
   }
 
   getTeamScore(team?: string) {
@@ -553,6 +554,11 @@ export class MatchDetailComponent {
     this.selectedTab = tab;
     this.team1Players = []
     this.team2Players = []
+  }
+
+  getProjectDetail() {
+    console.log(this.matchId)
+    this.dataService.getMatchDetail(this.matchId).subscribe(res => console.log(res));
   }
 
 

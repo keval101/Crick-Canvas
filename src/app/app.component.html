@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 <div [class.main]="!isLoginPage">
-    <app-sidebar *ngIf="!isLoginPage"></app-sidebar>
-    <div [ngClass]="{'main-content p-8': !isLoginPage}">
+    <app-sidebar *ngIf="!isLoginPage && !hideSidebar"></app-sidebar>
+    <div [ngClass]="{'main-content p-8': !isLoginPage && !hideSidebar}" [class.hide-sidebar]="hideSidebar">
         <router-outlet (activate)="checkForLoginPage()"></router-outlet>
     </div>
 </div>
