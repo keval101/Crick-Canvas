@@ -31,8 +31,9 @@
 
 
     <button
-        class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"
+        class="btn w-full"
         type="submit"
+        [disabled]="matchForm.invalid"
     >
     Create Match
     </button>

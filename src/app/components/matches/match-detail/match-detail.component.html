@@ -1,7 +1,7 @@
 <div class="match-container">
     <ng-container *ngIf="match">
         <div *ngIf="!match?.isCompletedMatch">
-            <button class="outline-btn flex gap-2 items-center mb-4 ml-auto" (click)="deleteMatch()" *ngIf="userId === match.userId">
+            <button class="outline-btn flex gap-2 items-center mb-4 ml-auto" (click)="deleteMatch()" *ngIf="userId === match.userId || isAdmin">
                 <img src="./assets/icons/delete.png" alt="" width="20" width="20">
                 Delete Match
             </button>
@@ -62,10 +62,10 @@
         </div>
 
         <ng-container *ngIf="selectedTab === 'commentry'">
-            <ng-container *ngIf="userId === match.userId">
+            <ng-container *ngIf="userId === match.userId && !match?.isCompletedMatch">
                 <div class="flex gap-3" *ngIf="match.isStarted">
-                    <button class="btn mt-2" (click)="openStriker()" *ngIf="!match?.isCompletedMatch && !match?.striker?.id || !match?.nonStriker?.id">Select The Batsman</button>
-                    <button class="btn mt-2" (click)="openBowler()" *ngIf="!match?.isCompletedMatch && !match.bowler?.id">Select The Bowler</button>
+                    <button class="btn mt-2" (click)="openStriker()" *ngIf="!match?.striker?.id || !match?.nonStriker?.id">Select The Batsman</button>
+                    <button class="btn mt-2" (click)="openBowler()" *ngIf="!match.bowler?.id">Select The Bowler</button>
                 </div>
             </ng-container>
             
@@ -249,7 +249,8 @@
                 <ng-container  *ngFor="let player of match[battingTeam].players">
                     <div class="flex items-center mb-4" *ngIf="!match?.striker?.id && !match.outBatsman.includes(player?.id) && player?.id != match?.nonStriker?.id && player?.id != strikerForm.value?.nonStriker?.id">
                         <input formControlName="striker" type="radio" id="{{player.uid}}-s" name="striker" [value]="player" class="hidden peer" required />
-                        <label for="{{player.uid}}-s" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
+                        <label for="{{player.uid}}-s" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100"
+                        [class.active-bg-label]="strikerForm?.value?.striker?.id === player?.uid">                           
                             <div class="block">
                                 <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
                             </div>
@@ -263,7 +264,7 @@
                 <ng-container *ngFor="let player of match[battingTeam].players">
                     <div class="flex items-center mb-4"  *ngIf="!match?.nonStriker?.id && !match.outBatsman.includes(player?.id) && player?.id != match?.striker?.id && player?.id != strikerForm.value?.striker?.id">
                         <input formControlName="nonStriker" type="radio" id="{{player.uid}}-n" name="nonStriker" [value]="player" class="hidden peer" required />
-                        <label for="{{player.uid}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100" [class.bg-red-500]="match.outBatsman.includes(player?.id)">                           
+                        <label for="{{player.uid}}-n" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100" [class.bg-red-500]="match.outBatsman.includes(player?.id)" [class.active-bg-label]="strikerForm?.value?.nonStriker?.id === player?.uid">                           
                             <div class="block">
                                 <div class="w-full flex gap-2 items-center"><img src="./assets/icons/bat.png" alt="" class="w-6 h-6"> {{player.name}}</div>
                             </div>
@@ -283,7 +284,8 @@
                 <p class="mb-2 font-semibold">Please Bowler</p>
                 <div class="flex items-center mb-4" *ngFor="let player of match[bowlingTeam].players">
                     <input formControlName="bowler" type="radio" id="{{player.id}}-bw" name="bowler" [value]="player" class="hidden peer" required />
-                    <label for="{{player.id}}-bw" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100">                           
+                    <label for="{{player.id}}-bw" class="inline-flex items-center justify-between w-full shadow-sm p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100"
+                    [class.active-bg-label]="bowlerForm?.value?.bowler?.id === player?.uid">                           
                         <div class="block">
                             <div class="w-full flex gap-2 items-center"><img src="./assets/icons/ball.png" alt="" class="w-6 h-6"> {{player.name}}</div>
                         </div>

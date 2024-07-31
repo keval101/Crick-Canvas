@@ -21,7 +21,7 @@
               formControlName="email"
             />
           </div>
-          <div>
+          <div class="relative">
             <label for="password" class="mb-2  text-lg">Password</label>
             <input
               id="password"
@@ -30,7 +30,10 @@
               placeholder="Password"
               required
               formControlName="password"
+              [attr.type]="seePassword ? 'text': 'password'"
             />
+            <img src="./assets/icons/eye-close.svg" class="eye-icon" alt="eye-close" *ngIf="!seePassword" (click)="seePassword = true">
+            <img src="./assets/icons/eye.svg" class="eye-icon" alt="eye" *ngIf="seePassword" (click)="seePassword = false">
           </div>
           <a
             class="group text-blue-400 transition-all duration-100 ease-in-out"

@@ -10,7 +10,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent {
 
-  loginForm: FormGroup
+  loginForm: FormGroup;
+  seePassword = false
 
   constructor(
     private fb: FormBuilder,

@@ -14,6 +14,10 @@
     &:focus {
         @apply ring-4 ring-blue-300 outline-none;
     }
+
+    &:disabled {
+        @apply opacity-50
+    }
 }
 
 input {
@@ -29,6 +33,12 @@ input {
 
     &:focus {
         @apply ring-4 ring-blue-300 outline-none;
+    }
+
+    &:disabled,
+    &[disabled] {
+        background-color: red !important;
+        @apply bg-gradient-to-r from-gray-500 to-gray-200
     }
 }
 

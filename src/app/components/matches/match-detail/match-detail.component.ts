@@ -38,6 +38,7 @@ export class MatchDetailComponent {
   userId: string;
   selectedTab: string = 'commentry';
   matchResult: string;
+  isAdmin = false;
 
   constructor(
     private dataService: DataService,
@@ -65,6 +66,7 @@ export class MatchDetailComponent {
     this.matchId = this.route.snapshot.params['matchId'];
     this.getMatchDetail();
     this.userId = localStorage.getItem('userId');
+    this.isAdmin = this.userId === 'qQsEQGrKWpUp36dkTAcqEhkCcCO2';
   }
 
   openStriker() {

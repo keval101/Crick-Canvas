@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
@@ -31,12 +31,12 @@ export class AddMatchComponent {
 
   ngOnInit() {
     this.matchForm = this.fb.group({
-      team1: [''],
-      team2: [''],
-      overs: [''],
-      oversPerBowler: [''],
-      date: [''],
-      venue: [''],
+      team1: ['', Validators.required],
+      team2: ['', Validators.required],
+      overs: ['', Validators.required],
+      oversPerBowler: ['', Validators.required],
+      date: ['', Validators.required],
+      venue: ['', Validators.required],
       outBatsman: [[]]
     })
     this.getUsers();
