@@ -110,7 +110,6 @@ export class MatchDetailComponent {
       this.team2Players.push(playerDetail)
     })
 
-    console.log(this.team1Players, this.team2Players)
   }
 
   openStriker() {
@@ -227,7 +226,6 @@ export class MatchDetailComponent {
         team2.wickets = x.matches[matchIndex]?.wickets
           ? x.matches[matchIndex].wickets + team2.wickets
           : team2.wickets;
-        console.log(x.matches[matchIndex])
         team2.overs = x.matches[matchIndex]?.overs
           ? +x.matches[matchIndex].overs + team2.overs
           : team2.overs;
@@ -245,7 +243,6 @@ export class MatchDetailComponent {
         team1.wickets = x.matches[matchIndex]?.wickets
           ? x.matches[matchIndex].wickets + team1.wickets
           : team1.wickets;
-        console.log(x.matches[matchIndex])
         team1.overs = x.matches[matchIndex]?.overs
           ? +x.matches[matchIndex].overs + team1.overs
           : team1.overs;
@@ -256,7 +253,6 @@ export class MatchDetailComponent {
       team1: team1,
       team2: team2,
     };
-    console.log(this.matchRunsDetail)
   }
 
   setBowling(score) {
@@ -485,8 +481,8 @@ export class MatchDetailComponent {
       console.log('Inning End')
     }
 
-    console.log('this', this.match)
-    // this.dataService.updateMatch(payload);
+    this.match['matchRunsDetail'] = this.matchRunsDetail;
+    this.dataService.updateMatch(this.match);
   }
 
   calculateStrikeRate(totalRuns, totalBallsFaced) {
@@ -529,8 +525,6 @@ export class MatchDetailComponent {
     // Calculate remaining target runs
     let remainingTarget = targetRuns - runsScored;
 
-  console.log(remainingOvers, remainingTarget, targetRuns, runsScored)
-
     // Calculate required run rate
     let requiredRunRate = remainingTarget / remainingOvers;
 
@@ -557,7 +551,6 @@ export class MatchDetailComponent {
   }
 
   getProjectDetail() {
-    console.log(this.matchId)
     this.dataService.getMatchDetail(this.matchId).subscribe(res => console.log(res));
   }
 

@@ -17,7 +17,9 @@ export class AddMatchComponent {
   @Output() close = new EventEmitter();
   players$ = new BehaviorSubject([]);
   teams$ = new BehaviorSubject([]);
+  opponents$ = new BehaviorSubject([]);
   date = new Date();
+  teams = [];
 
   matchForm: FormGroup
   constructor(
@@ -41,12 +43,27 @@ export class AddMatchComponent {
     })
     this.getUsers();
     this.getTeams();
+
   }
 
   getTeams() {
     this.dataService.getTeams().subscribe(teams => {
+      this.teams = teams;
       this.teams$.next(teams)
+      this.opponents$.next(teams)
     })
+  }
+
+  updateOpponents(type: string) {
+    if(type === 'team1') {
+      const opponents = this.teams.filter(x => x.id != this.matchForm.value.team1.id)
+      this.opponents$.next(opponents)
+    }
+
+    if(type === 'team2') {
+      const opponents = this.teams.filter(x => x.id != this.matchForm.value.team2.id)
+      this.teams$.next(opponents)
+    }
   }
 
   getUsers() {

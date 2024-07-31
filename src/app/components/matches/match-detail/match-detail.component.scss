@@ -6,6 +6,7 @@
 .match-overs {
   @apply text-gray-500;
   font-size: 12px;
+  white-space: nowrap;
 }
 
 
@@ -140,4 +141,9 @@
 
 .active {
   @apply bg-gray-100;
+}
+
+.match-detail-row {
+  display: grid;
+  grid-template-columns: 1fr 8fr;
 }

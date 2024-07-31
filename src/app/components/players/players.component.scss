@@ -10,7 +10,21 @@
         transition: all 0.2s ease-in;
     }
 
-    @media screen and (max-width: 600px) {
-        grid-template-columns: repeat(1, 1fr);
+    &-name {
+        @apply font-semibold;
+        font-size: 16px;
     }
+    @media screen and (max-width: 600px) {
+        @apply p-2;
+        grid-template-columns: repeat(1, 1fr);
+
+        img {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}
+
+.players {
+    font-size: 14px;
 }

@@ -6,8 +6,8 @@
 </div>
 <div class="teams mt-10">
    <ng-container *ngFor="let team of (teams$ | async)">
-      <div class="team-card relative flex p-4 gap-8 border border-gray-200 rounded-lg" (click)="selectTeam(team)">
-         <img [src]="team.logo" alt="team" class="w-20 h-20 rounded-full">
+      <div class="team-card relative flex p-4 gap-4 sm:gap-8 border border-gray-200 rounded-lg" (click)="selectTeam(team)">
+         <img [src]="team.logo" alt="team" class="rounded-full">
          <div>
             <p><strong>Name: </strong> {{team?.name}}</p>
             <p><strong>Players: </strong> 
