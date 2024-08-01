@@ -191,6 +191,13 @@ export class MatchDetailComponent {
     }
   }
 
+  switchBatsman() {
+    const striker = JSON.parse(JSON.stringify(this.match.nonStriker))
+    const nonStriker = JSON.parse(JSON.stringify(this.match.striker))
+    const payload = {...this.match, striker, nonStriker};
+    // this.dataService.updateMatch(payload)
+  }
+
   getMatchDetail() {
     this.dataService.getMatch(this.matchId).subscribe((match) => {
       this.match = match;
@@ -535,6 +542,7 @@ export class MatchDetailComponent {
         this.match['matchResult'] = this.matchResult;
       } else {
         this.match['isFirstInnigCompelted'] = true;
+        this.currentBall = 0;
       }
       this.battingTeam =  this.match.battingTeam
       this.bowlingTeam =  this.match.bowlingTeam;
