@@ -17,10 +17,35 @@
 
     <div>
         <p class="mb-2">Please Select Players</p>
-        <div class="flex items-center mb-4" *ngFor="let player of (players$ | async)">
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div class="flex items-center w-full" *ngFor="let player of (players$ | async)">
+              <div class="flex items-center w-full">
+                <input 
+                  type="checkbox" 
+                  id="{{player.uid}}-s" 
+                  name="striker" 
+                  [value]="" 
+                  class="hidden peer" 
+                  (change)="addPlayers($event, player)" 
+                  [checked]="playersIds.includes(player.id)" 
+                />
+                <label 
+                  for="{{player.uid}}-s" 
+                  class="inline-flex items-center justify-between w-full shadow-sm p-2 px-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100 peer-checked:bg-gray-100"
+                  [class.active-bg-label]="playersIds.includes(player.id)">
+                  <div class="block">
+                    {{player.name}}
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+        <!-- <div class="flex items-center mb-4" *ngFor="let player of (players$ | async)">
             <input id="{{player.id}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-blue-600 focus:ring-2" (change)="addPlayers($event, player)" [checked]="playersIds.includes(player.id)">
             <label for="{{player.id}}" class="ms-2 text-sm font-medium">{{player.name}}</label>
-        </div>
+        </div> -->
     </div>
     <button
         class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"

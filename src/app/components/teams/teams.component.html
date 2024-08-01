@@ -23,6 +23,6 @@
    </ng-container>
 </div>
 
-<p-dialog [header]="selectedTeam ? selectedTeam?.name : 'New Team'" (onHide)="closeModal()" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+<p-dialog [header]="selectedTeam ? selectedTeam?.name : 'New Team'" (onHide)="closeModal()" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw', minWidth: '300px' }" [draggable]="false" [resizable]="false">
    <app-add-team (close)="closeModal()" [selectedTeam]="selectedTeam"></app-add-team>
 </p-dialog>

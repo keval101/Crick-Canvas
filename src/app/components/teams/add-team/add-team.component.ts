@@ -48,6 +48,15 @@ export class AddTeamComponent {
 
   getPlayers() {
     this.dataService.getPlayers().subscribe(players => {
+      players.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
       this.players$.next(players)
     })
   }
