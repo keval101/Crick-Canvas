@@ -457,16 +457,31 @@ export class MatchDetailComponent {
     this.match.striker = { ...this.match.striker, ...strikerRuns };
     this.match.bowler = { ...this.match.bowler, ...bowlerRuns };
 
+    this.setTeamScores();
+
     if (score === 1 || (this.currentBall === 6 && score != 'OUT')) {
-      this.match.nonStriker = this.match.striker;
-      this.match.striker = nonStriker;
+    
+      if(this.matchRunsDetail[this.battingTeam].wickets != this.match[this.battingTeam].players.length - 1) {
+        this.match.nonStriker = this.match.striker;
+        this.match.striker = nonStriker;
+      } else {
+        this.match.striker = this.match.striker;
+        this.match.nonStriker = {};
+      }
     } else if (score === 'OUT') {
       this.match['outBatsman'] = this.match?.outBatsman
         ? [...this.match.outBatsman, this.match.striker.id]
         : [this.match.striker.id];
+
+      
+    if(this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length - 1) {
+      this.match.striker = nonStriker ?? this.match.striker;
+      this.match.nonStriker = {};
+    } else {
       this.match.striker = {};
     }
 
+    }
 
     this.match['team1Score'] =
       this.match['team1Score'] > 0 ? +this.match['team1Score'] + 1 : 0;
@@ -497,12 +512,6 @@ export class MatchDetailComponent {
       totalFacedBalls = totalFacedBalls + (x.matches[matchIndex]?.balls ?? 0)
     })
 
-    this.setTeamScores();
-
-    if(this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length - 1) {
-      this.match.striker = nonStriker;
-      this.match.nonStriker = {};
-    }
 
     if(this.match?.isFirstInnigCompelted && (this.matchRunsDetail[this.battingTeam]?.runs > this.matchRunsDetail[this.bowlingTeam]?.runs)) {
       this.match['isCompletedMatch'] = true;

@@ -105,7 +105,7 @@
         <ng-container *ngIf="selectedTab === 'commentry'">
             <ng-container *ngIf="userId === match.userId && !match?.isCompletedMatch">
                 <div class="flex gap-3" *ngIf="match.isStarted">
-                    <button class="btn mt-2" (click)="openStriker()" *ngIf="!match?.striker?.id || !match?.nonStriker?.id">Select The Batsman</button>
+                    <button class="btn mt-2" (click)="openStriker()" *ngIf="(!match?.striker?.id || !match?.nonStriker?.id) && this.matchRunsDetail[this.battingTeam].wickets !== this.match[this.battingTeam].players.length - 1">Select The Batsman</button>
                     <button class="btn mt-2" (click)="openBowler()" *ngIf="!match.bowler?.id">Select The Bowler</button>
                 </div>
             </ng-container>
