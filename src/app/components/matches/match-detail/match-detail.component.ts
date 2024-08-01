@@ -220,22 +220,22 @@ export class MatchDetailComponent {
     }
 
     if(player?.match?.outData?.type === 'Bowled'){
-      return 'b ' + player?.match?.outData?.player?.name
+      return 'B ' + player?.match?.outData?.bowler?.name
     }
     
     if(player?.match?.outData?.type === 'Catch'){
-      return 'c ' + player?.match?.outData?.player?.name
+      return 'C ' + player?.match?.outData?.player?.name + ' B ' + player?.match?.outData?.bowler?.name
     }
 
     if(player?.match?.outData?.type === 'Stump'){
-      return 'b ' + player?.match?.outData?.player?.name
+      return 'St ' + player?.match?.outData?.player?.name
     }
 
     if(player?.match?.outData?.type === 'Runout'){
-      return 'runout ' + player?.match?.outData?.player?.name
+      return 'Runout by' + player?.match?.outData?.player?.name
     }
 
-    return 'out'
+    return 'Out'
   }
 
   copyToClipBoard() {
@@ -383,6 +383,7 @@ export class MatchDetailComponent {
 
       if(this.selectedPlayer?.id) {
         strikerRuns['outData'].player = this.selectedPlayer
+        strikerRuns['outData'].bowler = this.match.bowler
       }
     }
 
@@ -532,7 +533,8 @@ export class MatchDetailComponent {
     }
 
     this.match['matchRunsDetail'] = this.matchRunsDetail;
-    this.dataService.updateMatch(this.match);
+    console.log(this.match)
+    // this.dataService.updateMatch(this.match);
   }
 
   calculateStrikeRate(totalRuns, totalBallsFaced) {

@@ -162,12 +162,12 @@
             
             <ng-container *ngIf="userId === match.userId">
                 <div class="bowling" *ngIf="match.bowler?.id">
-                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="setBowling(0)">0</p>
-                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="setBowling(1)">1</p>
-                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="setBowling(2)">2</p>
-                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="openRunsModal(4)">4</p>
-                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="openRunsModal(6)">6</p>
-                    <p [class.disable-bowling]="!match?.striker?.id || !match?.bowler?.id" (click)="openWicketModal()">OUT</p>
+                    <p [class.disable-bowling]="(!match?.striker?.id || !match?.bowler?.id) && !(match?.outBatsman?.length === match[battingTeam]?.players.length - 1)" (click)="setBowling(0)">0</p>
+                    <p [class.disable-bowling]="(!match?.striker?.id || !match?.bowler?.id) && !(match?.outBatsman?.length === match[battingTeam]?.players.length - 1)" (click)="setBowling(1)">1</p>
+                    <p [class.disable-bowling]="(!match?.striker?.id || !match?.bowler?.id) && !(match?.outBatsman?.length === match[battingTeam]?.players.length - 1)" (click)="setBowling(2)">2</p>
+                    <p [class.disable-bowling]="(!match?.striker?.id || !match?.bowler?.id) && !(match?.outBatsman?.length === match[battingTeam]?.players.length - 1)" (click)="openRunsModal(4)">4</p>
+                    <p [class.disable-bowling]="(!match?.striker?.id || !match?.bowler?.id) && !(match?.outBatsman?.length === match[battingTeam]?.players.length - 1)" (click)="openRunsModal(6)">6</p>
+                    <p [class.disable-bowling]="(!match?.striker?.id || !match?.bowler?.id) && !(match?.outBatsman?.length === match[battingTeam]?.players.length - 1)" (click)="openWicketModal()">OUT</p>
                 </div>
             </ng-container>
         
