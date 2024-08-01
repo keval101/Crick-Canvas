@@ -7,41 +7,55 @@
  <div class="matches mt-10">
     <ng-container *ngFor="let match of (matches$ | async)">
       <div class="match-card p-4 gap-8 border border-gray-200 rounded-lg" [routerLink]="[match.id]">
-         <div class="gap-2 flex items-center match-card-container">           
-            <div class="matches-team text-center">
-               <img [src]="match.team1.logo" alt="team" class="rounded-sm">
-               <span class="text-2xl block font-semibold">{{match.team1.name}} </span>
-            </div>
-  
-            <div class="flex gap-8 mx-auto justify-between items-center">
-               <!-- <div>
-                  <p class="match-card-score">137/8</p>
-                  <p class="match-card-over">20.0 Overs</p>
-               </div> -->
-               <div>
-                  <img src="https://scores.bcci.tv/matchcentre/mcv3/images/versus-v2.png?v=1" alt="" class="h-24 max-w-none">
+         <div class="gap-2 flex items-center match-card-container">
+            <div class="flex items-center justify-between sm:mx-auto">
+               <div class="matches-team text-center">
+                  <img [src]="match.team1.logo" alt="team" class="rounded-sm">
+                  <span class="text-2xl block font-semibold">{{match.team1.name}} </span>
                </div>
-               <!-- <div>
-                  <p class="match-card-score">137/8</p>
-                  <p class="match-card-over">20.0 Overs</p>
-               </div> -->
+               <div class="sm:hidden block" *ngIf="match?.matchRunsDetail?.team1">
+                  <p class="match-card-score">{{match?.matchRunsDetail?.team1?.runs ?? 0}}/{{match?.matchRunsDetail?.team1?.wickets ?? 0}} <span class="match-card-over">({{match?.matchRunsDetail?.team1?.overs ?? 0}})</span></p>
+               </div>
+            </div>        
+  
+            <div class="hidden gap-8 mx-auto justify-between items-center sm:flex">
+               <div *ngIf="match?.matchRunsDetail?.team1">
+                  <p class="match-card-score">{{match?.matchRunsDetail?.team1?.runs ?? 0}}/{{match?.matchRunsDetail?.team1?.wickets ?? 0}}</p>
+                  <p class="match-card-over">{{match?.matchRunsDetail?.team1?.overs ?? 0}} Overs</p>
+               </div>
+               <div>
+                  <img src="https://scores.bcci.tv/matchcentre/mcv3/images/versus-v2.png?v=1" alt="" class="h-24 vs-img max-w-none">
+               </div>
+               <div *ngIf="match?.matchRunsDetail?.team2">
+                  <p class="match-card-score">{{match?.matchRunsDetail?.team2?.runs ?? 0}}/{{match?.matchRunsDetail?.team2?.wickets ?? 0}}</p>
+                  <p class="match-card-over">{{match?.matchRunsDetail?.team2?.overs ?? 0}} Overs</p>
+               </div>
             </div>
   
-           <div class="matches-team text-center">
-              <img [src]="match.team2.logo" alt="team" class="rounded-sm">
-              <span class="text-2xl block font-semibold">{{match.team2.name}}</span>
-           </div>
+            <div class="flex items-center justify-between sm:mx-auto">
+               <div class="matches-team text-center">
+                  <img [src]="match.team2.logo" alt="team" class="rounded-sm">
+                  <span class="text-2xl block font-semibold">{{match.team2.name}} </span>
+               </div>
+               <div class="sm:hidden block" *ngIf="match?.matchRunsDetail?.team2">
+                  <p class="match-card-score">{{match?.matchRunsDetail?.team2?.runs ?? 0}}/{{match?.matchRunsDetail?.team2?.wickets ?? 0}} <span class="match-card-over">({{match?.matchRunsDetail?.team2?.overs ?? 0}})</span></p>
+               </div>
+            </div>   
 
          </div>
-         <div class="matches-detail justify-center mt-4 flex gap-2 text-center">
+         <div class="matches-detail justify-center mt-2 sm:mt-4 flex gap-2 text-center">
              <p class="text-left mb-2 date-text">{{ getDate(match.date) | date: 'MMM dd, YYYY'}}</p>
              <p class="text-left mb-2 date-text">{{match.venue}}</p>
+          </div>
+          
+          <div class="matches-detail justify-center mt-2 sm:mt-4 flex gap-2 text-center">
+            {{match?.matchResult}}
           </div>
          
       </div>
     </ng-container>
  </div>
  
- <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+ <p-dialog header="Start Match" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
     <app-add-match (close)="closeModal()"></app-add-match>
  </p-dialog>

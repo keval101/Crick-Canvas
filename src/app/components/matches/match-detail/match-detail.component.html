@@ -53,14 +53,14 @@
                     <img [src]="match?.team1?.logo" alt="team" class="w-10 h-10 ml-2 rounded-full">
                     {{match?.team1?.name}}
                     <span class="match-score">{{matchRunsDetail.team1.runs ?? 0}}/{{matchRunsDetail.team1.wickets ?? 0}}</span>
-                    <span class="match-overs">({{matchRunsDetail.team1.overs}} Overs / {{match.overs}} Overs)</span>
+                    <span class="match-overs">({{matchRunsDetail.team1.overs}})</span>
                 </div>
         
                 <div class="match-team flex mb-4 gap-2 items-center">
                     <img [src]="match?.team2?.logo" alt="team" class="w-10 h-10 ml-2 rounded-full">
                     {{match?.team2?.name}}
                     <span class="match-score">{{matchRunsDetail.team2.runs ?? 0}}/{{matchRunsDetail.team2.wickets ?? 0}}</span>
-                    <span class="match-overs">({{matchRunsDetail.team2.overs}} Overs / {{match.overs}} Overs)</span>
+                    <span class="match-overs">({{matchRunsDetail.team2.overs}})</span>
                 </div>
                 
                 <ng-container *ngIf="userId === match.userId">
@@ -241,49 +241,49 @@
             
             <ul class="max-w-xl divide-y match-detail divide-gray-200">
                 <li class="py-3 sm:py-4">
-                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                    <div class="match-detail-row">
                         <div class="flex-1 min-w-0">
                             <p class="font-medium text-gray-700 truncat">
                                 Venue
                             </p>
                         </div>
-                        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                        <div class="inline-flex items-center text-base font-semibold ml-auto text-gray-900">
                             {{match.venue}}
                         </div>
                     </div>
                 </li>
                 <li class="py-3 sm:py-4">
-                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                    <div class="match-detail-row">
                         <div class="flex-1 min-w-0">
                             <p class="font-medium text-gray-700 truncat">
                                 Date
                             </p>
                         </div>
-                        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                        <div class="inline-flex items-center text-base font-semibold ml-auto text-gray-900">
                             {{match.date}}
                         </div>
                     </div>
                 </li>
                 <li class="py-3 sm:py-4" *ngIf="match.toss">
-                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                    <div class="match-detail-row">
                         <div class="flex-1 min-w-0">
                             <p class="font-medium text-gray-700 truncat">
                                 Toss
                             </p>
                         </div>
-                        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                        <div class="inline-flex items-center text-base font-semibold ml-auto text-gray-900">
                             <img [src]="match[match?.toss?.winTheToss].logo" width="30" height="30" class="rounded-full mr-2"> {{match[match?.toss?.winTheToss].name}} elected to {{match.toss.selected}}
                         </div>
                     </div>
                 </li>
                 <li class="py-3 sm:py-4" *ngIf="match.matchResult">
-                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                    <div class="match-detail-row">
                         <div class="flex-1 min-w-0">
                             <p class="font-medium text-gray-700 truncat">
                                 Match Result
                             </p>
                         </div>
-                        <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                        <div class="inline-flex items-center text-base font-semibold ml-auto text-gray-900">
                             {{match?.matchResult}}
                         </div>
                     </div>

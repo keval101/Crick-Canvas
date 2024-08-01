@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private messageService: MessageService,
     private router: Router) {}
 
   ngOnInit() {
@@ -32,13 +34,13 @@ export class LoginComponent {
         const userId = res.user.multiFactor.user.uid
         localStorage.setItem('userId', userId);
         localStorage.setItem('token', token);
-        // this.messageService.add({ severity: 'success', summary: 'Logged In', detail: 'Logged In Successfully!' });
+        this.messageService.add({ severity: 'success', summary: 'Logged In', detail: 'Logged In Successfully!' });
         this.router.navigate(['/dashboard'])
       }).catch(error => {
         if(error.message.includes('invalid-credential')) {
-          // this.messageService.add({ severity: 'error', summary: 'Invalid Credential', detail: 'Invalid Credential' });
+          this.messageService.add({ severity: 'error', summary: 'Invalid Credential', detail: 'Invalid Credential' });
         } else if(error.message.includes('invalid-email')) {
-          // this.messageService.add({ severity: 'error', summary: 'Invalid Email', detail: 'The email address is Invalid' });
+          this.messageService.add({ severity: 'error', summary: 'Invalid Email', detail: 'The email address is Invalid' });
         }
       })
     }

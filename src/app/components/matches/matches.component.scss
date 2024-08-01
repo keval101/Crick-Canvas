@@ -32,9 +32,10 @@
 
         .matches-team {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            flex-direction: row;
+
             img {
                 width: 30px;
                 height: 30px;
@@ -47,12 +48,13 @@
     }
 
     @media screen and (max-width: 600px) {
-        padding: 20px;
+        padding: 10px;
 
         .matches-team {
             img {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
+                border-radius: 100%;
             }
 
             span {
@@ -65,7 +67,7 @@
 
 .date-text {
     @media screen and (max-width: 600px) {
-        font-size: 14px;
+        font-size: 12px;
         margin-top: 0.5rem;
     }
 }
@@ -82,18 +84,31 @@
 
 .match-card-score {
     @apply font-bold text-3xl;
+
+    @media screen and (max-width: 600px) {
+        font-size: 18px;
+    }
 }
+
 .match-card-over {
     @apply text-gray-400 text-sm;
+
+    @media screen and (max-width: 600px) {
+        font-size: 12px;
+    }
 }
 
 .match-card-container {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr !important;
+
+    @media screen and (max-width: 600px) {
+        grid-template-columns: 1fr !important;
+    }
 }
 
 .matches {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 10px;
 }
