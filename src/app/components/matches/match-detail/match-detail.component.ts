@@ -482,7 +482,7 @@ export class MatchDetailComponent {
     }
 
     this.match['matchRunsDetail'] = this.matchRunsDetail;
-    this.dataService.updateMatch(this.match);
+    // this.dataService.updateMatch(this.match);
   }
 
   calculateStrikeRate(totalRuns, totalBallsFaced) {
