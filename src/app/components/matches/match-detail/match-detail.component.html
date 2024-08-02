@@ -156,7 +156,7 @@
                         <p>{{match.bowler.maiden ?? 0}}</p>
                         <p>{{match.bowler.concededRuns ?? 0}}</p>
                         <p>{{match.bowler.wickets ?? 0}}</p>
-                        <p>{{calculateEconomy(match.bowler.over, match.bowler.runs)}}</p>
+                        <p>{{calculateEconomy(match.bowler.overs, match.bowler.concededRuns)}}</p>
                     </div>
                 </div>
             </div>
@@ -230,7 +230,7 @@
                                 <p>{{player?.match?.maiden ?? 0}}</p>
                                 <p>{{player?.match?.concededRuns ?? 0}}</p>
                                 <p>{{player?.match?.wickets ?? 0}}</p>
-                                <p>{{calculateEconomy(player?.match?.over ?? 0, player?.match?.runs ?? 0)}}</p>
+                                <p>{{calculateEconomy(player?.match?.overs ?? 0, player?.match?.concededRuns ?? 0)}}</p>
                             </div>
                         </ng-container>
                     </div>

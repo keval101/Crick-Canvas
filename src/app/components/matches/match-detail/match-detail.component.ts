@@ -572,7 +572,7 @@ export class MatchDetailComponent {
 
   calculateEconomy(overs, runs) {
     const oversFloat = parseFloat(overs);
-    const economy = (runs / oversFloat) * 6;
+    const economy = runs / oversFloat;
     const economyRounded = economy.toFixed(2);
     return !isNaN(economy) ? economyRounded : 0;
   }
