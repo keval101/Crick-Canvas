@@ -104,7 +104,7 @@
 
         <ng-container *ngIf="selectedTab === 'commentry'">
             <ng-container *ngIf="userId === match.userId && !match?.isCompletedMatch">
-                <div class="flex gap-3" *ngIf="match.isStarted">
+                <div class="flex gap-3" *ngIf="match.isStarted && isAdmin">
                     <button class="btn mt-2" (click)="openStriker()" *ngIf="(!match?.striker?.id || !match?.nonStriker?.id) && this.matchRunsDetail[this.battingTeam].wickets !== this.match[this.battingTeam].players.length - 1">Select The Batsman</button>
                     <button class="btn mt-2" (click)="openBowler()" *ngIf="!match.bowler?.id">Select The Bowler</button>
                     <button class="btn mt-2" (click)="switchBatsman()" *ngIf="match?.striker?.id && match?.nonStriker?.id">Switch Batsman</button>
@@ -161,7 +161,7 @@
                 </div>
             </div>
             
-            <ng-container *ngIf="userId === match.userId">
+            <ng-container *ngIf="userId === match.userId && isAdmin">
                 <div class="bowling" *ngIf="match.bowler?.id">
                     <p [class.disable-bowling]="(!match?.striker?.id || !match?.bowler?.id) && !(match?.outBatsman?.length === match[battingTeam]?.players.length - 1)" (click)="setBowling(0)">0</p>
                     <p [class.disable-bowling]="(!match?.striker?.id || !match?.bowler?.id) && !(match?.outBatsman?.length === match[battingTeam]?.players.length - 1)" (click)="setBowling(1)">1</p>
@@ -172,7 +172,7 @@
                 </div>
             </ng-container>
         
-            <ng-container *ngIf="userId === match.userId">
+            <ng-container *ngIf="userId === match.userId && isAdmin">
                 <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.striker?.id && !match?.isCompletedMatch">Please select striker</p>
                 <p class="mt-2 text-sm text-red-400" *ngIf="match.isStarted && !match.bowler?.id && !match?.isCompletedMatch">Please select bowler</p>
             </ng-container>
