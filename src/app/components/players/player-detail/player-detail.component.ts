@@ -17,38 +17,38 @@ export class PlayerDetailComponent {
     private dataService: DataService
   ){}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.playerId = this.route.snapshot.params['playerId'];
-    this.getPlayerDetail();
+    await this.getPlayerDetail();
   }
 
-   getPlayerDetail() {
-    this.dataService.getPlayer(this.playerId).subscribe(player => {
+   async getPlayerDetail() {
+    const playerDetail = await this.dataService.getPlayer(this.playerId);
+    let player;
       const stats = {
-        balls: player.matches.reduce((acc, curr) => typeof curr?.balls === 'number' ? curr?.balls + acc : acc, 0),
-        runs: player.matches.reduce((acc, curr) => typeof curr?.runs === 'number' ? curr?.runs + acc : acc, 0),
-        sixes: player.matches.reduce((acc, curr) => typeof curr?.sixes === 'number' ? curr?.sixes + acc : acc, 0),
-        fours: player.matches.reduce((acc, curr) => typeof curr?.fours === 'number' ? curr?.fours + acc : acc, 0),
-        catches: player.matches.reduce((acc, curr) => typeof curr?.catches === 'number' ? curr?.catches + acc : acc, 0),
-        bowled: player.matches.reduce((acc, curr) => typeof curr?.bowled === 'number' ? curr?.bowled + acc : acc, 0),
-        concededRuns: player.matches.reduce((acc, curr) => typeof curr?.concededRuns === 'number' ? curr?.concededRuns + acc : acc, 0),
-        wickets: player.matches.reduce((acc, curr) => typeof curr?.wickets === 'number' ? curr?.wickets + acc : acc, 0),
-        maidens: player.matches.reduce((acc, curr) => typeof curr?.maidens === 'number' ? curr?.maidens + acc : acc, 0),
-        overs: player.matches.reduce((acc, curr) => typeof curr?.overs === 'number' ? curr?.overs + acc : acc, 0),
-        outs: player.matches.reduce((acc, curr) => {
+        balls: playerDetail?.matches.reduce((acc, curr) => typeof curr?.balls === 'number' ? curr?.balls + acc : acc, 0),
+        runs: playerDetail?.matches.reduce((acc, curr) => typeof curr?.runs === 'number' ? curr?.runs + acc : acc, 0),
+        sixes: playerDetail?.matches.reduce((acc, curr) => typeof curr?.sixes === 'number' ? curr?.sixes + acc : acc, 0),
+        fours: playerDetail?.matches.reduce((acc, curr) => typeof curr?.fours === 'number' ? curr?.fours + acc : acc, 0),
+        catches: playerDetail?.matches.reduce((acc, curr) => typeof curr?.catches === 'number' ? curr?.catches + acc : acc, 0),
+        bowled: playerDetail?.matches.reduce((acc, curr) => typeof curr?.bowled === 'number' ? curr?.bowled + acc : acc, 0),
+        concededRuns: playerDetail?.matches.reduce((acc, curr) => typeof curr?.concededRuns === 'number' ? curr?.concededRuns + acc : acc, 0),
+        wickets: playerDetail?.matches.reduce((acc, curr) => typeof curr?.wickets === 'number' ? curr?.wickets + acc : acc, 0),
+        maidens: playerDetail?.matches.reduce((acc, curr) => typeof curr?.maidens === 'number' ? curr?.maidens + acc : acc, 0),
+        overs: playerDetail?.matches.reduce((acc, curr) => typeof curr?.overs === 'number' ? curr?.overs + acc : acc, 0),
+        outs: playerDetail?.matches.reduce((acc, curr) => {
           if (curr.out) {
             return acc + 1;
         } else {
             return acc;
         }
         }, 0),
-        highScore: player.matches.reduce((max, curr) => (curr?.runs > max) ? curr?.runs : max, player.matches[0]?.runs),
-        innigs: player.matches.length ?? 0,
+        highScore: playerDetail?.matches.reduce((max, curr) => (curr?.runs > max) ? curr?.runs : max, playerDetail?.matches[0]?.runs),
+        innigs: playerDetail?.matches.length ?? 0,
       }
       player = {...player, stats}
 
       this.player$.next(player)
-    })
   }
 
   calculateStrikeRate(totalRuns, totalBallsFaced) {

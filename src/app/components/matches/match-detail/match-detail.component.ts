@@ -195,7 +195,7 @@ export class MatchDetailComponent {
     const striker = JSON.parse(JSON.stringify(this.match.nonStriker))
     const nonStriker = JSON.parse(JSON.stringify(this.match.striker))
     this.match = {...this.match, striker, nonStriker};
-    // this.dataService.updateMatch(payload)
+    this.dataService.updateMatch(this.match)
   }
 
   getMatchDetail() {
@@ -216,6 +216,13 @@ export class MatchDetailComponent {
       this.battingTeam = this.match.battingTeam
       this.bowlingTeam = this.match.bowlingTeam
 
+      this.match.team1.players.map(async (x) => {
+        x = await this.dataService.getPlayer(x.id);
+      })
+
+      this.match.team2.players.map(async (x) => {
+        x = await this.dataService.getPlayer(x.id);
+      })
 
       this.setTeamScores();
     });
@@ -312,7 +319,7 @@ export class MatchDetailComponent {
     };
   }
 
-  setBowling(score) {
+  async setBowling(score) {
     this.displayWicket = false;
     this.selectRuns = false;
 
@@ -337,7 +344,7 @@ export class MatchDetailComponent {
           player.matches[matchIndex][type] = player.matches[matchIndex]?.[type] ? player.matches[matchIndex]?.[type] + 1 : 1;
         }
 
-        //  this.dataService.updatePlayer(this.match[this.bowlingTeam].players[playerIndex]);
+         this.dataService.updatePlayer(this.match[this.bowlingTeam].players[playerIndex]);
       }
     }
 
@@ -423,29 +430,29 @@ export class MatchDetailComponent {
     };
 
     if (score === 'OUT') {
-      bowler['wickets'] = bowler?.wickets ? +bowler.wickets + 1 : 1;
-      bowlerRuns.wickets = bowler.wickets;
+      bowlerDetail['wickets'] = bowlerDetail?.wickets ? +bowlerDetail.wickets + 1 : 1;
+      bowlerRuns.wickets = bowlerDetail.wickets;
     } else {
-      bowler['concededRuns'] =
-        bowler?.concededRuns > 0 ? bowler.concededRuns + +score : score;
-      bowlerRuns.concededRuns = bowler.concededRuns;
+      bowlerDetail['concededRuns'] =
+      bowlerDetail?.concededRuns > 0 ? bowlerDetail?.concededRuns + +score : score;
+      bowlerRuns.concededRuns = bowlerDetail.concededRuns;
     }
 
     if (this.currentBall === 6) {
       const overs = this.match.bowler?.overs?.split('.')?.[0] ?? 0;
-      bowler['overs'] = bowler.overs > 0 ? `${+overs + 1}.0` : '1.0';
-      bowlerRuns.overs = bowler.overs;
+      bowlerDetail['overs'] = bowlerDetail.overs > 0 ? `${+overs + 1}.0` : '1.0';
+      bowlerRuns.overs = bowlerDetail.overs;
       if (this.maidenBallCount === 6) {
-        bowler['maidens'] = bowler?.maidens > 0 ? bowler.maidens + 1 : 1;
-        bowlerRuns.maidens = bowler.maidens;
+        bowlerDetail['maidens'] = bowlerDetail?.maidens > 0 ? bowlerDetail.maidens + 1 : 1;
+        bowlerRuns.maidens = bowlerDetail.maidens;
       }
     } else {
       const overs = this.match.bowler?.overs?.split('.')?.[0] ?? 0;
-      bowler['overs'] =
-        bowler.overs > 0
+      bowlerDetail['overs'] =
+      bowlerDetail.overs > 0
           ? `${overs}.${this.currentBall}`
           : `0.${this.currentBall}`;
-      bowlerRuns.overs = bowler.overs;
+      bowlerRuns.overs = bowlerDetail.overs;
     }
 
     const matchBwIndex = this.match[this.bowlingTeam].players[
@@ -551,7 +558,7 @@ export class MatchDetailComponent {
 
     this.match['matchRunsDetail'] = this.matchRunsDetail;
     console.log(this.match)
-    // this.dataService.updateMatch(this.match);
+    this.dataService.updateMatch(this.match);
   }
 
   calculateStrikeRate(totalRuns, totalBallsFaced) {
@@ -602,6 +609,18 @@ export class MatchDetailComponent {
 
   async deleteMatch() {
     if (confirm('Are you sure to delete match?') == true) {
+      this.match.team1.players.map(async (x) => {
+        x.matches = x.matches.filter(m => m.matchId != this.matchId);
+        await this.dataService.updatePlayer(x)
+      })
+
+      this.match.team2.players.map(async (x) => {
+        x.matches = x.matches.filter(m => m.matchId != this.matchId);
+        await this.dataService.updatePlayer(x)
+      })
+
+      console.log(this.match)
+
       await this.dataService.deleteMatch(this.matchId);
       this.messageService.add({
         severity: 'success',

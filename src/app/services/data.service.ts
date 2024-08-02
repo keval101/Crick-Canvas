@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, map } from 'rxjs';
+import { Observable, firstValueFrom, map } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -121,19 +121,23 @@ export class DataService {
     return this.firestore.collection(`${this.api}/teams`).doc(payload.id).set(payload, {merge: true});
   }
 
-  getPlayer(playerId: any) {
-      return this.firestore.collection(`/users`).doc(playerId).snapshotChanges()
+  async getPlayer(playerId: any) {
+    let response;
+      const res = await firstValueFrom(this.firestore.collection(`/users`).doc(playerId).snapshotChanges()
       .pipe(
-        map((doc: any) => {
+        map(async (doc: any) => {
           if (doc.payload.exists) {
             const data = doc.payload.data();
             const id = doc.payload.id;
-            return { id, ...data };
+            response = await { id, ...data }
+            return await { id, ...data };
           } else {
+            response = null
             return null;
           }
         })
-      );
+      ));
+      return response;
     }
 
   async deleteMatch(matchId: string) {
