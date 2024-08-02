@@ -194,7 +194,7 @@ export class MatchDetailComponent {
   switchBatsman() {
     const striker = JSON.parse(JSON.stringify(this.match.nonStriker))
     const nonStriker = JSON.parse(JSON.stringify(this.match.striker))
-    const payload = {...this.match, striker, nonStriker};
+    this.match = {...this.match, striker, nonStriker};
     // this.dataService.updateMatch(payload)
   }
 
