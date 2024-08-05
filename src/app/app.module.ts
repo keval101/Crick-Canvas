@@ -33,6 +33,7 @@ import { MatchDetailComponent } from './components/matches/match-detail/match-de
 import { CoinTossComponent } from './shared/components/coin-toss/coin-toss.component';
 import { PlayerDetailComponent } from './components/players/player-detail/player-detail.component';
 import { MessageService } from 'primeng/api';
+import { ManOfTheMatchComponent } from './components/matches/man-of-the-match/man-of-the-match.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -58,7 +59,8 @@ const firebaseConfig = {
     AddMatchComponent,
     MatchDetailComponent,
     CoinTossComponent,
-    PlayerDetailComponent
+    PlayerDetailComponent,
+    ManOfTheMatchComponent
   ],
   imports: [
     BrowserModule,

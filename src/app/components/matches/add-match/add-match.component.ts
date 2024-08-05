@@ -77,9 +77,22 @@ export class AddMatchComponent {
     const userId = localStorage.getItem('userId')
     payload = {...payload, userId: userId}
     payload.date = this.datepipe.transform(this.date, 'dd/MM/yyyy');
+
+    const team1Players = await this.fetchPlayers(payload.team1);
+    const team2Players = await this.fetchPlayers(payload.team2);
+    
+    payload.team1.players = team1Players;
+    payload.team2.players = team2Players;
+
     const response = await this.dataService.createMatch(payload)
     this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Created Successfully!' });
     this.router.navigate(['/matches', response.id])
     this.close.emit();
   }
+
+  async fetchPlayers(team: any) {
+    return Promise.all(team.players.map(async (player: any) => {
+      return await this.dataService.getPlayer(player.id);
+    }));
+  };
 }

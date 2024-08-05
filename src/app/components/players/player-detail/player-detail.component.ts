@@ -31,6 +31,8 @@ export class PlayerDetailComponent {
         sixes: playerDetail?.matches.reduce((acc, curr) => typeof curr?.sixes === 'number' ? curr?.sixes + acc : acc, 0),
         fours: playerDetail?.matches.reduce((acc, curr) => typeof curr?.fours === 'number' ? curr?.fours + acc : acc, 0),
         catches: playerDetail?.matches.reduce((acc, curr) => typeof curr?.catches === 'number' ? curr?.catches + acc : acc, 0),
+        runouts: playerDetail?.matches.reduce((acc, curr) => typeof curr?.runouts === 'number' ? curr?.runouts + acc : acc, 0),
+        stumps: playerDetail?.matches.reduce((acc, curr) => typeof curr?.stumps === 'number' ? curr?.stumps + acc : acc, 0),
         bowled: playerDetail?.matches.reduce((acc, curr) => typeof curr?.bowled === 'number' ? curr?.bowled + acc : acc, 0),
         concededRuns: playerDetail?.matches.reduce((acc, curr) => typeof curr?.concededRuns === 'number' ? curr?.concededRuns + acc : acc, 0),
         wickets: playerDetail?.matches.reduce((acc, curr) => typeof curr?.wickets === 'number' ? curr?.wickets + acc : acc, 0),

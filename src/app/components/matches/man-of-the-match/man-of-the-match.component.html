@@ -1,0 +1,49 @@
+<div class="mom-card flex justify-between" *ngIf="player">
+    <div>
+        <div class="mom-card-title mb-5">
+            <h1>{{player.name}}</h1>
+        </div>
+
+        <ng-container *ngIf="player?.match?.runs">
+            <div class="font-bold border-b border-gray-200 pb-3 text-2xl">Batting</div>
+    
+            <div class="flex gap-4 flex-wrap">
+                <div class="mom-card-stats" *ngIf="player?.match?.runs">
+                    <h1>{{player?.match?.runs}}</h1>
+                    <h2>Runs</h2>
+                </div>
+        
+                <div class="mom-card-stats" *ngIf="player?.match?.runs">
+                    <h1>{{calculateStrikeRate(player?.match?.runs, player?.match?.facedBalls)}}</h1>
+                    <h2>Strike Rate</h2>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="player?.match?.overs">
+            <div class="font-bold border-b border-gray-200 pb-3 text-2xl mt-6">Bowling</div>
+    
+            <div class="flex gap-4 flex-wrap">            
+                <div class="mom-card-stats" *ngIf="player?.match?.overs">
+                    <h1>{{player?.match?.overs}}</h1>
+                    <h2>Overs</h2>
+                </div>
+        
+                <div class="mom-card-stats" *ngIf="player?.match?.wickets">
+                    <h1>{{player?.match?.wickets}}</h1>
+                    <h2>Wickets</h2>
+                </div>
+        
+                <div class="mom-card-stats" *ngIf="player?.match?.overs">
+                    <h1>{{calculateEconomy(player?.match?.overs, player?.match?.concededRuns)}}</h1>
+                    <h2>Economy</h2>
+                </div>
+            </div>
+        </ng-container>
+
+    </div>
+
+    <div class="hidden sm:block">
+        <img src="./assets/icons/mom.jfif" alt="" width="200" height="200">
+    </div>
+</div>

@@ -31,17 +31,14 @@ export class AddTeamComponent {
       logo: [''],
     })
     this.getPlayers();
-    console.log('this.selectedTeam', this.selectedTeam);
 
   }
 
   ngOnChanges() {
-    console.log(this.selectedTeam);
     if(this.selectedTeam) {
       this.teamForm.get('name').setValue(this.selectedTeam.name)
       this.teamForm.get('logo').setValue(this.selectedTeam.logo)
       this.players = this.selectedTeam.players
-      console.log(this.players)
       this.playersIds = this.players.map(x => x.id)
     }
   }
@@ -75,7 +72,6 @@ export class AddTeamComponent {
   async createTeam() {
     let payload = this.teamForm.value
     payload = {...payload, players: this.players}
-    console.log(this.selectedTeam)
     if(this.selectedTeam) {
       payload = {...payload, id: this.selectedTeam.id}
       await this.dataService.updateTeam(payload)

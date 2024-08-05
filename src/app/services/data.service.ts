@@ -44,7 +44,6 @@ export class DataService {
   async createTeam(payload: any) {
     this.setUserId();
     const response = await this.firestore.collection(`${this.api}/teams`).add(payload);
-    console.log(response)
     return response
   }
 
@@ -108,7 +107,6 @@ export class DataService {
   }
 
   updateMatch(payload: any) {
-    console.log(payload)
     return this.firestore.collection(`/matches`).doc(payload.id).set(payload, {merge: true});
   }
 

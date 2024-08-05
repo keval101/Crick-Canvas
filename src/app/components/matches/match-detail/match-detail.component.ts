@@ -46,6 +46,7 @@ export class MatchDetailComponent {
   matchUrl:string;
   whatsappUrl:string;
   facebookUrl:string;
+  mvpPlayer;
 
   constructor(
     private dataService: DataService,
@@ -81,7 +82,6 @@ export class MatchDetailComponent {
   }
 
   getTeamScore(team?: string) {
-    console.log(team ,"team")
     this.activeScorecard = team;
     this.team1Players = []
     this.team2Players = []
@@ -128,7 +128,7 @@ export class MatchDetailComponent {
   saveStriker() {
     const payload = { ...this.match, ...this.strikerForm.value };
     this.match = payload;
-    // this.dataService.updateMatch(payload);
+    this.dataService.updateMatch(payload);
     this.selectStriker = false;
   }
 
@@ -145,7 +145,7 @@ export class MatchDetailComponent {
     if(matchIndex != -1 && matchIndex >=0 ) {
       this.match.bowler = {...this.match.bowler, ...this.match[this.bowlingTeam].players[playerIndex].matches[matchIndex]}
     }
-    // this.dataService.updateMatch(payload);
+    this.dataService.updateMatch(payload);
     this.selectBowler = false;
   }
 
@@ -198,10 +198,202 @@ export class MatchDetailComponent {
     this.dataService.updateMatch(this.match)
   }
 
+  getPlayerDetail(player) {
+    const playerDetail = this.match[this.match.battingTeam].players.find(x => x.id === player.id)
+    return playerDetail;
+  }
+
+  calculateMvpPoints(match) {
+    // Define weights for each statistic
+    const ballFaced = match?.facedBalls ?? 0
+    const runs = match?.runs ?? 0
+    const sixes = match?.sixes ?? 0;
+
+    const pointsPerRun = 1;
+    const pointsPerDotBall = -1;
+    const pointsPerSix = 8;
+    const pointsPerFour = 6;
+    const bonusFor30Plus = 8;
+    const bonusFor50Plus = 12;
+    
+    // Calculate the number of dot balls
+    const dotBalls = ballFaced - runs; // Every ball faced minus the runs scored gives dot balls
+    
+    // Calculate base points
+    let points = (runs * pointsPerRun) +
+                 (dotBalls * pointsPerDotBall) +
+                 (sixes * pointsPerSix);
+    
+    // Calculate fours from runs and sixes
+    // Total runs scored from fours and sixes: Runs - (6 * number of sixes)
+    const runsFromFours = runs - (6 * sixes);
+    const fours = Math.floor(runsFromFours / 4);
+    points += fours * pointsPerFour;
+    
+    // Apply bonuses
+    if (runs >= 50) {
+        points += bonusFor50Plus;
+    } else if (runs >= 30) {
+        points += bonusFor30Plus;
+    }
+
+    return points;
+  }
+
+  calculateBowlingMvpPoints(match) {
+
+    const balls = match?.balls ?? 0
+    const concededRuns = match?.concededRuns ?? 0
+    const catches = match?.catches ?? 0
+    const runouts = match?.runouts ?? 0
+
+    // Define weights for each statistic
+    const pointsPerDotBall = 2;
+    const pointsPerRun = -0.5;
+    const pointsPerCatch = 8;
+    const pointsPerRunout = 8;
+    const deductionFor30Plus = -8;
+    const deductionFor50Plus = -12;
+
+    // Calculate the number of dot balls
+    // Assuming dot balls are balls where no runs were scored
+    const dotBalls = balls - concededRuns; // Simplified assumption
+    
+    // Calculate base points
+    let points = (dotBalls * pointsPerDotBall) +
+                (concededRuns * pointsPerRun) +
+                (catches * pointsPerCatch) +
+                (runouts * pointsPerRunout);
+
+    // Apply deductions
+    if (concededRuns >= 50) {
+        points += deductionFor50Plus;
+    } else if (concededRuns >= 30) {
+        points += deductionFor30Plus;
+    }
+
+    return points;
+  }
+
+  getBestData() {
+    if(this.match.isCompletedMatch) {
+      this.getTeamScore('team1')
+      const team1Results = this.analyzeMatchStats(this.team1Players);
+      const team2Results = this.analyzeMatchStats(this.team2Players);
+      this.team1Players.map(x => {
+        x['battingPoints'] = this.calculateMvpPoints(x.match)
+        x['bowlingPoints'] = this.calculateBowlingMvpPoints(x.match)
+        x['totalMVPPoints'] = x.battingPoints + x.bowlingPoints;
+      })
+
+      this.team2Players.map(x => {
+        x['battingPoints'] = this.calculateMvpPoints(x.match)
+        x['bowlingPoints'] = this.calculateBowlingMvpPoints(x.match)
+        x['totalMVPPoints'] = x.battingPoints + x.bowlingPoints;
+      })
+
+
+      const players = [...this.team1Players, ...this.team2Players];
+      let mvpPlayer: any = {};
+      players.map(x => {
+        if(x.totalMVPPoints > (mvpPlayer?.totalMVPPoints ?? 0)) {
+          mvpPlayer = x
+        }
+      })
+      this.mvpPlayer = mvpPlayer;
+      console.log(this.mvpPlayer)
+  
+      // const bestData = this.findHighestStats(team1Results, team2Results)
+    }
+  }
+
+  analyzeMatchStats(players) {
+    // Initialize statistics holders
+    const stats = {
+        bestBatsman: { name: '', runs: -1 },
+        bestBowler: { name: '', wickets: -1 },
+        mostSixes: { name: '', sixes: -1 },
+        mostFours: { name: '', fours: -1 },
+        mostCatches: { name: '', catches: -1 },
+        mostRunouts: { name: '', runouts: -1 }
+    };
+
+    // Process each player
+    players.forEach(player => {
+        const match = player.match;
+        
+        // Check for Best Batsman
+        if (match.runs > stats.bestBatsman.runs) {
+            stats.bestBatsman.name = player.name;
+            stats.bestBatsman.runs = match.runs;
+        }
+
+        // Check for Best Bowler
+        if (match.wickets > stats.bestBowler.wickets) {
+            stats.bestBowler.name = player.name;
+            stats.bestBowler.wickets = match.wickets;
+        }
+
+        // Check for Most Sixes (assuming `sixes` is part of match)
+        if (match.sixes > stats.mostSixes.sixes) {
+            stats.mostSixes.name = player.name;
+            stats.mostSixes.sixes = match.sixes;
+        }
+
+        // Check for Most Fours (assuming `fours` data is available, but it's not in this data)
+        // Example (if available): if (match.fours > stats.mostFours.fours) {
+        //     stats.mostFours.name = player.name;
+        //     stats.mostFours.fours = match.fours;
+        // }
+
+        // Check for Most Catches
+        if (match.catches > stats.mostCatches.catches) {
+            stats.mostCatches.name = player.name;
+            stats.mostCatches.catches = match.catches;
+        }
+
+        // Check for Most Runouts (assuming `runouts` is part of match)
+        if (match.runouts) {
+            if (match.runouts > stats.mostRunouts.runouts) {
+              stats.mostRunouts.name = player.name;
+              stats.mostRunouts.runouts = match.runouts;
+            }
+        }
+    });
+
+    return stats;
+  }
+
+  findHighestStats(team1, team2) {
+    // Helper function to compare and include team information
+    function compareAndIncludeTeam(stat1, stat2, teamName1, teamName2) {
+        if (stat1 > stat2) {
+            return { name: team1.bestBatsman.name, runs: stat1, team: teamName1 };
+        } else if (stat2 > stat1) {
+            return { name: team2.bestBatsman.name, runs: stat2, team: teamName2 };
+        } else {
+            return { name: team1.bestBatsman.name, runs: stat1, team: teamName1 }; // Or adjust as needed for ties
+        }
+    }
+
+    // Initialize result object
+    const highestStats = {
+        bestBatsman: compareAndIncludeTeam(team1.bestBatsman.runs, team2.bestBatsman.runs, 'Team 1', 'Team 2'),
+        bestBowler: compareAndIncludeTeam(team1.bestBowler.wickets, team2.bestBowler.wickets, 'Team 1', 'Team 2'),
+        mostSixes: compareAndIncludeTeam(team1.mostSixes.sixes, team2.mostSixes.sixes, 'Team 1', 'Team 2'),
+        mostFours: compareAndIncludeTeam(team1.mostFours.fours, team2.mostFours.fours, 'Team 1', 'Team 2'),
+        mostCatches: compareAndIncludeTeam(team1.mostCatches.catches, team2.mostCatches.catches, 'Team 1', 'Team 2'),
+        mostRunouts: compareAndIncludeTeam(team1.mostRunouts.runouts, team2.mostRunouts.runouts, 'Team 1', 'Team 2')
+    };
+
+    // Return highest statistics
+    return highestStats;
+}
+
   getMatchDetail() {
-    this.dataService.getMatch(this.matchId).subscribe((match) => {
+    this.dataService.getMatch(this.matchId).subscribe(async (match) => {
       this.match = match;
-      this.match['outBatsman'] = [];
+      this.match['outBatsman'] = this.match['outBatsman'].length ? this.match['outBatsman'] : [];
 
       if (this.match.bowler) {
         const balls =
@@ -216,17 +408,22 @@ export class MatchDetailComponent {
       this.battingTeam = this.match.battingTeam
       this.bowlingTeam = this.match.bowlingTeam
 
-      this.match.team1.players.map(async (x) => {
-        x = await this.dataService.getPlayer(x.id);
-      })
 
-      this.match.team2.players.map(async (x) => {
-        x = await this.dataService.getPlayer(x.id);
-      })
-
+      const team1Players = await this.fetchPlayers(this.match.team1);
+      const team2Players = await this.fetchPlayers(this.match.team2);
+      
+      this.match.team1.players = team1Players;
+      this.match.team2.players = team2Players;
       this.setTeamScores();
+      this.getBestData();
     });
   }
+
+  async fetchPlayers(team: any) {
+    return Promise.all(team.players.map(async (player: any) => {
+      return await this.dataService.getPlayer(player.id);
+    }));
+  };
 
   getPlayerCurrentStatus(player){
     if(!player?.match?.out){
@@ -293,6 +490,10 @@ export class MatchDetailComponent {
         team2.overs = x.matches[matchIndex]?.overs
           ? +x.matches[matchIndex].overs + team2.overs
           : team2.overs;
+
+          if(x.matches[matchIndex]?.out && x.matches[matchIndex]?.outData?.type === 'Runout') {
+            team1.wickets = team1.wickets + 1
+          }
       }
     });
 
@@ -310,6 +511,10 @@ export class MatchDetailComponent {
         team1.overs = x.matches[matchIndex]?.overs
           ? +x.matches[matchIndex].overs + team1.overs
           : team1.overs;
+
+        if(x.matches[matchIndex]?.out && x.matches[matchIndex]?.outData?.type === 'Runout') {
+          team2.wickets = team2.wickets + 1
+        }
       }
     });
 
@@ -325,7 +530,7 @@ export class MatchDetailComponent {
 
     if(score === 'OUT') {
       if(this.wicketType != 'Bowled') {
-        let type = this.wicketType === 'Catch' ? 'catch' : this.wicketType === 'Stump' ? 'stump' : 'runout';
+        let type = this.wicketType === 'Catch' ? 'catches' : this.wicketType === 'Stump' ? 'stumps' : 'runouts';
         const playerIndex = this.match[this.bowlingTeam].players.findIndex(
           (x) => x.uid === this.selectedPlayer.uid
         );
@@ -430,8 +635,10 @@ export class MatchDetailComponent {
     };
 
     if (score === 'OUT') {
-      bowlerDetail['wickets'] = bowlerDetail?.wickets ? +bowlerDetail.wickets + 1 : 1;
-      bowlerRuns.wickets = bowlerDetail.wickets;
+      if(this.wicketType != 'Runout') {
+        bowlerDetail['wickets'] = bowlerDetail?.wickets ? +bowlerDetail.wickets + 1 : 1;
+        bowlerRuns.wickets = bowlerDetail.wickets;
+      }
     } else {
       bowlerDetail['concededRuns'] =
       bowlerDetail?.concededRuns > 0 ? bowlerDetail?.concededRuns + +score : score;
@@ -468,13 +675,15 @@ export class MatchDetailComponent {
       );
     }
 
-    this.match.striker = { ...this.match.striker, ...strikerRuns };
+    if(this.matchRunsDetail[this.battingTeam].wickets != this.match[this.battingTeam].players.length - 1) { 
+      this.match.striker = { ...this.match.striker, ...strikerRuns };
+    }
+
     this.match.bowler = { ...this.match.bowler, ...bowlerRuns };
 
     this.setTeamScores();
 
     if (score === 1 || (this.currentBall === 6 && score != 'OUT')) {
-    
       if(this.matchRunsDetail[this.battingTeam].wickets != this.match[this.battingTeam].players.length - 1) {
         this.match.nonStriker = this.match.striker;
         this.match.striker = nonStriker;
@@ -487,7 +696,6 @@ export class MatchDetailComponent {
         ? [...this.match.outBatsman, this.match.striker.id]
         : [this.match.striker.id];
 
-      
     if(this.matchRunsDetail[this.battingTeam].wickets === this.match[this.battingTeam].players.length - 1) {
       this.match.striker = nonStriker ?? this.match.striker;
       this.match.nonStriker = {};
@@ -505,10 +713,10 @@ export class MatchDetailComponent {
     const bowlingPlayer = this.match[this.bowlingTeam].players[bowlerIndex];
 
 
-    // this.dataService.updatePlayer(batsmanPlayer);
-    // this.dataService.updatePlayer(bowlingPlayer);
-    // this.dataService.updateTeam(this.match[this.battingTeam]);
-    // this.dataService.updateTeam(this.match[this.bowlingTeam]);
+    this.dataService.updatePlayer(batsmanPlayer);
+    this.dataService.updatePlayer(bowlingPlayer);
+    this.dataService.updateTeam(this.match[this.battingTeam]);
+    this.dataService.updateTeam(this.match[this.bowlingTeam]);
 
     if(this.currentBall === 6) {
       this.match.bowler = {};
@@ -542,22 +750,21 @@ export class MatchDetailComponent {
       this.match.striker = {};
       this.match.nonStriker = {};
       this.match.bowler = {};
-      console.log('this.match?.isFirstInnigCompelted',this.match?.isFirstInnigCompelted)
       if(this.match?.isFirstInnigCompelted) {
         this.match['isCompletedMatch'] = true;
         this.findMatchResult(this.match.toss, this.matchRunsDetail, this.match[this.battingTeam].players.length)
         this.match['matchResult'] = this.matchResult;
+        this.match['outBatsman'] = [];
       } else {
         this.match['isFirstInnigCompelted'] = true;
+        this.match['outBatsman'] = [];
         this.currentBall = 0;
       }
       this.battingTeam =  this.match.battingTeam
       this.bowlingTeam =  this.match.bowlingTeam;
-      console.log('Inning End')
     }
 
     this.match['matchRunsDetail'] = this.matchRunsDetail;
-    console.log(this.match)
     this.dataService.updateMatch(this.match);
   }
 
@@ -619,7 +826,6 @@ export class MatchDetailComponent {
         await this.dataService.updatePlayer(x)
       })
 
-      console.log(this.match)
 
       await this.dataService.deleteMatch(this.matchId);
       this.messageService.add({
@@ -639,7 +845,7 @@ export class MatchDetailComponent {
   }
 
   getProjectDetail() {
-    this.dataService.getMatchDetail(this.matchId).subscribe(res => console.log(res));
+    this.dataService.getMatchDetail(this.matchId).subscribe();
   }
 
 
