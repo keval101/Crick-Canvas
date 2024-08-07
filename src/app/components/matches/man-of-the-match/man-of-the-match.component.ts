@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ManOfTheMatchComponent {
   @Input() player;
+  @Input() bestData;
 
   
   calculateStrikeRate(totalRuns, totalBallsFaced) {

@@ -47,6 +47,7 @@ export class MatchDetailComponent {
   whatsappUrl:string;
   facebookUrl:string;
   mvpPlayer;
+  bestData;
 
   constructor(
     private dataService: DataService,
@@ -303,7 +304,8 @@ export class MatchDetailComponent {
       this.mvpPlayer = mvpPlayer;
       console.log(this.mvpPlayer)
   
-      // const bestData = this.findHighestStats(team1Results, team2Results)
+      this.bestData = this.findHighestStats(team1Results, team2Results)
+      console.log(this.bestData)
     }
   }
 

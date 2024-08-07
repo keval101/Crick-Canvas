@@ -111,7 +111,7 @@
             <!-- <p>Most Runouts</p> -->
 
             <ng-container *ngIf="match?.isCompletedMatch">
-                <app-man-of-the-match [player]="mvpPlayer"></app-man-of-the-match>
+                <app-man-of-the-match [player]="mvpPlayer" [bestData]="bestData"></app-man-of-the-match>
             </ng-container>
 
             <ng-container *ngIf="userId === match.userId && !match?.isCompletedMatch">
