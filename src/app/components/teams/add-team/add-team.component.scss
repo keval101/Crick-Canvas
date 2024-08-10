@@ -7,11 +7,16 @@
         border-radius: 100%;
         margin-top: 10px;
         cursor: pointer;
+        @media screen and (max-width: 768px) {
+            width: 50px;
+            height: 50px;
+        }   
 
         &:hover {
             @apply border border-gray-50;
         }
     }
+
 }
 
 .active-logo {
@@ -19,3 +24,7 @@
     border-width: 5px;
     border-color: #a855f7;
 }
+
+.active-bg-label {
+    @apply ring-blue-500 border-blue-500;
+  }

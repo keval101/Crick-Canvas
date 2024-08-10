@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import {MDCSnackbar} from '@material/snackbar';
 
 @Component({
   selector: 'app-match-detail',
@@ -42,6 +43,9 @@ export class MatchDetailComponent {
   team1Players = [];
   team2Players = [];
   activeScorecard: string;
+  matchUrl:string;
+  whatsappUrl:string;
+  facebookUrl:string;
 
   constructor(
     private dataService: DataService,
@@ -67,6 +71,9 @@ export class MatchDetailComponent {
 
   ngOnInit() {
     this.matchId = this.route.snapshot.params['matchId'];
+    this.matchUrl = window.location.href;
+    this.whatsappUrl = encodeURI('https://api.whatsapp.com/send?text=') + encodeURIComponent(this.matchUrl);
+    this.facebookUrl  = encodeURI('https://www.facebook.com/sharer/sharer.php?quote=') + '&u=' + this.matchUrl;
     this.getMatchDetail();
     this.userId = localStorage.getItem('userId');
     this.isAdmin = this.userId === 'qQsEQGrKWpUp36dkTAcqEhkCcCO2';
@@ -74,6 +81,7 @@ export class MatchDetailComponent {
   }
 
   getTeamScore(team?: string) {
+    console.log(team ,"team")
     this.activeScorecard = team;
     this.team1Players = []
     this.team2Players = []
@@ -206,6 +214,48 @@ export class MatchDetailComponent {
       this.setTeamScores();
     });
   }
+
+  getPlayerCurrentStatus(player){
+    if(!player?.match?.out){
+      return 'not out'
+    }
+
+    if(player?.match?.outData?.type === 'Bowled'){
+      return 'b ' + player?.match?.outData?.player?.name
+    }
+    
+    if(player?.match?.outData?.type === 'Catch'){
+      return 'c ' + player?.match?.outData?.player?.name
+    }
+
+    if(player?.match?.outData?.type === 'Stump'){
+      return 'b ' + player?.match?.outData?.player?.name
+    }
+
+    if(player?.match?.outData?.type === 'Runout'){
+      return 'runout ' + player?.match?.outData?.player?.name
+    }
+
+    return 'out'
+  }
+
+  copyToClipBoard() {
+    try {
+        const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+        snackbar.open()
+        const text = (document.getElementById('copylink') as HTMLInputElement).value;
+        const input = document.createElement('input');
+        input.setAttribute('value', String(text));
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        setTimeout(()=> snackbar.close(), 3000);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
 
   getPlayers() {
     this.dataService.getPlayers().subscribe((players) => {
