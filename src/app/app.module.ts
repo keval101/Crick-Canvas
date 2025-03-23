@@ -34,6 +34,13 @@ import { CoinTossComponent } from './shared/components/coin-toss/coin-toss.compo
 import { PlayerDetailComponent } from './components/players/player-detail/player-detail.component';
 import { MessageService } from 'primeng/api';
 import { ManOfTheMatchComponent } from './components/matches/man-of-the-match/man-of-the-match.component';
+import { LeaguesComponent } from './components/leagues/leagues.component';
+import { AddLeagueComponent } from './components/leagues/add-league/add-league.component';
+import { SpinnerComponent } from './shared/components/spinner/spinner.component';
+import { LeagueDetailComponent } from './components/leagues/league-detail/league-detail.component';
+import { SetupTeamComponent } from './components/leagues/setup-team/setup-team.component';
+import { JoinCodeComponent } from './shared/components/join-code/join-code.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -60,7 +67,14 @@ const firebaseConfig = {
     MatchDetailComponent,
     CoinTossComponent,
     PlayerDetailComponent,
-    ManOfTheMatchComponent
+    ManOfTheMatchComponent,
+    LeaguesComponent,
+    AddLeagueComponent,
+    SpinnerComponent,
+    LeagueDetailComponent,
+    SetupTeamComponent,
+    JoinCodeComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

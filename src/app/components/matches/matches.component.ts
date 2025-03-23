@@ -25,15 +25,7 @@ export class MatchesComponent {
     this.dataService.getMatches().subscribe(matches => {
       const data = [];
       matches.map(x => {
-        let player;
-        if(x.team1.players.find(p => p.id === this.userId)) {
-          player = x.team1.players.find(p => p.id === this.userId)
-        } else if(x.team2.players.find(p => p.id === this.userId)) {
-          player = x.team2.players.find(p => p.id === this.userId)
-        }
-        if(player) {
-          data.push(x);
-        }
+        data.push(x);
       })
       this.matches$.next(data)
     })

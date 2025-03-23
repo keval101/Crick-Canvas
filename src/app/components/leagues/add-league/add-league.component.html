@@ -1,0 +1,31 @@
+<form [formGroup]="leagueForm" (ngSubmit)="createMatch()">
+   <div class="mb-5">
+        <label for="venue" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+        <input type="text" id="venue" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Venue" required formControlName="name" />
+    </div>
+
+    <div class="mb-5">
+        <label for="venue" class="block mb-2 text-sm font-medium text-gray-900">Venue</label>
+        <input type="text" id="venue" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Venue" required formControlName="venue" />
+    </div>
+
+    <div class="mb-5">
+        <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Start Date</label>
+        <p-calendar [appendTo]="'body'" formControlName="startFrom" placeholder="Select Start Date"></p-calendar>
+    </div>
+
+    <!-- <div class="mb-5">
+        <label for="maximumOvers" class="block mb-2 text-sm font-medium text-gray-900">Overs</label>
+        <input type="number" id="maximumOvers" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Maximum Overs" required formControlName="maximumOvers" />
+    </div> -->
+
+
+    <button
+        class="btn w-full flex justify-center items-center"
+        type="submit"
+        [disabled]="leagueForm.invalid"
+    >
+    <ng-container *ngIf="isLoading"><app-spinner></app-spinner> </ng-container>
+    <ng-container *ngIf="!isLoading">Create League</ng-container>
+    </button>
+</form>

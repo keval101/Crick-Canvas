@@ -1,0 +1,48 @@
+
+<div class="flex justify-between items-center">
+    <h1 class="section-heading">Leagues</h1>
+    <div class="flex gap-2">
+        <button type="button" class="btn" (click)="generateLeague()">Create League</button>
+        <button type="button" class="btn" (click)="joinLeague()">Join League</button>
+    </div>
+ </div>
+ 
+ <div class="max-w-7xl mt-8 mx-auto">
+   <div class="grid gap-6" id="leagueList">
+       <!-- League 1 -->
+       <div class="league-card bg-white rounded-lg shadow-sm p-6 transition-all duration-200 cursor-pointer" *ngFor="let league of leagues$ | async" [routerLink]="['/leagues', league.id]">
+           <div class="flex items-center">
+               <div class="w-12 h-12 bg-icon rounded-full flex items-center justify-center mr-4">
+                    <img src="./assets/icons/cricket.png" alt="" width="24px"> 
+               </div>
+               <div class="flex-1">
+                   <h3 class="text-lg font-semibold text-gray-900">{{league.name}}</h3>
+                   <div class="flex items-center mt-2 text-sm text-gray-600">
+                       <div class="flex items-center">
+                           <i class="ri-calendar-line mr-1"></i>
+                           <span>{{getDateFormat(league.startFrom) | date: 'MMM dd, yyyy'}}</span>
+                       </div>
+                       <div class="flex items-center ml-6">
+                           <i class="ri-team-line mr-1"></i>
+                           <span>{{league?.teams?.length ?? 0}} teams</span>
+                       </div>
+                   </div>
+               </div>
+               <i class="ri-arrow-right-line text-gray-400"></i>
+           </div>
+       </div>
+   </div>
+</div>
+
+  
+ <p-dialog header="Create League" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <app-add-league (close)="closeModal()"></app-add-league>
+ </p-dialog>
+
+   
+ <p-dialog header="" [(visible)]="setupTeamVisible" [modal]="true" [draggable]="false" [resizable]="false">
+    <app-setup-team (close)="closeSetupTeamModal()"></app-setup-team>
+ </p-dialog>
+
+
+

@@ -9,6 +9,9 @@ import { AuthGuard } from './guard/auth.guard';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { MatchDetailComponent } from './components/matches/match-detail/match-detail.component';
 import { PlayerDetailComponent } from './components/players/player-detail/player-detail.component';
+import { LeaguesComponent } from './components/leagues/leagues.component';
+import { LeagueDetailComponent } from './components/leagues/league-detail/league-detail.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -42,6 +45,21 @@ const routes: Routes = [
   {
     path: 'matches',
     component: MatchesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'leagues',
+    component: LeaguesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'leagues/:id',
+    component: LeagueDetailComponent,
     canActivate: [AuthGuard]
   },
   {

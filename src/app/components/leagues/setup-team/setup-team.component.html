@@ -1,0 +1,115 @@
+<!-- setup-cricket-team.component.html -->
+<div class="">
+    <div class="bg-white rounded-lg">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">
+          Take Your Team to the League
+        </h1>
+        <p class="mt-2 text-gray-600">Join the league and face top teams in cricket!</p>
+      </div>
+      <form (ngSubmit)="onSubmit()" [formGroup]="teamForm" class="space-y-6">
+        <div>
+          <label for="teamName" class="block mb-2 text-sm font-medium text-gray-900">
+            Team Name
+          </label>
+          <input
+            type="text"
+            id="teamName"
+            formControlName="teamName"
+            required
+            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Enter team name"
+          />
+        </div>
+
+        <div>
+          <div>
+            <label for="leagueCode" class="block mb-2 text-sm font-medium text-gray-900">
+              League Code
+            </label>
+            <input
+              type="text"
+              id="leagueCode"
+              maxlength="6"
+              formControlName="leagueCode"
+              required
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="Enter team name"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Team Logo
+          </label>
+          <div class="flex items-center space-x-4">
+            <div
+              id="logoPreview"
+              class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50"
+            >
+              <i class="ri-image-add-line text-3xl text-gray-400" *ngIf="!logoPreview"></i>
+              <img src="{{logoPreview}}" alt="team logo" class="w-full h-full rounded-lg object-cover" *ngIf="logoPreview"> 
+            </div>
+            <div class="flex-1">
+              <input
+                type="file"
+                #logoInput
+                id="logoInput"
+                accept="image/*"
+                (change)="onLogoChange($event)"
+                class="hidden"
+              />
+              <button
+                type="button"
+                (click)="logoInput.click()"
+                class="btn"
+              >
+                <i class="ri-upload-2-line mr-2"></i>
+                Upload Logo
+              </button>
+              <p class="mt-2 text-xs text-gray-500">
+                Recommended size: 200x200px. Max file size: 2MB.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="btn w-full"
+            [disabled]="!teamForm.valid"
+          >
+            Save Team
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <div
+      id="successModal"
+      *ngIf="showSuccessModal"
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center"
+    >
+      <div class="bg-white rounded-lg p-8 max-w-sm w-full mx-4">
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-green-100 mx-auto flex items-center justify-center">
+            <i class="ri-check-line text-2xl text-green-600"></i>
+          </div>
+          <h3 class="mt-4 text-lg font-medium text-gray-900">
+            Team Created Successfully!
+          </h3>
+          <p class="mt-2 text-sm text-gray-500">
+            Your team has been created and is ready to play.
+          </p>
+          <button
+            (click)="closeModal()"
+            class="mt-6 w-full btn"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

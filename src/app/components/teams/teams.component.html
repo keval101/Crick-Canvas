@@ -11,8 +11,8 @@
          <div>
             <p><strong>Name: </strong> {{team?.name}}</p>
             <p><strong>Players: </strong> 
-            <ng-container *ngFor="let player of team.players">
-               <span>{{player?.name}}</span>,
+            <ng-container *ngFor="let player of team.players; let i = index">
+               <span>{{player?.name}}</span> <span *ngIf="team.players.length != i+1">, </span>
             </ng-container></p>
          </div>
 

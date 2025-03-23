@@ -2,7 +2,6 @@
 <div class="flex justify-between items-center">
     <h1 class="section-heading">Matches</h1>
     <button type="button" class="btn" (click)="addTeam()">Add Match</button>
- 
  </div>
  <div class="matches mt-10">
     <ng-container *ngFor="let match of (matches$ | async)">
