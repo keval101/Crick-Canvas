@@ -453,9 +453,8 @@
   </div>
 </div>
 
-<div class="mdc-snackbar"><div class="mdc-snackbar__surface"><div class="mdc-snackbar__label" role="status" aria-live="polite">Copied!</div><div class="mdc-snackbar__actions">
-
-  <p-dialog header="" [(visible)]="matchResultModal" [modal]="true" [draggable]="false" [resizable]="false">
-    HELLo
-    <!-- <app-match-result (closeMatchResultModal)="closeMatchResultModal()"></app-match-result> -->
+  <p-dialog header="Match Result" [(visible)]="matchResultModal" [modal]="true" [draggable]="false" [resizable]="false">
+    <app-match-result (closeMatchResultModal)="closeMatchResultModal()"></app-match-result>
  </p-dialog>
+
+<div class="mdc-snackbar"><div class="mdc-snackbar__surface"><div class="mdc-snackbar__label" role="status" aria-live="polite">Copied!</div><div class="mdc-snackbar__actions">
