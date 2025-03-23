@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SidebarComponent {
 
-  
+  userId: string;
   navigations = [
     {
       name: 'Dashboard',
@@ -45,7 +45,11 @@ export class SidebarComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router) {}
+    private router: Router) {
+      this.authService.getCurrentUserDetail().subscribe(user => {
+        this.userId = user.uid
+      })
+    }
 
   signOut() {
     this.authService.signOut();

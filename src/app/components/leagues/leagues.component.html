@@ -10,7 +10,7 @@
  <div class="max-w-7xl mt-8 mx-auto">
    <div class="grid gap-6" id="leagueList">
        <!-- League 1 -->
-       <div class="league-card bg-white rounded-lg shadow-sm p-6 transition-all duration-200 cursor-pointer" *ngFor="let league of leagues$ | async" [routerLink]="['/leagues', league.id]">
+       <div class="league-card relative bg-white rounded-lg shadow-sm p-6 transition-all duration-200 cursor-pointer" *ngFor="let league of leagues$ | async" [routerLink]="['/leagues', league.id]">
            <div class="flex items-center">
                <div class="w-12 h-12 bg-icon rounded-full flex items-center justify-center mr-4">
                     <img src="./assets/icons/cricket.png" alt="" width="24px"> 
@@ -30,6 +30,10 @@
                </div>
                <i class="ri-arrow-right-line text-gray-400"></i>
            </div>
+
+           <button class="outline-btn btn-delete flex gap-2 items-center mb-4 ml-auto" (click)="deleteLeague(league, $event)" *ngIf="userId === league.userId">
+            <img src="./assets/icons/delete.png" alt="" width="20" width="20">
+        </button>
        </div>
    </div>
 </div>
@@ -41,7 +45,7 @@
 
    
  <p-dialog header="" [(visible)]="setupTeamVisible" [modal]="true" [draggable]="false" [resizable]="false">
-    <app-setup-team (close)="closeSetupTeamModal()"></app-setup-team>
+    <app-setup-team (closeSetupTeamModal)="closeSetupTeamModal()"></app-setup-team>
  </p-dialog>
 
 

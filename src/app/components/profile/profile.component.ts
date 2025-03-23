@@ -7,16 +7,25 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
+  setupTeamVisible = false;
+  isLoading = true;
+  user: any;
 
-  user: any
-  constructor(
-    private authService: AuthService,
-  ) { }
+  constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.authService.getCurrentUserDetail().subscribe(user => {
-      console.log(user)
       this.user = user;
+      this.isLoading = false;
     })
   }
+
+  closeSetupTeamModal() {
+    this.setupTeamVisible = false;
+  }
+
+  setupTeam() {
+    this.setupTeamVisible = true;
+  }
+
 }

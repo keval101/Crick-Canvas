@@ -46,11 +46,10 @@ export class AuthService {
 
   // --------------------------------------- Sheet API ---------------------------------------
   getCurrentUserDetail() {
-    const userId = localStorage.getItem('userId');
     return this.getCurrentUser().pipe(
       switchMap(user => {
         if (user) {
-          return this.fireStore.doc<any>(`users/${userId}`).valueChanges();
+          return this.fireStore.doc<any>(`users/${user.uid}`).valueChanges();
         } else {
           return null;
         }

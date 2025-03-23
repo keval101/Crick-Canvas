@@ -41,6 +41,8 @@ import { LeagueDetailComponent } from './components/leagues/league-detail/league
 import { SetupTeamComponent } from './components/leagues/setup-team/setup-team.component';
 import { JoinCodeComponent } from './shared/components/join-code/join-code.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { StatsComponent } from './components/stats/stats.component';
+import { MatchResultComponent } from './components/leagues/match-result/match-result.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -74,7 +76,9 @@ const firebaseConfig = {
     LeagueDetailComponent,
     SetupTeamComponent,
     JoinCodeComponent,
-    ProfileComponent
+    ProfileComponent,
+    StatsComponent,
+    MatchResultComponent
   ],
   imports: [
     BrowserModule,

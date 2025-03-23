@@ -12,6 +12,7 @@ import { PlayerDetailComponent } from './components/players/player-detail/player
 import { LeaguesComponent } from './components/leagues/leagues.component';
 import { LeagueDetailComponent } from './components/leagues/league-detail/league-detail.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { StatsComponent } from './components/stats/stats.component';
 
 const routes: Routes = [
   {
@@ -48,9 +49,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'stats/:userId',
+    component: StatsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'leagues',

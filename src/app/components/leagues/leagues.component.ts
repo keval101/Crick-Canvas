@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -14,23 +14,32 @@ export class LeaguesComponent {
   setupTeamVisible = false;
   form!: FormGroup;
   leagues$ = new BehaviorSubject([]);
+  userId: string;
+  unsubscribe = new BehaviorSubject(null);
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private dataService: DataService) {
-      this.dataService.getLeagues().then(leagues => {
-        this.leagues$.next(leagues)
-        console.log(leagues)
-      })
     }
+
+  ngOnInit() {
+    this.authService.getCurrentUserDetail().subscribe(user => {
+      this.getLeagues();
+      console.log(user)
+      this.userId = user.uid
+    })
+  }
+
+  getLeagues() {
+    this.dataService.getLeagues().subscribe(leagues => {
+      console.log(leagues)
+      this.leagues$.next(leagues)
+    })
+  }
 
   generateLeague() {
     this.visible = true;
-    this.authService.getCurrentUser().subscribe(user => {
-      console.log(user.uid)
-      console.log(localStorage.getItem('userId'))
-    })
   }
 
   closeModal() {
@@ -49,5 +58,18 @@ export class LeaguesComponent {
     let formateDate = date.split('/');
     formateDate = formateDate[2] + '-' + formateDate[1] + '-' + formateDate[0];
     return new Date(formateDate).toDateString();
+  }
+
+  deleteLeague(league: any, e: Event) {
+    e.stopPropagation();
+    if(confirm(`Are you want to delete league ${league.name}`) === true) {
+      this.dataService.deleteLeague(league.id);
+      this.getLeagues();
+    }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next(true);
+    this.unsubscribe.complete();
   }
 }

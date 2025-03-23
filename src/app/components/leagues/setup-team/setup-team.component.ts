@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
+import { ImageUploadService } from 'src/app/services/image-upload.service';
 
 @Component({
   selector: 'app-setup-team',
@@ -10,13 +12,20 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class SetupTeamComponent {
   @Output() closeSetupTeamModal = new EventEmitter<void>();
+  @Input() isProfile = false;
+  @Input() data: any;
   teamForm: FormGroup;
   showSuccessModal: boolean = false;
   logoPreview: string | ArrayBuffer | null = null;
+  logo: any;
+  user: any;
+  isLoading = false
 
   constructor(
     private fb: FormBuilder,
     private dataService: DataService,
+    private imageUploadService: ImageUploadService,
+    private messageService: MessageService,
     private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -26,9 +35,19 @@ export class SetupTeamComponent {
       leagueCode: ['', [Validators.required]],
     });
 
-    this.authService.getCurrentUser().subscribe(user => {
-      // this.userId = user.uid;
-      console.log(user)
+
+
+    this.authService.getCurrentUserDetail().subscribe(user => {
+      this.user = user;
+      if(this.user?.team) {
+        this.teamForm.get('teamName').setValue(this.user?.team?.name)
+        this.teamForm.get('logo').setValue(this.user?.team?.logo)
+        this.logoPreview = this.user?.team?.logo;
+      }
+
+      if(this.isProfile) { 
+        this.teamForm.removeControl('leagueCode');
+      }
     })
   }
 
@@ -36,6 +55,7 @@ export class SetupTeamComponent {
   onLogoChange(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
     const file = fileInput.files ? fileInput.files[0] : null;
+    this.logo = file;
 
     if (file) {
       const reader = new FileReader();
@@ -51,8 +71,52 @@ export class SetupTeamComponent {
   // Handle form submission
   onSubmit(): void {
     if (this.teamForm.invalid) return;
-    this.showSuccessModal = true;
+
+    if(this.isProfile) {
+      this.onUpload()
+    } else {
+      this.findLeague();
+    }
+  }
+
+  async joinLeague(league) {
+    this.isLoading = true;
+    league.teams.push(this.user.uid);
+    const payload = { ...league}
+    console.log(payload)
+    await this.dataService.joinLeague(payload, league?.id);
+    this.messageService.add({ severity: 'success', summary: 'League', detail: 'Joined Successfully!' });
+    this.isLoading = false;
     this.closeSetupTeamModal.emit();
+  }
+
+  async findLeague() {
+    this.isLoading = true;
+    this.dataService.getLeague(this.teamForm.value.leagueCode).then((league) => {
+      this.joinLeague(league);
+    })
+  }
+
+  async onUpload() {
+    this.isLoading = true;
+    if (this.logo) {
+      this.imageUploadService.convertBlobToBase64(this.logo).subscribe(async (downloadURL) => {
+        console.log('Image uploaded successfully, URL:', downloadURL);
+        const payload = { ...this.user, team: { name: this.teamForm.value.teamName, logo: downloadURL } }
+        console.log(payload)
+        await this.dataService.updateUserDetail(payload, this.user.uid);
+        this.messageService.add({ severity: 'success', summary: 'Team', detail: 'Saved Successfully!' });
+        this.isLoading = false;
+        this.closeSetupTeamModal.emit();
+      });
+    } else if(this.logoPreview) {
+      const payload = { ...this.user, team: { name: this.teamForm.value.teamName, logo: this.logoPreview } }
+      console.log(payload)
+      await this.dataService.updateUserDetail(payload, this.user.uid);
+      this.isLoading = false;
+      this.messageService.add({ severity: 'success', summary: 'Team', detail: 'Saved Successfully!' });
+      this.closeSetupTeamModal.emit();
+    }
   }
 
   // Close the success modal

@@ -1,75 +1,76 @@
-.dots {
-    width: var(--size);
-    height: var(--size);
-    position: relative;
+/* //codelessly loader style */
+.ui-loader {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+.loader-blk {
+  color: #3f51b5;
+  animation: rotate-outer08 1.4s linear infinite;
+}
+
+.multiColor-loader {
+  display: block;
+  animation: color-anim08 1.4s infinite;
+}
+
+.loader-circle {
+  stroke: currentColor;
+}
+
+.MuiCircularProgress-circleStatic {
+  transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+}
+
+.loader-circle-animation {
+  animation: rotate-inner08 1.4s ease-in-out
+    infinite;
+  stroke-dasharray: 80px, 200px;
+  stroke-dashoffset: 0;
+}
+
+@keyframes rotate-outer08 {
+  0% {
+    transform-origin: 50% 50%;
   }
-  
-  .dot {
-    width: var(--size);
-    height: var(--size);
-    animation: dwl-dot-spin calc(var(--speed) * 5) infinite linear both;
-    animation-delay: calc(var(--i) * var(--speed) / (var(--dot-count) + 2) * -1);
-    rotate: calc(var(--i) * var(--spread) / (var(--dot-count) - 1));
-    position: absolute;
+
+  100% {
+    transform: rotate(360deg);
   }
-  
-  .dot::before {
-    content: "";
-    display: block;
-    width: var(--dot-size);
-    height: var(--dot-size);
-    background-color: var(--color);
-    border-radius: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    bottom: 0;
-    left: 50%;
+}
+
+@keyframes rotate-inner08 {
+  0% {
+    stroke-dasharray: 1px, 200px;
+    stroke-dashoffset: 0;
   }
-  
-  @keyframes dwl-dot-spin {
-    0% {
-      transform: rotate(0deg);
-      animation-timing-function: cubic-bezier(0.390, 0.575, 0.565, 1.000);
-      opacity: 1;
-    }
-  
-    2% {
-      transform: rotate(20deg);
-      animation-timing-function: linear;
-      opacity: 1;
-    }
-  
-    30% {
-      transform: rotate(180deg);
-      animation-timing-function: cubic-bezier(0.445, 0.050, 0.550, 0.950);
-      opacity: 1;
-    }
-  
-    41% {
-      transform: rotate(380deg);
-      animation-timing-function: linear;
-      opacity: 1;
-    }
-  
-    69% {
-      transform: rotate(520deg);
-      animation-timing-function: cubic-bezier(0.445, 0.050, 0.550, 0.950);
-      opacity: 1;
-    }
-  
-    76% {
-      opacity: 1;
-    }
-  
-    76.1% {
-      opacity: 0;
-    }
-  
-    80% {
-      transform: rotate(720deg);
-    }
-  
-    100% {
-      opacity: 0;
-    }
+
+  50% {
+    stroke-dasharray: 100px, 200px;
+    stroke-dashoffset: -15px;
   }
+
+  100% {
+    stroke-dasharray: 100px, 200px;
+    stroke-dashoffset: -125px;
+  }
+}
+
+@keyframes color-anim08 {
+  0% {
+    color: #4285f4;
+  }
+
+  25% {
+    color: #ea4335;
+  }
+
+  50% {
+    color: #f9bb2d;
+  }
+
+  75% {
+    color: #34a853;
+  }
+}
