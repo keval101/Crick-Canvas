@@ -17,15 +17,15 @@
       <div class="flex gap-4 mt-4">
         <div class="px-4 py-2 bg-gray-50 rounded-lg">
           <div class="text-sm text-gray-600">Matches</div>
-          <div class="text-xl font-semibold">168</div>
+          <div class="text-xl font-semibold">{{stats?.matchStats?.totalMatches}}</div>
         </div>
         <div class="px-4 py-2 bg-gray-50 rounded-lg">
           <div class="text-sm text-gray-600">Total Runs</div>
-          <div class="text-xl font-semibold">4,283</div>
+          <div class="text-xl font-semibold">{{stats?.battingStats?.totalRuns}}</div>
         </div>
         <div class="px-4 py-2 bg-gray-50 rounded-lg">
           <div class="text-sm text-gray-600">Wickets</div>
-          <div class="text-xl font-semibold">384</div>
+          <div class="text-xl font-semibold">{{stats?.bowlingStats?.totalWickets}}</div>
         </div>
       </div>
     </div>
