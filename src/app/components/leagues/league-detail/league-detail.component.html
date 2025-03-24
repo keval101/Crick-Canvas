@@ -60,7 +60,7 @@
   </div>
 
   <div class="max-w-7xl mx-auto px-8 pb-16" *ngIf="selectedTab === 'fixtures'">
-    <div class="flex items-center justify-between mb-12" *ngIf="fixtures?.length"> 
+    <div class="flex items-center justify-between mb-12" *ngIf="fixtures?.length > 0"> 
       <div class="flex items-center gap-8">
         <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'all'" [class.font-medium]="matchType === 'all'" (click)="setMatchType('all')">
           All Matches
@@ -160,7 +160,7 @@
                 </div>
                 
                 <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
-                *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || league?.fixture?.team_two?.id === user?.uid || league?.fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
+                *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                   <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30">
                   Update Result
                 </button>
