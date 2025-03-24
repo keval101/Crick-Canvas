@@ -82,14 +82,14 @@ export class StatsComponent {
           totalBallsFaced += playerTeam.balls;
     
           // Bowling stats (if player bowled)
-          totalWickets += playerTeam.wickets;
+          totalWickets += opponentTeam.wickets;
           totalBallsBowled += opponentTeam.balls;
           totalRunsConceded += opponentTeam.runs;
     
           // Best figures logic
           if (playerTeam.wickets > bestFigures.wickets || 
              (playerTeam.wickets === bestFigures.wickets && opponentTeam.runs < bestFigures.runs)) {
-            bestFigures = { wickets: playerTeam.wickets, runs: opponentTeam.runs };
+            bestFigures = { wickets: opponentTeam.wickets, runs: opponentTeam.runs };
           }
     
           // Head to Head stats
