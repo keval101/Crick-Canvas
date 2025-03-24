@@ -35,7 +35,7 @@
         type="submit"
         [disabled]="leagueForm.invalid"
     >
-    <ng-container *ngIf="isLoading"><app-spinner></app-spinner> </ng-container>
+    <ng-container *ngIf="isLoading"><app-spinner [white]="true"></app-spinner> </ng-container>
     <ng-container *ngIf="!isLoading">Create League</ng-container>
     </button>
 </form>

@@ -13,6 +13,10 @@
 .multiColor-loader {
   display: block;
   animation: color-anim08 1.4s infinite;
+
+  &.white {
+    animation: white-anim08 1.4s infinite !important;
+  }
 }
 
 .loader-circle {
@@ -72,5 +76,23 @@
 
   75% {
     color: #34a853;
+  }
+}
+
+@keyframes color-anim08 {
+  0% {
+    color: rgba(255,255,255, 0.25);
+  }
+
+  25% {
+    color: rgba(255,255,255, 0.50);
+  }
+
+  50% {
+    color: rgba(255,255,255, 0.75);
+  }
+
+  75% {
+    color: rgba(255,255,255, 1);
   }
 }

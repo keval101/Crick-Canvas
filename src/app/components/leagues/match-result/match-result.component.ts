@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-match-result',
@@ -9,12 +11,15 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class MatchResultComponent {
 
   @Output() closeMatchResultModal = new EventEmitter<void>();
-
+  @Input() match: any;
   team_one: FormGroup
   team_two: FormGroup
+  isLoading = false;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dataService: DataService,
+    private messageService: MessageService
   ) {
 
     this.team_one = this.fb.group({
@@ -30,5 +35,30 @@ export class MatchResultComponent {
     })
   }
 
-  ngOnInit(): void {}
+  ngOnChanges(): void {
+    console.log(this.match)
+  }
+
+  swapResults() {
+    const teamOne = JSON.parse(JSON.stringify(this.team_one.value))
+    const teamTwo = JSON.parse(JSON.stringify(this.team_two.value))
+
+    this.team_one.patchValue(teamTwo)
+    this.team_two.patchValue(teamOne)
+  }
+
+  async submitMatchResult() {
+    this.isLoading = true;
+    const payload = {
+      ...this.match,
+      team_one: {...this.match.team_one, ...this.team_one.value},
+      team_two: {...this.match.team_two, ...this.team_two.value},
+      status: 'completed'
+    }
+
+    await this.dataService.updateMatchResult(payload, this.match.id)
+    this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Match Result Updated!' });
+    this.isLoading = false;
+    this.closeMatchResultModal.emit(); 
+  }
 }

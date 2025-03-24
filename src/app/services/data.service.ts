@@ -279,4 +279,41 @@ export class DataService {
   joinLeague(payload: any, leagueId: string) {
     return this.firestore.collection('leagues').doc(leagueId).set(payload, {merge: true});
   }
+
+  saveMatches(matches: any[]): Promise<void> {
+    // Assuming you want to save to a 'league-matches' collection
+    const collectionRef = this.firestore.collection('league-matches');
+    
+    // Create a batch to save all matches in one atomic operation
+    const batch = this.firestore.firestore.batch();
+    
+    matches.forEach(match => {
+      // Use league_id and match_number as a composite key, or generate a new ID
+      const docRef = collectionRef.doc(`${match.league_id}_${match.match_number}`).ref;
+      batch.set(docRef, match);
+    });
+
+    // Commit the batch (single API call)
+    return batch.commit();
+  }
+
+  getLeagueMatches(leagueId: string) {
+    return this.firestore.collection('league-matches', ref => ref.where('league_id', '==', leagueId).limit(100))
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
+  }
+
+  
+  updateMatchResult(payload: any, fixtureId: string) {
+    return this.firestore.collection('league-matches').doc(fixtureId).set(payload, {merge: true});
+  }
+
 }

@@ -85,7 +85,7 @@
             [disabled]="!teamForm.valid"
           >
             <span *ngIf="!isLoading">{{ isProfile ? 'Save Team' : 'Join League' }}</span>
-            <app-spinner *ngIf="isLoading"></app-spinner>
+            <app-spinner *ngIf="isLoading" [white]="true"></app-spinner>
           </button>
         </div>
       </form>

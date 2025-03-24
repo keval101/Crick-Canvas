@@ -1,54 +1,19 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-    <div class="team-score bg-white rounded-lg shadow-lg p-6">
-      <h2 class="text-xl font-semibold mb-4">Team 1</h2>
+    <form [formGroup]="team_one" class="team-score bg-white rounded-lg shadow-lg p-6">
+      <div class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <img [src]="match?.team_one?.logo" alt="Team 1" class="w-16 h-16 rounded-full object-cover">
+        <span class="ml-2">{{match?.team_one?.name}}</span>
+      </div>
       <div class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Team Name</label
-          >
-          <div class="relative">
-            <button
-              id="team1Btn"
-              class="w-full px-4 py-2 border rounded-button text-left focus:outline-none focus:ring-2 focus:ring-primary flex items-center justify-between"
-            >
-              <span id="selectedTeam1">Select Team</span>
-              <i class="ri-arrow-down-s-line"></i>
-            </button>
-            <div
-              id="team1Dropdown"
-              class="hidden absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg"
-            >
-              <div class="p-2">
-                <div
-                  class="cursor-pointer hover:bg-gray-100 px-4 py-2 rounded"
-                  onclick="selectTeam1('India')"
-                >
-                  India
-                </div>
-                <div
-                  class="cursor-pointer hover:bg-gray-100 px-4 py-2 rounded"
-                  onclick="selectTeam1('Australia')"
-                >
-                  Australia
-                </div>
-                <div
-                  class="cursor-pointer hover:bg-gray-100 px-4 py-2 rounded"
-                  onclick="selectTeam1('England')"
-                >
-                  England
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1"
             >Runs</label
           >
           <input
             type="number"
-            class="w-full px-4 py-2 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary text-3xl text-center"
+            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="0"
+            formControlName="runs"
           />
         </div>
         <div class="grid grid-cols-2 gap-4">
@@ -60,76 +25,43 @@
               type="number"
               min="0"
               max="10"
-              class="w-full px-4 py-2 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary text-center"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="0"
+              formControlName="wickets"
             />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Overs</label
+              >Balls</label
             >
             <input
               type="number"
-              step="0.1"
               min="0"
-              class="w-full px-4 py-2 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary text-center"
-              placeholder="0.0"
+              max="12"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="0"
+              formControlName="balls"
             />
           </div>
         </div>
       </div>
-    </div>
+    </form>
 
-    <div class="team-score bg-white rounded-lg shadow-lg p-6">
-      <h2 class="text-xl font-semibold mb-4">Team 2</h2>
+    <form [formGroup]="team_two" class="team-score bg-white rounded-lg shadow-lg p-6">
+      <div class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <img [src]="match?.team_two?.logo" alt="Team 1" class="w-16 h-16 rounded-full object-cover">
+        <span class="ml-2">{{match?.team_two?.name}}</span>
+      </div>
       <div class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Team Name</label
-          >
-          <div class="relative">
-            <button
-              id="team2Btn"
-              class="w-full px-4 py-2 border rounded-button text-left focus:outline-none focus:ring-2 focus:ring-primary flex items-center justify-between"
-            >
-              <span id="selectedTeam2">Select Team</span>
-              <i class="ri-arrow-down-s-line"></i>
-            </button>
-            <div
-              id="team2Dropdown"
-              class="hidden absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg"
-            >
-              <div class="p-2">
-                <div
-                  class="cursor-pointer hover:bg-gray-100 px-4 py-2 rounded"
-                  onclick="selectTeam2('India')"
-                >
-                  India
-                </div>
-                <div
-                  class="cursor-pointer hover:bg-gray-100 px-4 py-2 rounded"
-                  onclick="selectTeam2('Australia')"
-                >
-                  Australia
-                </div>
-                <div
-                  class="cursor-pointer hover:bg-gray-100 px-4 py-2 rounded"
-                  onclick="selectTeam2('England')"
-                >
-                  England
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1"
             >Runs</label
           >
           <input
             type="number"
-            class="w-full px-4 py-2 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary text-3xl text-center"
+            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="0"
+            formControlName="runs"
           />
         </div>
         <div class="grid grid-cols-2 gap-4">
@@ -141,23 +73,35 @@
               type="number"
               min="0"
               max="10"
-              class="w-full px-4 py-2 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary text-center"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="0"
+              formControlName="wickets"
             />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Overs</label
+              >Balls</label
             >
             <input
               type="number"
-              step="0.1"
               min="0"
-              class="w-full px-4 py-2 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary text-center"
-              placeholder="0.0"
+              max="12"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              placeholder="0"
+              formControlName="balls"
             />
           </div>
         </div>
       </div>
-    </div>
+    </form>
+  </div>
+  
+  <div class="flex items-center justify-centerw-full gap-4 w-full">
+    <button class="btn w-full flex justify-center items-center" (click)="swapResults()"> 
+      <i class="ri-arrow-left-right-line mr-4"></i> Swap Results
+    </button>
+    <button class="btn w-full flex justify-center items-center" (click)="submitMatchResult()"> 
+      <span *ngIf="isLoading"><app-spinner [white]="true"></app-spinner></span>
+      <span *ngIf="!isLoading">Save</span>
+     </button>
   </div>
