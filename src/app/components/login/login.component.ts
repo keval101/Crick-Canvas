@@ -12,7 +12,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent {
 
   loginForm: FormGroup;
-  seePassword = false
+  seePassword = false;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,12 +29,14 @@ export class LoginComponent {
   }
 
   login() {
+    this.isLoading = true;
     if(this.loginForm.valid) {
       this.authService.signIn(this.loginForm.value).then((res: any) => {
         const token = res.user.multiFactor.user.accessToken
         const userId = res.user.multiFactor.user.uid
         localStorage.setItem('userId', userId);
         localStorage.setItem('token', token);
+        this.isLoading = false;
         this.messageService.add({ severity: 'success', summary: 'Logged In', detail: 'Logged In Successfully!' });
         this.router.navigate(['/dashboard'])
       }).catch(error => {
