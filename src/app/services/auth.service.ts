@@ -45,11 +45,11 @@ export class AuthService {
   }
 
   // --------------------------------------- Sheet API ---------------------------------------
-  getCurrentUserDetail() {
+  getCurrentUserDetail(userId?: string) {
     return this.getCurrentUser().pipe(
       switchMap(user => {
         if (user) {
-          return this.fireStore.doc<any>(`users/${user.uid}`).valueChanges();
+          return this.fireStore.doc<any>(`users/${userId ?? user.uid}`).valueChanges();
         } else {
           return null;
         }
