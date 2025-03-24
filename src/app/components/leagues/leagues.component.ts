@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -15,7 +15,7 @@ export class LeaguesComponent {
   form!: FormGroup;
   leagues$ = new BehaviorSubject([]);
   userId: string;
-  unsubscribe = new BehaviorSubject(null);
+  destroy$ = new Subject();
 
   constructor(
     private fb: FormBuilder,
@@ -33,7 +33,7 @@ export class LeaguesComponent {
   }
 
   getLeagues() {
-    this.dataService.getLeagues().subscribe(leagues => {
+    this.dataService.getLeagues().pipe(takeUntil(this.destroy$)).subscribe(leagues => {
       console.log(leagues)
       this.leagues$.next(leagues)
     })
@@ -71,7 +71,7 @@ export class LeaguesComponent {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.next(true);
-    this.unsubscribe.complete();
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 }

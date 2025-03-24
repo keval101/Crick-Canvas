@@ -23,6 +23,7 @@ export class LeagueDetailComponent {
   matchType = 'all'
   selectedMatch: any;
   pointTable: any[] = [];
+  playOffs: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +36,7 @@ export class LeagueDetailComponent {
   ngOnInit() {
     this.authService.getCurrentUserDetail().subscribe((user) => {
       this.user = user;
+      console.log(this.user)
     });
 
     this.leagueId = this.route.snapshot.paramMap.get('id');
@@ -118,6 +120,8 @@ export class LeagueDetailComponent {
     this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
     this.fixturesLoading = false;
     this.cd.detectChanges();
+
+    console.log(fixtures);
   }
 
   getTeamDetails(team: any) {
@@ -206,7 +210,6 @@ generatePointsTable() {
   console.log(this.fixtures);
 
   for (const match of this.fixtures) {
-    if(match?.team_one?.balls > 0 || match?.team_two?.balls > 0)  {
       const teams = [
         { team: match.team_one, opponent: match.team_two },
         { team: match.team_two, opponent: match.team_one }
@@ -215,6 +218,7 @@ generatePointsTable() {
       for (const { team, opponent } of teams) {
         if (!table[team.id]) {
           table[team.id] = {
+            id: team.id,
             team: team.name,
             team_logo: team.logo,
             played: 0,
@@ -228,7 +232,9 @@ generatePointsTable() {
           };
         }
   
-        table[team.id].played++;
+        if(match?.team_one?.balls > 0 || match?.team_two?.balls > 0) {
+          table[team.id].played++;
+        }
         table[team.id].runsFor += team.runs;
         table[team.id].oversFacedBalls += team.balls;
         table[team.id].runsAgainst += opponent.runs;
@@ -256,26 +262,150 @@ generatePointsTable() {
       const nrr = ((team.runsFor / oversFaced) - (team.runsAgainst / oversBowled)).toFixed(2);
   
       return {
+        id: team.id,
         team: team.team,
         team_logo: team.team_logo,
-        played: team.played,
-        win: team.win,
-        loss: team.loss,
-        draw: team.draw,
-        runsFor: team.runsFor,
+        played: +team.played,
+        win: +team.win,
+        loss: +team.loss,
+        draw: +team.draw,
+        runsFor: +team.runsFor,
         oversFaced: `${Math.floor(team.oversFacedBalls / 6)}.${team.oversFacedBalls % 6}`,
         runsAgainst: team.runsAgainst,
         oversBowled: `${Math.floor(team.oversBowledBalls / 6)}.${team.oversBowledBalls % 6}`,
-        pts: pts,
-        nrr: nrr,
+        pts: +pts,
+        nrr: isNaN(+nrr) ? 0 : nrr,
         winPercentage: `${winPercent}%`
       };
     });
 
-    }
-
     console.log('pointTable:', this.pointTable)
 }
+
+  generatePlayOffs() {
+    this.generatePointsTable();
+    const sortedTable = this.sortPointsTable(this.pointTable);
+    const totalMatches = this.fixtures.length;
+    const completedMatches = this.fixtures.filter(match => match.status === 'completed').length;
+    
+    setTimeout(() => {
+      if(sortedTable.length) {
+        console.log(sortedTable[0], sortedTable[1], sortedTable[2], sortedTable[3])
+      }
+      if(completedMatches == totalMatches && this.playOffs.length === 0 && sortedTable.length) {
+        // https://i.postimg.cc/65sS9ZdX/pngwing-com.png
+        this.playOffs = [
+          {
+            league_name: this.league.name,
+            status: "upcoming",
+            team_one: {
+              balls: 0,
+              id: sortedTable[0].id,
+              name: sortedTable[0].name,
+              runs: 0,
+              logo: sortedTable[0].team_logo,
+              wickets: 0
+            },
+            league_id: this.league.id,
+            match_number: 'Qualifier 1',
+            team_two: {
+              balls: 0,
+              id: sortedTable[1].id,
+              name: sortedTable[1].name,
+              runs: 0,
+              logo: sortedTable[1].team_logo,
+              wickets: 0
+            },
+            id: `${this.league.id}_q1`
+          },
+          {
+            league_name: this.league.name,
+            status: "upcoming",
+            team_one: {
+              balls: 0,
+              id: sortedTable[2].id,
+              name: sortedTable[2].team,
+              runs: 0,
+              logo: sortedTable[2].team_logo,
+              wickets: 0
+            },
+            league_id: this.league.id,
+            match_number: 'Eliminator',
+            team_two: {
+              balls: 0,
+              id: sortedTable[3].id,
+              name: sortedTable[3].team,
+              runs: 0,
+              logo: sortedTable[3].team_logo,
+              wickets: 0
+            },
+            id: `${this.league.id}_eliminator`
+          },
+        ]
+      } else {
+        this.playOffs = [
+          {
+            league_name: this.league.name,
+            status: "upcoming",
+            team_one: {
+              balls: 0,
+              id: '',
+              name: 'TBD',
+              runs: 0,
+              logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+              wickets: 0
+            },
+            league_id: this.league.id,
+            match_number: 'Qualifier 1',
+            team_two: {
+              balls: 0,
+              id: '',
+              name: 'TBD',
+              runs: 0,
+              logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+              wickets: 0
+            },
+            id: `${this.league.id}_q1`
+          },
+          {
+            league_name: this.league.name,
+            status: "upcoming",
+            team_one: {
+              balls: 0,
+              id: '',
+              name: 'TBD',
+              runs: 0,
+              logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+              wickets: 0
+            },
+            league_id: this.league.id,
+            match_number: 'Eliminator',
+            team_two: {
+              balls: 0,
+              id: '',
+              name: 'TBD',
+              runs: 0,
+              logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+              wickets: 0
+            },
+            id: `${this.league.id}_eliminator`
+          },
+        ]
+      }
+      console.log('playOffs', this.playOffs)
+      this.cd.detectChanges();
+    }, 1000);
+
+  }
+
+  sortPointsTable(pointsTable: any[]) {
+    return pointsTable.sort((a, b) => {
+      if (b.pts === a.pts) {
+        return b.nrr - a.nrr; // Sort by NRR if points are equal
+      }
+      return b.pts - a.pts; // Otherwise sort by points
+    });
+  }
 
 
 }
