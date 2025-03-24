@@ -18,7 +18,7 @@ export class LeagueDetailComponent {
   teams: any[] = [];
   fixtures: any[] = [];
   matchResultModal = false;
-  fixturesLoading = false;
+  fixturesLoading = true;
   allMatches: any[] = [];
   matchType = 'all'
   selectedMatch: any;
@@ -72,6 +72,7 @@ export class LeagueDetailComponent {
     console.log(teams);
     this.dataService.getUserTeams(teams).then((teams) => {
       this.teams = teams;
+      this.fixturesLoading = false;
       console.log(this.teams);
     });
   }
@@ -236,9 +237,9 @@ generatePointsTable() {
           table[team.id].played++;
         }
         table[team.id].runsFor += team.runs;
-        table[team.id].oversFacedBalls += team.balls;
+        table[team.id].oversFacedBalls += opponent.balls;
         table[team.id].runsAgainst += opponent.runs;
-        table[team.id].oversBowledBalls += opponent.balls;
+        table[team.id].oversBowledBalls += team.balls;
   
         // Win/Loss/Draw calculation
         if (match.status === 'completed') {
@@ -254,12 +255,12 @@ generatePointsTable() {
     }
   
     // Finalize the points table with NRR, Pts, Win%
-    this.pointTable = Object.values(table).map((team: any) => {
+    pointTable = Object.values(table).map((team: any) => {
       const pts = (team.win * 2) + (team.draw * 1);
       const winPercent = team.played > 0 ? ((team.win / team.played) * 100).toFixed(0) : '0';
       const oversFaced = team.oversFacedBalls / 6;
       const oversBowled = team.oversBowledBalls / 6;
-      const nrr = ((team.runsFor / oversFaced) - (team.runsAgainst / oversBowled)).toFixed(2);
+      const nrr = this.calculateNRR(team.runsFor, team.oversFacedBalls, team.runsAgainst, team.oversBowledBalls);
   
       return {
         id: team.id,
@@ -279,7 +280,18 @@ generatePointsTable() {
       };
     });
 
+    this.pointTable = this.sortPointsTable(pointTable);
     console.log('pointTable:', this.pointTable)
+}
+
+calculateNRR(runsFor: number, oversFaced: number, runsAgainst: number, oversBowled: number): number {
+  console.log(runsFor, oversFaced, runsAgainst, oversBowled)
+  if (oversFaced > 0 && oversBowled > 0) {
+    const nrr = (runsFor / (oversFaced / 6)) - (runsAgainst / (oversBowled / 6));
+    return parseFloat(nrr.toFixed(3));
+  } else {
+    return 0;
+  }
 }
 
   generatePlayOffs() {
@@ -292,105 +304,153 @@ generatePointsTable() {
       if(sortedTable.length) {
         console.log(sortedTable[0], sortedTable[1], sortedTable[2], sortedTable[3])
       }
-      if(completedMatches == totalMatches && this.playOffs.length === 0 && sortedTable.length) {
-        // https://i.postimg.cc/65sS9ZdX/pngwing-com.png
-        this.playOffs = [
-          {
-            league_name: this.league.name,
-            status: "upcoming",
-            team_one: {
-              balls: 0,
-              id: sortedTable[0].id,
-              name: sortedTable[0].name,
-              runs: 0,
-              logo: sortedTable[0].team_logo,
-              wickets: 0
+      if(!this.playOffs.length) {
+        if(completedMatches == totalMatches && sortedTable.length) {
+          // https://i.postimg.cc/65sS9ZdX/pngwing-com.png;
+          this.playOffs = [
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: sortedTable[0].id,
+                name: sortedTable[0].name,
+                runs: 0,
+                logo: sortedTable[0].team_logo,
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Qualifier 1',
+              team_two: {
+                balls: 0,
+                id: sortedTable[1].id,
+                name: sortedTable[1].name,
+                runs: 0,
+                logo: sortedTable[1].team_logo,
+                wickets: 0
+              },
+              id: `${this.league.id}_q1`
             },
-            league_id: this.league.id,
-            match_number: 'Qualifier 1',
-            team_two: {
-              balls: 0,
-              id: sortedTable[1].id,
-              name: sortedTable[1].name,
-              runs: 0,
-              logo: sortedTable[1].team_logo,
-              wickets: 0
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: sortedTable[2].id,
+                name: sortedTable[2].team,
+                runs: 0,
+                logo: sortedTable[2].team_logo,
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Eliminator',
+              team_two: {
+                balls: 0,
+                id: sortedTable[3].id,
+                name: sortedTable[3].team,
+                runs: 0,
+                logo: sortedTable[3].team_logo,
+                wickets: 0
+              },
+              id: `${this.league.id}_eliminator`
             },
-            id: `${this.league.id}_q1`
-          },
-          {
-            league_name: this.league.name,
-            status: "upcoming",
-            team_one: {
-              balls: 0,
-              id: sortedTable[2].id,
-              name: sortedTable[2].team,
-              runs: 0,
-              logo: sortedTable[2].team_logo,
-              wickets: 0
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Qualifier 2',
+              team_two: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              id: `${this.league.id}_q2`
             },
-            league_id: this.league.id,
-            match_number: 'Eliminator',
-            team_two: {
-              balls: 0,
-              id: sortedTable[3].id,
-              name: sortedTable[3].team,
-              runs: 0,
-              logo: sortedTable[3].team_logo,
-              wickets: 0
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Final',
+              team_two: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              id: `${this.league.id}_final`
+            }
+          ]
+        } else {
+          this.playOffs = [
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Qualifier 1',
+              team_two: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              id: `${this.league.id}_q1`
             },
-            id: `${this.league.id}_eliminator`
-          },
-        ]
-      } else {
-        this.playOffs = [
-          {
-            league_name: this.league.name,
-            status: "upcoming",
-            team_one: {
-              balls: 0,
-              id: '',
-              name: 'TBD',
-              runs: 0,
-              logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
-              wickets: 0
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Eliminator',
+              team_two: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              id: `${this.league.id}_eliminator`
             },
-            league_id: this.league.id,
-            match_number: 'Qualifier 1',
-            team_two: {
-              balls: 0,
-              id: '',
-              name: 'TBD',
-              runs: 0,
-              logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
-              wickets: 0
-            },
-            id: `${this.league.id}_q1`
-          },
-          {
-            league_name: this.league.name,
-            status: "upcoming",
-            team_one: {
-              balls: 0,
-              id: '',
-              name: 'TBD',
-              runs: 0,
-              logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
-              wickets: 0
-            },
-            league_id: this.league.id,
-            match_number: 'Eliminator',
-            team_two: {
-              balls: 0,
-              id: '',
-              name: 'TBD',
-              runs: 0,
-              logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
-              wickets: 0
-            },
-            id: `${this.league.id}_eliminator`
-          },
-        ]
+          ]
+        }
       }
       console.log('playOffs', this.playOffs)
       this.cd.detectChanges();

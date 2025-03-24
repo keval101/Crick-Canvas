@@ -65,46 +65,50 @@ export class StatsComponent {
   
       if (playerTeam) {
         isPlayerInMatch = true;
-        totalMatches++;
-  
-        // Recent Matches
-        recentMatches.push(match);
-  
-        // Win/Loss count
-        if (playerTeam.runs > opponentTeam.runs) {
-          wins++;
-        } else if (playerTeam.runs < opponentTeam.runs) {
-          losses++;
+        if(match.status === 'completed') {
+          totalMatches++;
+          // Recent Matches
+          recentMatches.push(match);
+
+          // Win/Loss count
+          if (playerTeam.runs > opponentTeam.runs) {
+            wins++;
+          } else if (playerTeam.runs < opponentTeam.runs) {
+            losses++;
+          }
+
+          // Batting stats
+          totalRuns += playerTeam.runs;
+          totalBallsFaced += playerTeam.balls;
+    
+          // Bowling stats (if player bowled)
+          totalWickets += playerTeam.wickets;
+          totalBallsBowled += opponentTeam.balls;
+          totalRunsConceded += opponentTeam.runs;
+    
+          // Best figures logic
+          if (playerTeam.wickets > bestFigures.wickets || 
+             (playerTeam.wickets === bestFigures.wickets && opponentTeam.runs < bestFigures.runs)) {
+            bestFigures = { wickets: playerTeam.wickets, runs: opponentTeam.runs };
+          }
+    
+          // Head to Head stats
+          if (!headToHead[opponentTeam.id]) {
+            headToHead[opponentTeam.id] = {
+              opponent: opponentTeam.name,
+              logo: opponentTeam.logo,
+              totalRuns: 0,
+              ballsFaced: 0,
+              matches: 0,
+            };
+          }
+          headToHead[opponentTeam.id].totalRuns += playerTeam.runs;
+          headToHead[opponentTeam.id].ballsFaced += playerTeam.balls;
+          headToHead[opponentTeam.id].matches++;
         }
   
-        // Batting stats
-        totalRuns += playerTeam.runs;
-        totalBallsFaced += playerTeam.balls;
   
-        // Bowling stats (if player bowled)
-        totalWickets += playerTeam.wickets;
-        totalBallsBowled += opponentTeam.balls;
-        totalRunsConceded += opponentTeam.runs;
   
-        // Best figures logic
-        if (playerTeam.wickets > bestFigures.wickets || 
-           (playerTeam.wickets === bestFigures.wickets && opponentTeam.runs < bestFigures.runs)) {
-          bestFigures = { wickets: playerTeam.wickets, runs: opponentTeam.runs };
-        }
-  
-        // Head to Head stats
-        if (!headToHead[opponentTeam.id]) {
-          headToHead[opponentTeam.id] = {
-            opponent: opponentTeam.name,
-            logo: opponentTeam.logo,
-            totalRuns: 0,
-            ballsFaced: 0,
-            matches: 0,
-          };
-        }
-        headToHead[opponentTeam.id].totalRuns += playerTeam.runs;
-        headToHead[opponentTeam.id].ballsFaced += playerTeam.balls;
-        headToHead[opponentTeam.id].matches++;
       }
     });
   

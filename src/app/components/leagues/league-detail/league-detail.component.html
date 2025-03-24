@@ -60,7 +60,7 @@
   </div>
 
   <div class="max-w-7xl mx-auto px-8 pb-16" *ngIf="selectedTab === 'fixtures'">
-    <div class="flex items-center justify-between mb-12" *ngIf="fixtures?.length > 0"> 
+    <div class="flex items-center justify-between mb-12" *ngIf="allMatches?.length > 0"> 
       <div class="flex items-center gap-8">
         <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'all'" [class.font-medium]="matchType === 'all'" (click)="setMatchType('all')">
           All Matches
@@ -221,7 +221,10 @@
           <td class="px-4 py-4 text-center">{{team?.runsAgainst}}</td>
           <td class="px-4 py-4 text-center">{{team?.oversBowled}}</td>
           <td class="px-4 py-4 text-center font-semibold">{{team?.pts}}</td>
-          <td class="px-4 py-4 text-center text-green-600">{{team?.nrr}}</td>
+          <td class="px-4 py-4 text-center"
+          [class.text-green-600]="+(team?.nrr) > 0"
+          [class.text-red-600]="0 > +(team?.nrr)"
+          >{{team?.nrr}}</td>
           <td class="px-4 py-4 text-center">{{team?.winPercentage}}</td>
         </tr>
 
