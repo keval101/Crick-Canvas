@@ -48,7 +48,7 @@
       <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="" > PlayOffs </button>
     </ng-container>
 
-    <ng-container *ngIf="!allMatches?.length">
+    <ng-container *ngIf="!allMatches?.length && league?.userId === user?.uid">
       <button class="text-gray-900 font-medium hover:text-primary transition-colors" (click)="generateFixtures()"> 
         <span *ngIf="fixturesLoading"> 
           <app-spinner></app-spinner>

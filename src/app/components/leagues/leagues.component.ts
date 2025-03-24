@@ -24,6 +24,7 @@ export class LeaguesComponent {
     }
 
   ngOnInit() {
+
     this.authService.getCurrentUserDetail().subscribe(user => {
       this.getLeagues();
       console.log(user)
@@ -64,6 +65,7 @@ export class LeaguesComponent {
     e.stopPropagation();
     if(confirm(`Are you want to delete league ${league.name}`) === true) {
       this.dataService.deleteLeague(league.id);
+      this.dataService.deleteLeagueMatches(league.id);
       this.getLeagues();
     }
   }

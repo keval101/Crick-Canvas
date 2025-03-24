@@ -337,4 +337,26 @@ export class DataService {
     return allMatches;
   }
 
+  deleteLeagueMatches(leagueId: string) {
+    // Delete all matches first
+    this.firestore.collection('league-matches', ref => ref.where('league_id', '==', leagueId))
+      .get()
+      .subscribe(snapshot => {
+        const batch = this.firestore.firestore.batch();
+  
+        snapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+  
+        batch.commit().then(() => {
+          // After deleting all matches, delete the league
+          this.firestore.collection('leagues').doc(leagueId).delete()
+            .then(() => {
+              console.log('League and all its matches deleted successfully!');
+            })
+            .catch(err => console.error('Error deleting league:', err));
+        }).catch(err => console.error('Error deleting matches:', err));
+      });
+  }
+
 }

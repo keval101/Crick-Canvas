@@ -152,6 +152,8 @@
                     </div>
                 </div>
             </div>
+
+            <div *ngIf="!stats?.recentMatches?.length"> No Recent Matches Found!</div>
         </div>
 
         <div class="bg-white rounded-lg shadow-sm p-6">
@@ -202,7 +204,11 @@
         <h2 class="text-xl font-bold text-gray-900 mb-6">
             Head to Head Analysis
         </h2>
-        <div class="grid grid-cols-3 gap-6">
+
+
+        <div *ngIf="!stats?.headToHead?.length"> No Head to Head Matches Found!</div>
+
+        <div class="grid grid-cols-3 gap-6" *ngIf="stats?.headToHead?.length">
             <div class="stat-card p-6 rounded-lg" *ngFor="let team of stats?.headToHead">
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center gap-4">
