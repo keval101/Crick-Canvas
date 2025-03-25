@@ -56,11 +56,13 @@ export class MatchResultComponent {
       status: 'completed'
     }
 
+    this.match = payload
+
     await this.dataService.updateMatchResult(payload, this.match.id)
     this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Match Result Updated!' });
     this.isLoading = false;
     this.team_one.reset();
     this.team_two.reset();
-    this.closeMatchResultModal.emit(); 
+    this.closeMatchResultModal.emit(this.match); 
   }
 }

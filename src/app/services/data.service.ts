@@ -281,6 +281,7 @@ export class DataService {
   }
 
   saveMatches(matches: any[]): Promise<void> {
+    console.log(matches)
     // Assuming you want to save to a 'league-matches' collection
     const collectionRef = this.firestore.collection('league-matches');
     
@@ -289,7 +290,7 @@ export class DataService {
     
     matches.forEach(match => {
       // Use league_id and match_number as a composite key, or generate a new ID
-      const docRef = collectionRef.doc(`${match.league_id}_${match.match_number}`).ref;
+      const docRef = collectionRef.doc(match?.id ? match?.id : `${match.league_id}_${match.match_number}`).ref;
       batch.set(docRef, match);
     });
 

@@ -1,4 +1,9 @@
 <div>
+
+  <div class="mb-8" *ngIf="finalMatch?.status === 'completed'">
+    <app-league-winner [match]="finalMatch"></app-league-winner>
+  </div>
+  
   <div class="hero-bg w-full relative rounded-md">
     <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent rounded-md"></div>
     <div class="max-w-7xl mx-auto h-full flex items-center relative px-8">
@@ -232,7 +237,7 @@
     </table>
   </div>
 
-  <div class="grid grid-cols-1 gap-6" id="matchContainer"*ngIf="selectedTab === 'playoffs'">
+  <div class="grid grid-cols-1 gap-6" id="matchContainer"*ngIf="selectedTab === 'playoffs' && !isPlayOffLoading">
     <ng-container *ngFor="let fixture of playOffs">
       <div
         class="match-card mb-4 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden">
@@ -311,7 +316,7 @@
               </div>
               
               <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
-              *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || league?.fixture?.team_two?.id === user?.uid || league?.fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
+              *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                 <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30">
                 Update Result
               </button>
@@ -321,10 +326,14 @@
       </div>
     </ng-container>
   </div>
+
+  <ng-container *ngIf="fixturesLoading || isPlayOffLoading">
+    <app-spinner></app-spinner> 
+  </ng-container>
 </div>
 
   <p-dialog header="Match Result" [(visible)]="matchResultModal" [modal]="true" [draggable]="false" [resizable]="false">
-    <app-match-result [match]="selectedMatch" (closeMatchResultModal)="closeMatchResultModal()"></app-match-result>
+    <app-match-result [match]="selectedMatch" (closeMatchResultModal)="closeMatchResultModal($event)"></app-match-result>
  </p-dialog>
 
 <div class="mdc-snackbar"><div class="mdc-snackbar__surface"><div class="mdc-snackbar__label" role="status" aria-live="polite">Copied!</div><div class="mdc-snackbar__actions">

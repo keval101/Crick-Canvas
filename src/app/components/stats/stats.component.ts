@@ -128,6 +128,8 @@ export class StatsComponent {
       };
     });
   
+    // display only last 5 matches
+    recentMatches.length = recentMatches.length > 5 ? 5 : recentMatches.length;
     return {
       matchStats: {
         totalMatches,
