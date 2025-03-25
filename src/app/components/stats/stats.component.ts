@@ -95,16 +95,23 @@ export class StatsComponent {
           // Head to Head stats
           if (!headToHead[opponentTeam.id]) {
             headToHead[opponentTeam.id] = {
+              id: opponentTeam.id,
               opponent: opponentTeam.name,
               logo: opponentTeam.logo,
               totalRuns: 0,
               ballsFaced: 0,
-              matches: 0,
+              totalMatchesPlayed: 0,
+              winsAgainst: 0
             };
           }
           headToHead[opponentTeam.id].totalRuns += playerTeam.runs;
           headToHead[opponentTeam.id].ballsFaced += playerTeam.balls;
-          headToHead[opponentTeam.id].matches++;
+          headToHead[opponentTeam.id].totalMatchesPlayed++;
+
+        // Count wins against opponent
+          if (playerTeam.runs > opponentTeam.runs) {
+            headToHead[opponentTeam.id].winsAgainst++;
+          }
         }
   
   
@@ -116,15 +123,24 @@ export class StatsComponent {
     const strikeRate = totalBallsFaced ? ((totalRuns / totalBallsFaced) * 100).toFixed(2) : '0.00';
     const economy = totalBallsBowled ? ((totalRunsConceded / (totalBallsBowled / 6))).toFixed(2) : '0.00';
   
+    console.log('headToHeadArray', headToHead);
     const headToHeadArray = Object.values(headToHead).map((team: any) => {
       const teamSR = team.ballsFaced ? ((team.totalRuns / team.ballsFaced) * 100).toFixed(2) : '0.00';
-      const avg = team.matches ? (team.totalRuns / team.matches).toFixed(2) : '0.00';
+      const avg = team.totalMatchesPlayed ? (team.totalRuns / team.totalMatchesPlayed).toFixed(2) : '0.00';
+      const winRate =
+      team.totalMatchesPlayed > 0
+        ? ((team.winsAgainst / team.totalMatchesPlayed) * 100).toFixed(2) + "%"
+        : "0%";
       return {
+        id: team.id,
         team: team.opponent,
         logo: team.logo,
         totalRuns: team.totalRuns,
         avg,
         strikeRate: teamSR,
+        totalMatchesPlayed: team.totalMatchesPlayed,
+        winsAgainst: team.winsAgainst,
+        winRate,
       };
     });
   

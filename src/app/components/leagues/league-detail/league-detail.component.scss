@@ -43,3 +43,11 @@
     }
   }
 }
+
+.team-name {
+  transition: all 0.2s ease-in;
+  &:hover {
+    @apply text-purple-700;
+    transition: all 0.2s ease-in;
+  }
+}

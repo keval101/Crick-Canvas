@@ -208,18 +208,30 @@
 
         <div *ngIf="!stats?.headToHead?.length"> No Head to Head Matches Found!</div>
 
-        <div class="grid grid-cols-3 gap-6" *ngIf="stats?.headToHead?.length">
+        <div class="grid grid-cols-2 gap-6" *ngIf="stats?.headToHead?.length">
             <div class="stat-card p-6 rounded-lg" *ngFor="let team of stats?.headToHead">
                 <div class="flex items-center justify-between mb-4">
-                  <div class="flex items-center gap-4">
+                  <div class="flex team-name items-center gap-4" [routerLink]="['/stats', team?.id]">
                     <img [src]="team?.logo"
                     class="w-12 h-12 rounded-full object-cover" alt="RCB" />
                     {{team?.team}}
                   </div>
+                  <div class="flex gap-3 items-center">
+                    <div class="text-right">
+                      <div class="text-2xl font-bold text-gray-900">{{team?.totalMatchesPlayed}}</div>
+                      <div class="text-sm text-gray-600">Matches</div>
+                    </div>
+
+                    <div class="text-right">
+                      <div class="text-2xl font-bold text-gray-900">{{team?.winsAgainst}}</div>
+                      <div class="text-sm text-gray-600">Won</div>
+                    </div>
+
                     <div class="text-right">
                         <div class="text-2xl font-bold text-gray-900">{{team?.totalRuns}}</div>
                         <div class="text-sm text-gray-600">Runs</div>
                     </div>
+                  </div>
                 </div>
                 <div class="flex items-center justify-between text-sm">
                     <span class="text-gray-600">Avg: {{team?.avg}}</span>
