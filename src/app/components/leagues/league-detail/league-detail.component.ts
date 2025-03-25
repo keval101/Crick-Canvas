@@ -30,6 +30,7 @@ export class LeagueDetailComponent {
   finalMatch: any;
   orangecap: any;
   purplecap: any;
+  searchText: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -124,6 +125,7 @@ export class LeagueDetailComponent {
     await this.dataService.saveMatches(fixtures);
     this.messageService.add({ severity: 'success', summary: 'League', detail: 'Fixtures Generated Successfully!' });
     this.fixtures = fixtures;
+    this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
     this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
     this.fixturesLoading = false;
     this.cd.detectChanges();
@@ -142,6 +144,7 @@ export class LeagueDetailComponent {
   getLeagueMatches() {
     this.dataService.getLeagueMatches(this.leagueId).pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe((matches) => {
       this.fixtures = matches.filter(match => match?.type != 'playoff');
+      this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
       this.playOffs = matches.filter(match => match?.type === 'playoff');
       this.playOffs = this.playOffs.length ? this.playOffs.sort((a, b) => a.rank - b.rank) : [];
       this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
@@ -235,10 +238,13 @@ export class LeagueDetailComponent {
     this.cd.detectChanges();
   }
 
-  searchMatches(e: Event): any {
-    const searchText = (e.target as HTMLInputElement).value;
+  searchMatches(e: any, value?: string): any {
+    const searchText = value ?? (e.target as HTMLInputElement).value;
+    console.log(searchText)
+    this.searchText = searchText;
     if (!searchText) {
       this.fixtures = this.allMatches;
+      this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
       return;
     }
   
@@ -256,14 +262,19 @@ export class LeagueDetailComponent {
         teamTwoName.includes(lowerSearch)
       );
     });
+
+    this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
+
   }
 
   setMatchType(type: string) {
     this.matchType = type;
     if (type === 'all') {
       this.fixtures = this.allMatches;
+      this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
     } else {
       this.fixtures = this.allMatches.filter(match => match.status === type);
+      this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
     }
   }
 

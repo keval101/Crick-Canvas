@@ -57,7 +57,7 @@ export class StatsComponent {
     let losses = 0;
     const recentMatches: any[] = [];
     const headToHead: { [opponentId: string]: any } = {};
-    const finalMatches = matches.filter(match => match.id.includes('final') && match.status === 'completed');
+    const finalMatches = matches.filter(match => match?.id?.includes('final') && match.status === 'completed');
     console.log(finalMatches)
 
     const runnerUpTitles = []
