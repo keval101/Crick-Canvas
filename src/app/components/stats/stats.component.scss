@@ -4,6 +4,7 @@
     }
 
     .team-name {
+        cursor: pointer;
         transition: all 0.2s ease-in;
         &:hover {
           @apply text-purple-700;

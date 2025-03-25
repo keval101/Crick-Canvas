@@ -161,25 +161,25 @@
                 Career Achievements
             </h2>
             <div class="grid grid-cols-2 gap-4">
-                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg" *ngIf="finalTitles.length">
                     <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-lg">
                         <i class="ri-trophy-line text-yellow-600 text-2xl"></i>
                     </div>
                     <div>
-                        <div class="font-semibold">IPL Champion</div>
-                        <div class="text-sm text-gray-600">2024, 2022</div>
+                        <div class="font-semibold">Champion</div>
+                        <div class="text-sm text-gray-600">{{finalTitles.join(', ')}}</div>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg" *ngIf="runnerUpTitles.length">
                     <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">
                         <i class="ri-medal-line text-gray-600 text-2xl"></i>
                     </div>
                     <div>
                         <div class="font-semibold">Runner Up</div>
-                        <div class="text-sm text-gray-600">2023, 2021</div>
+                        <div class="text-sm text-gray-600">{{runnerUpTitles.join(', ')}}</div>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                <!-- <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                     <div class="w-12 h-12 flex items-center justify-center bg-orange-100 rounded-lg">
                         <i class="ri-award-line text-orange-600 text-2xl"></i>
                     </div>
@@ -187,8 +187,8 @@
                         <div class="font-semibold">Orange Cap</div>
                         <div class="text-sm text-gray-600">2024</div>
                     </div>
-                </div>
-                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                </div> -->
+                <!-- <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                     <div class="w-12 h-12 flex items-center justify-center bg-purple-100 rounded-lg">
                         <i class="ri-star-line text-purple-600 text-2xl"></i>
                     </div>
@@ -196,7 +196,7 @@
                         <div class="font-semibold">MVP</div>
                         <div class="text-sm text-gray-600">2023, 2022</div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

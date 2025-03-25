@@ -14,6 +14,8 @@ export class StatsComponent {
   playerId: any;
   stats: any;
   isLoading = true;
+  finalTitles: any[] = [];
+  runnerUpTitles: any[] = [];
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -23,13 +25,21 @@ export class StatsComponent {
   ngOnInit(): void {
 
     this.playerId = this.route.snapshot.paramMap.get('userId');
+    this.route.paramMap.subscribe(params => {
+      this.isLoading = true;
+      this.finalTitles = [];
+      this.runnerUpTitles = [];
+      this.playerId = params.get('userId');
+      console.log(this.playerId)
 
-    if(this.playerId) {
-      this.getPlayerDetails();
-      this.authService.getCurrentUserDetail(this.playerId).subscribe(user => {
-        this.user = user;
-      })
-    }
+      if(this.playerId) {
+        this.getPlayerDetails();
+        this.authService.getCurrentUserDetail(this.playerId).subscribe(user => {
+          this.user = user;
+        })
+      }
+    })
+
   }
 
   getPlayerDetails() {
@@ -47,6 +57,23 @@ export class StatsComponent {
     let losses = 0;
     const recentMatches: any[] = [];
     const headToHead: { [opponentId: string]: any } = {};
+    const finalMatches = matches.filter(match => match.id.includes('final') && match.status === 'completed');
+    console.log(finalMatches)
+
+    const runnerUpTitles = []
+    const finalTitles = []
+    finalMatches.map(match => {
+      const winner = match.team_one.runs > match.team_two.runs ? match.team_one : match.team_two;
+      const loser = match.team_one.runs > match.team_two.runs ? match.team_two : match.team_one;
+      if(loser.id === playerId) {
+        this.runnerUpTitles.push(match?.league_name)
+      }
+
+      if(winner.id === playerId) {
+        this.finalTitles.push(match?.league_name)
+      }
+    })
+
   
     // Batting Stats
     let totalRuns = 0;
