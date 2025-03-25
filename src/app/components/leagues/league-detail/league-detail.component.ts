@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MDCSnackbar } from '@material/snackbar';
 import { MessageService } from 'primeng/api';
-import { Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -140,7 +140,7 @@ export class LeagueDetailComponent {
   }
 
   getLeagueMatches() {
-    this.dataService.getLeagueMatches(this.leagueId).pipe(takeUntil(this.destroy$)).subscribe((matches) => {
+    this.dataService.getLeagueMatches(this.leagueId).pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe((matches) => {
       this.fixtures = matches.filter(match => match?.type != 'playoff');
       this.playOffs = matches.filter(match => match?.type === 'playoff');
       this.playOffs = this.playOffs.length ? this.playOffs.sort((a, b) => a.rank - b.rank) : [];
@@ -155,7 +155,7 @@ export class LeagueDetailComponent {
 
   async closeMatchResultModal(match) {
     this.matchResultModal = false;
-    this.getLeagueMatches();
+    // this.getLeagueMatches();
 
     const totalMatches = this.allMatches.length;
     const completedMatches = this.fixtures.filter(match => (match.status === 'completed' && match?.type != 'playoff') ).length;
