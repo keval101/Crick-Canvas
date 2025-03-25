@@ -118,8 +118,7 @@
               
               <div *ngIf="fixture?.team_two?.runs === fixture?.team_one?.runs"
                 class=" w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
-                <i class="ri-trophy-line"></i>
-                <span>Draw!</span>
+                <span>It's a Draw!</span>
               </div>
 
             </ng-container>
@@ -209,7 +208,7 @@
         <tr class="bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer" *ngFor="let team of pointTable; let i = index"
         [class.!bg-white]="i % 2 === 0">
           <td class="px-6 py-4">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
               <img
                 [src]="team?.team_logo"
                 alt="Royal Challengers"

@@ -47,6 +47,16 @@
 .team-name {
   cursor: pointer;
   transition: all 0.2s ease-in;
+
+  span {
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+  
+    &:hover {
+      @apply text-purple-700;
+      transition: all 0.2s ease-in;
+    }
+  }
   &:hover {
     @apply text-purple-700;
     transition: all 0.2s ease-in;
