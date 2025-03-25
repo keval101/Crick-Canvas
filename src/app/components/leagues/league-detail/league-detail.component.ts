@@ -28,6 +28,8 @@ export class LeagueDetailComponent {
   playOffs: any[] = [];
   isPlayOffLoading = false;
   finalMatch: any;
+  orangecap: any;
+  purplecap: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -306,6 +308,7 @@ async generatePointsTable() {
           loss: 0,
           draw: 0,
           runsFor: 0,
+          wicketsTaken: 0,
           oversFacedBalls: 0,
           runsAgainst: 0,
           oversBowledBalls: 0,
@@ -319,6 +322,7 @@ async generatePointsTable() {
       table[team.id].oversFacedBalls += opponent.balls;
       table[team.id].runsAgainst += opponent.runs;
       table[team.id].oversBowledBalls += team.balls;
+      table[team.id].wicketsTaken += opponent.wickets;
 
       // Win/Loss/Draw calculation
       if (match.status === 'completed') {
@@ -351,6 +355,7 @@ async generatePointsTable() {
         loss: +team.loss,
         draw: +team.draw,
         runsFor: +team.runsFor,
+        wicketsTaken: +team.wicketsTaken,
         oversFaced: `${Math.floor(team.oversFacedBalls / 6)}.${team.oversFacedBalls % 6}`,
         runsAgainst: team.runsAgainst,
         oversBowled: `${Math.floor(team.oversBowledBalls / 6)}.${team.oversBowledBalls % 6}`,
@@ -361,6 +366,8 @@ async generatePointsTable() {
     })
   );
 
+  this.orangecap = pointTable.sort((a, b) => b.runsFor - a.runsFor)[0];
+  this.purplecap = pointTable.sort((a, b) => b.wicketsTaken - a.wicketsTaken)[0];
   this.pointTable = await this.sortPointsTable(pointTable);
   console.log('pointTable:', this.pointTable);
 }

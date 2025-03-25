@@ -10,7 +10,7 @@
       <div class="text-white max-w-2xl">
         <h1 class="text-5xl font-bold mb-6">{{league?.name}}</h1>
         <p class="text-xl text-gray-200 mb-8">
-          Stay updated with live runss, match schedules and results from
+          Stay updated with live runs, match schedules and results from
           around the world
         </p>
         <div class="flex items-center gap-6">
@@ -215,6 +215,8 @@
                 class="w-8 h-8 rounded-full object-cover"
               />
               <span class="font-semibold text-gray-900">{{team?.team}}</span>
+              <img src="/assets/icons/orangecap.png" alt="" width="30" height="30" *ngIf="team?.id === orangecap?.id">
+              <img src="/assets/icons/purplecap.png" alt="" width="30" height="30" *ngIf="team?.id === purplecap?.id">
             </div>
           </td>
           <td class="px-4 py-4 text-center">{{team?.played}}</td>
