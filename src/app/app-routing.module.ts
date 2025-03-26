@@ -13,6 +13,7 @@ import { LeaguesComponent } from './components/leagues/leagues.component';
 import { LeagueDetailComponent } from './components/leagues/league-detail/league-detail.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { StatsComponent } from './components/stats/stats.component';
+import { RankingsComponent } from './components/rankings/rankings.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,11 @@ const routes: Routes = [
     path: 'stats/:userId',
     component: StatsComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'rankings',
+    component: RankingsComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'profile',

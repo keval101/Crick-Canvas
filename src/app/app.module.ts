@@ -44,6 +44,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { StatsComponent } from './components/stats/stats.component';
 import { MatchResultComponent } from './components/leagues/match-result/match-result.component';
 import { LeagueWinnerComponent } from './components/leagues/league-winner/league-winner.component';
+import { RankingsComponent } from './components/rankings/rankings.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -80,7 +81,8 @@ const firebaseConfig = {
     ProfileComponent,
     StatsComponent,
     MatchResultComponent,
-    LeagueWinnerComponent
+    LeagueWinnerComponent,
+    RankingsComponent
   ],
   imports: [
     BrowserModule,
