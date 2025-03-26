@@ -343,9 +343,9 @@ async generatePointsTable() {
         table[team.id].played++;
       }
       table[team.id].runsFor += team.runs;
-      table[team.id].oversFacedBalls += opponent.balls;
+      table[team.id].oversFacedBalls += team.balls;
       table[team.id].runsAgainst += opponent.runs;
-      table[team.id].oversBowledBalls += team.balls;
+      table[team.id].oversBowledBalls += opponent.balls;
       table[team.id].wicketsTaken += opponent.wickets;
 
       // Win/Loss/Draw calculation
