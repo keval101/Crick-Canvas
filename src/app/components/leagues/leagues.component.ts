@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
@@ -19,6 +20,7 @@ export class LeaguesComponent {
 
   constructor(
     private fb: FormBuilder,
+    private messageService: MessageService,
     private authService: AuthService,
     private dataService: DataService) {
     }
@@ -66,6 +68,7 @@ export class LeaguesComponent {
     if(confirm(`Are you want to delete league ${league.name}`) === true) {
       this.dataService.deleteLeague(league.id);
       this.dataService.deleteLeagueMatches(league.id);
+      this.messageService.add({ severity: 'success', summary: 'League', detail: 'Deleted Successfully!' });
       this.getLeagues();
     }
   }
