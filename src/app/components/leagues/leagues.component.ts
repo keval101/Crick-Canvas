@@ -67,7 +67,7 @@ export class LeaguesComponent {
   deleteLeague(league: any, e: Event) {
     e.stopPropagation();
 
-    if(league.userId === this.userId || this.user.role === 'admin') {
+    if(league.userId === this.userId) {
       if(confirm(`Are you want to delete league ${league.name}`) === true) {
         this.dataService.deleteLeague(league.id);
         this.dataService.deleteLeagueMatches(league.id);
