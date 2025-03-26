@@ -65,7 +65,7 @@
   </div>
 
   <div class="max-w-7xl mx-auto px-8 pb-16" *ngIf="selectedTab === 'fixtures'">
-    <div class="flex items-center justify-between mb-12" *ngIf="allMatches?.length > 0"> 
+    <div class="flex items-center justify-between mb-6" *ngIf="allMatches?.length > 0"> 
       <div class="flex items-center gap-8">
         <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'all'" [class.font-medium]="matchType === 'all'" (click)="setMatchType('all')">
           All Matches
@@ -75,6 +75,10 @@
         </button>
         <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'upcoming'" [class.font-medium]="matchType === 'upcoming'" (click)="setMatchType('upcoming')">
           Upcoming
+        </button>
+
+        <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'mymatches'" [class.font-medium]="matchType === 'mymatches'" (click)="setMatchType('mymatches')">
+          My Matches
         </button>
 
         <button class="text-gray-500 hover:text-primary transition-colors">
@@ -89,7 +93,18 @@
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-1 gap-6" id="matchContainer">
+
+    <div class="flex items-center gap-2 justify-end mb-12" *ngIf="allMatches?.length > 0">
+      <button class="w-fit" (click)="toggleView('list')">
+        <img src="./assets/icons/list.png" alt="" width="40" width="40">
+      </button>
+
+      <button class="w-fit" (click)="toggleView('grid')">
+        <img src="./assets/icons/grid.png" alt="" width="40" width="40">
+      </button>
+    </div>
+
+    <div class="grid gap-6" [class.grid-cols-1]="view === 'list'" [class.grid-cols-2]="view === 'grid'" id="matchContainer">
 
       <ng-container *ngFor="let fixture of fixtures">
         <div
