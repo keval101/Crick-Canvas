@@ -17,7 +17,7 @@ export class LeaguesComponent {
   leagues$ = new BehaviorSubject([]);
   userId: string;
   destroy$ = new Subject();
-
+  user: any;
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
@@ -30,6 +30,7 @@ export class LeaguesComponent {
     this.authService.getCurrentUserDetail().subscribe(user => {
       this.getLeagues();
       console.log(user)
+      this.user = user;
       this.userId = user.uid
     })
   }
@@ -65,11 +66,17 @@ export class LeaguesComponent {
 
   deleteLeague(league: any, e: Event) {
     e.stopPropagation();
-    if(confirm(`Are you want to delete league ${league.name}`) === true) {
-      this.dataService.deleteLeague(league.id);
-      this.dataService.deleteLeagueMatches(league.id);
-      this.messageService.add({ severity: 'success', summary: 'League', detail: 'Deleted Successfully!' });
-      this.getLeagues();
+
+    if(league.userId === this.userId || this.user.role === 'admin') {
+      if(confirm(`Are you want to delete league ${league.name}`) === true) {
+        this.dataService.deleteLeague(league.id);
+        this.dataService.deleteLeagueMatches(league.id);
+        this.messageService.add({ severity: 'success', summary: 'League', detail: 'Deleted Successfully!' });
+        this.getLeagues();
+      }
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'League', detail: 'You are not authorized to delete this league!' });
+      return;
     }
   }
 
