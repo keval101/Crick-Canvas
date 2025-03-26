@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-league-detail',
@@ -137,7 +138,8 @@ export class LeagueDetailComponent {
     const teamData = this.teams.find((x) => x.id === team?.id);
     team['name'] = teamData?.team?.name;
     team['logo'] = teamData?.team?.logo;
-    this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
+    // this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
+    this.allMatches = _.cloneDeep(this.fixtures);
     return teamData;
   }
 
