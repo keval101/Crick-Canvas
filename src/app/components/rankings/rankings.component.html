@@ -1,11 +1,13 @@
-<div class="max-w-7xl mx-auto">
-    <h1 class="text-4xl font-bold text-gray-800 mb-12 text-center">Cricket Rankings 2025</h1>
-  
-    <div>
-      <button (click)="ranking = 'Team'">Team</button>
-      <button (click)="ranking = 'Batting'">Batting</button>
-      <button (click)="ranking = 'Bowling'">Bowling</button>
+<h1 class="text-4xl font-bold text-gray-800 mb-12 text-left">Rankings</h1>
+<div class="max-w-7xl mx-auto" *ngIf="!isLoading">
+    <div class="flex gap-4 menus justify-center mb-8">
+      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Team'" (click)="ranking = 'Team'"> Team </button>
+      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Batting'"  (click)="ranking = 'Batting'"> Batting </button>
+      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Bowling'" (click)="ranking = 'Bowling'" > Bowling </button>
     </div>
+
+
+
     <div class="grid grid-cols-1 gap-8 bg-grid">
       <!-- Team Rankings Card -->
       <div class="shadow-lg p-8 card-hover" *ngIf="ranking === 'Team'">
@@ -14,7 +16,7 @@
             <div class="rank-card__image">
               <!-- https://i.postimg.cc/65sS9ZdX/pngwing-com.png -->
               <!-- getTeamDetails(team)?.team?.logo -->
-              <img [src]="'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'" class="object-cover rounded-lg" width="50" height="50" alt="team logo"> 
+              <img [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'" class="object-cover team-logo rounded-lg" width="50" height="50" alt="team logo"> 
             </div>
             <div class="rank-card__detail">
               <div class="rank-card__number">
@@ -27,34 +29,30 @@
             </div>
 
             <div class="rank-card__points">
+
               <div class="rank-card__point">
-                <p>20</p>
+                <p>{{team.points}}</p>
+                <span>Points</span>
+              </div>
+              
+              <div class="rank-card__point">
+                <p>{{team.matches}}</p>
                 <span>Matches</span>
               </div>
 
               <div class="rank-card__point">
-                <p>15</p>
+                <p>{{team.wins}}</p>
                 <span>Won</span>
               </div>
 
               <div class="rank-card__point">
-                <p>5</p>
+                <p>{{team.losses}}</p>
                 <span>Lose</span>
               </div>
 
-              <div class="rank-card__point">
-                <p>50%</p>
-                <span>Pecentage</span>
-              </div>
-            </div>
-            <!-- <div class="text-sm text-gray-600">
-              <span class="text-green-600">{{ team.wins }}W</span> &nbsp;
-              <span class="text-red-600">{{ team.losses }}L</span>
-            </div> -->
 
-            <p>{{team.points}}</p>
+            </div>
           </div>
-          
         </div>
         <!-- <div class="space-y-4">
           <div *ngFor="let team of mockData.teams" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
@@ -122,3 +120,6 @@
     </div>
   </div>
   
+<div *ngIf="isLoading">
+  <app-spinner></app-spinner>
+</div>

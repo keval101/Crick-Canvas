@@ -22,14 +22,9 @@ export class RankingsComponent {
   teams: any[] = [];
   ranking = 'Team';
   destroy$ = new Subject();
+  isLoading = true;
   mockData: any = {
-    teams: [
-      { rank: 1, name: "Australia", points: 128, wins: 25, losses: 8 },
-      { rank: 2, name: "India", points: 124, wins: 23, losses: 9 },
-      { rank: 3, name: "England", points: 118, wins: 22, losses: 10 },
-      { rank: 4, name: "New Zealand", points: 112, wins: 20, losses: 12 },
-      { rank: 5, name: "South Africa", points: 108, wins: 19, losses: 13 },
-    ],
+    teams: [],
     batsmen: [
       { rank: 1, name: "Steve Smith", country: "AUS", runs: 12456, avg: 61.8, sr: 86.5 },
       { rank: 2, name: "Virat Kohli", country: "IND", runs: 12380, avg: 59.2, sr: 93.2 },
@@ -51,13 +46,13 @@ export class RankingsComponent {
   ) { }
 
   ngOnInit(): void {
-    // this.dataService.getAllLeagueMatches().subscribe(matches => {
-    //   console.log(matches);
-    //   this.getTeams();
-    //   const teamRankings = this.calculateTeamRankings(matches);
-    //   this.mockData.teams = teamRankings;
-    //   console.log(this.mockData.teams);
-    // })
+    this.dataService.getAllLeagueMatches().subscribe(matches => {
+      console.log(matches);
+      this.getTeams();
+      const teamRankings = this.calculateTeamRankings(matches);
+      this.mockData.teams = teamRankings;
+      console.log(this.mockData.teams);
+    })
   }
 
   calculateTeamRankings(matches: any[]): TeamRanking[] {
@@ -119,6 +114,7 @@ export class RankingsComponent {
     });
     console.log(rankings)
   
+    this.isLoading = false;
     return Object.values(rankings).sort((a, b) => b.points - a.points);
   }
 
