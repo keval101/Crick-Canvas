@@ -194,6 +194,10 @@ export class DataService {
     }
   }
 
+  getAllusers() {
+    return this.firestore.collection(`/users`).valueChanges();
+  }
+
   // Method to create a league with a unique ID
   createLeague(leagueData: any, customId: string): Promise<void> {
     // Using custom ID for the document
@@ -268,6 +272,10 @@ export class DataService {
     }
   }
 
+  async saveH2HToFirebase(fixture) {
+    return this.firestore.collection('matches').doc(fixture.id).set(fixture);
+  }
+
   async deleteLeague(leagueId: string) {
     await this.firestore.collection('leagues').doc(leagueId).delete();
   }
@@ -315,6 +323,28 @@ export class DataService {
   
   updateMatchResult(payload: any, fixtureId: string) {
     return this.firestore.collection('league-matches').doc(fixtureId).set(payload, {merge: true});
+  }
+
+  updateH2HResult(payload: any, fixtureId: string) {
+    return this.firestore.collection('matches').doc(fixtureId).set(payload, {merge: true});
+  }
+
+  getAllLeagueMatches() {
+    return this.firestore.collection('league-matches').valueChanges();
+  }
+
+  getUserMatches(userId: string) {
+    return this.firestore.collection(`/matches`, ref => ref.where('team_one.id', '==', userId).limit(100))
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
   }
 
   // Get league-matches where playerId is in either team_one.id or team_two.id

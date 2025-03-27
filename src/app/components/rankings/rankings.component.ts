@@ -1,4 +1,16 @@
 import { Component } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
+
+interface TeamRanking {
+  id: string;
+  name: string;
+  logo: string;
+  matches: number;
+  wins: number;
+  losses: number;
+  draws: number;
+  points: number;
+}
 
 @Component({
   selector: 'app-rankings',
@@ -7,7 +19,8 @@ import { Component } from '@angular/core';
 })
 export class RankingsComponent {
 
-  mockData = {
+  ranking = 'Team';
+  mockData: any = {
     teams: [
       { rank: 1, name: "Australia", points: 128, wins: 25, losses: 8 },
       { rank: 2, name: "India", points: 124, wins: 23, losses: 9 },
@@ -31,9 +44,78 @@ export class RankingsComponent {
     ],
   };
 
-  constructor() { }
+  constructor(
+    private dataService: DataService
+  ) { }
 
   ngOnInit(): void {
+    this.dataService.getAllLeagueMatches().subscribe(matches => {
+      console.log(matches);
+      const teamRankings = this.calculateTeamRankings(matches);
+      this.mockData.teams = teamRankings;
+      console.log(this.mockData.teams);
+    })
+  }
+
+  calculateTeamRankings(matches: any[]): TeamRanking[] {
+    const rankings: Record<string, TeamRanking> = {};
+  
+    matches.forEach(match => {
+      const { team_one, team_two } = match;
+      const teamOneId = team_one.id;
+      const teamTwoId = team_two.id;
+  
+      if(teamOneId === '' || teamTwoId === '') {
+        return;
+      }
+      if (!rankings[teamOneId]) {
+        rankings[teamOneId] = {
+          id: teamOneId,
+          name: team_one.name,
+          logo: team_one.logo,
+          matches: 0,
+          wins: 0,
+          losses: 0,
+          draws: 0,
+          points: 0
+        };
+      }
+  
+      if (!rankings[teamTwoId]) {
+        rankings[teamTwoId] = {
+          id: teamTwoId,
+          name: team_two.name,
+          logo: team_one.logo,
+          matches: 0,
+          wins: 0,
+          losses: 0,
+          draws: 0,
+          points: 0
+        };
+      }
+  
+      rankings[teamOneId].matches++;
+      rankings[teamTwoId].matches++;
+  
+      if (team_one.runs > team_two.runs) {
+        rankings[teamOneId].wins++;
+        rankings[teamOneId].points += 2;
+        rankings[teamTwoId].losses++;
+        rankings[teamTwoId].points -= 1;
+      } else if (team_one.runs < team_two.runs) {
+        rankings[teamTwoId].wins++;
+        rankings[teamTwoId].points += 2;
+        rankings[teamOneId].losses++;
+        rankings[teamOneId].points -= 1;
+      } else {
+        rankings[teamOneId].draws++;
+        rankings[teamTwoId].draws++;
+        rankings[teamOneId].points += 1;
+        rankings[teamTwoId].points += 1;
+      }
+    });
+  
+    return Object.values(rankings).sort((a, b) => b.points - a.points);
   }
 
   // Calculate win rate for teams

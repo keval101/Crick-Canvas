@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 // Firebase Modules
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFirestoreModule, SETTINGS } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { LoginComponent } from './components/login/login.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -45,6 +45,8 @@ import { StatsComponent } from './components/stats/stats.component';
 import { MatchResultComponent } from './components/leagues/match-result/match-result.component';
 import { LeagueWinnerComponent } from './components/leagues/league-winner/league-winner.component';
 import { RankingsComponent } from './components/rankings/rankings.component';
+import { HeadToHeadComponent } from './components/head-to-head/head-to-head.component';
+import { AddHeadToHeadComponent } from './components/head-to-head/add-head-to-head/add-head-to-head.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -82,7 +84,9 @@ const firebaseConfig = {
     StatsComponent,
     MatchResultComponent,
     LeagueWinnerComponent,
-    RankingsComponent
+    RankingsComponent,
+    HeadToHeadComponent,
+    AddHeadToHeadComponent
   ],
   imports: [
     BrowserModule,
@@ -109,6 +113,12 @@ const firebaseConfig = {
     MessageService,
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+    },
+    {
+      provide: SETTINGS,
+      useValue: {
+        experimentalForceLongPolling: true // Enable Firestore long polling
+      }
     }
   ],
   bootstrap: [AppComponent]

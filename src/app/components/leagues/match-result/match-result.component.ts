@@ -12,6 +12,7 @@ export class MatchResultComponent {
 
   @Output() closeMatchResultModal = new EventEmitter<void>();
   @Input() match: any;
+  @Input() isH2H = false;
   team_one: FormGroup
   team_two: FormGroup
   isLoading = false;
@@ -53,12 +54,17 @@ export class MatchResultComponent {
       ...this.match,
       team_one: {...this.match.team_one, ...this.team_one.value},
       team_two: {...this.match.team_two, ...this.team_two.value},
-      status: 'completed'
+      status: 'completed',
+      date: new Date().getTime()
     }
 
     this.match = payload
 
-    await this.dataService.updateMatchResult(payload, this.match.id)
+    if(this.isH2H) {
+      await this.dataService.updateH2HResult(payload, this.match.id)
+    } else {
+      await this.dataService.updateMatchResult(payload, this.match.id)
+    }
     this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Match Result Updated!' });
     this.isLoading = false;
     this.team_one.reset();

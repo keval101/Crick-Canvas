@@ -19,7 +19,7 @@ export class LeagueWinnerComponent {
   ngOnInit(): void {
     const winner = this.match.team_one.runs > this.match.team_two.runs ? this.match.team_one : this.match.team_two;
     const loser = this.match.team_one.runs > this.match.team_two.runs ? this.match.team_two : this.match.team_one;
-    this.winningTeam = this.match.team_one;
+    this.winningTeam = winner;
     this.finalScore = `Final Score: ${winner.name} ${winner.runs}/${winner.wickets} vs ${loser.name} ${loser.runs}/${loser.wickets}`;
   }
 

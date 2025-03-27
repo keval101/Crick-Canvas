@@ -46,7 +46,7 @@ export class StatsComponent {
     console.log(this.playerId)
     this.dataService.getPlayerMatches(this.playerId).then(matches => {
       this.stats = this.getPlayerStats(this.playerId, matches);
-      console.log(this.stats)
+      console.log(this.stats, matches)
       this.isLoading = false;
     })
   }
@@ -55,7 +55,7 @@ export class StatsComponent {
     let totalMatches = 0;
     let wins = 0;
     let losses = 0;
-    const recentMatches: any[] = [];
+    let recentMatches: any[] = [];
     const headToHead: { [opponentId: string]: any } = {};
     const finalMatches = matches.filter(match => match?.id?.includes('final') && match.status === 'completed');
     console.log(finalMatches)
@@ -172,6 +172,7 @@ export class StatsComponent {
     });
   
     // display only last 5 matches
+    // recentMatches = recentMatches.reverse();
     recentMatches.length = recentMatches.length > 5 ? 5 : recentMatches.length;
     return {
       matchStats: {

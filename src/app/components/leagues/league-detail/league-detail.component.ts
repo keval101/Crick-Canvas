@@ -407,14 +407,12 @@ calculateNRR(runsFor: number, oversFaced: number, runsAgainst: number, oversBowl
 }
 
   async generatePlayOffs() {
+    this.isPlayOffLoading = true;
+    await this.generatePointsTable();
+    const sortedTable = this.sortPointsTable(this.pointTable);
+    const totalMatches = this.allMatches.length;
+    const completedMatches = this.fixtures.filter(match => (match.status === 'completed' && match?.type != 'playoff') ).length;
     if(!this.playOffs.length) {
-      this.isPlayOffLoading = true;
-      await this.generatePointsTable();
-      const sortedTable = this.sortPointsTable(this.pointTable);
-      const totalMatches = this.allMatches.length;
-      const completedMatches = this.fixtures.filter(match => (match.status === 'completed' && match?.type != 'playoff') ).length;
-      
-      console.log(completedMatches, totalMatches, this.playOffs);
       setTimeout(async () => {
         if(this.playOffs.length === 0) {
           if(completedMatches == totalMatches && sortedTable.length) {
@@ -630,122 +628,124 @@ calculateNRR(runsFor: number, oversFaced: number, runsAgainst: number, oversBowl
           await this.dataService.saveMatches(this.playOffs);
           this.isPlayOffLoading = false;
           this.messageService.add({ severity: 'success', summary: 'League', detail: 'Playoffs Generated Successfully!' });
-        } else {
-          if(this.playOffs[0].team_one.id === '') {
-            if(completedMatches == totalMatches && sortedTable.length) {
-              // https://i.postimg.cc/65sS9ZdX/pngwing-com.png
-              this.playOffs = [
-                {
-                  league_name: this.league.name,
-                  status: "upcoming",
-                  team_one: {
-                    balls: 0,
-                    id: sortedTable[0].id,
-                    name: sortedTable[0].team,
-                    runs: 0,
-                    logo: sortedTable[0].team_logo,
-                    wickets: 0
-                  },
-                  league_id: this.league.id,
-                  match_number: 'Qualifier 1',
-                  team_two: {
-                    balls: 0,
-                    id: sortedTable[1].id,
-                    name: sortedTable[1].team,
-                    runs: 0,
-                    logo: sortedTable[1].team_logo,
-                    wickets: 0
-                  },
-                  id: `${this.league.id}_q1`,
-                  type: 'playoff',
-                  rank: 1
-                },
-                {
-                  league_name: this.league.name,
-                  status: "upcoming",
-                  team_one: {
-                    balls: 0,
-                    id: sortedTable[2].id,
-                    name: sortedTable[2].team,
-                    runs: 0,
-                    logo: sortedTable[2].team_logo,
-                    wickets: 0
-                  },
-                  league_id: this.league.id,
-                  match_number: 'Eliminator',
-                  team_two: {
-                    balls: 0,
-                    id: sortedTable[3].id,
-                    name: sortedTable[3].team,
-                    runs: 0,
-                    logo: sortedTable[3].team_logo,
-                    wickets: 0
-                  },
-                  id: `${this.league.id}_eliminator`,
-                  type: 'playoff',
-                  rank: 2
-                },
-                {
-                  league_name: this.league.name,
-                  status: "upcoming",
-                  team_one: {
-                    balls: 0,
-                    id: '',
-                    name: 'TBD',
-                    runs: 0,
-                    logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
-                    wickets: 0
-                  },
-                  league_id: this.league.id,
-                  match_number: 'Qualifier 2',
-                  team_two: {
-                    balls: 0,
-                    id: '',
-                    name: 'TBD',
-                    runs: 0,
-                    logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
-                    wickets: 0
-                  },
-                  id: `${this.league.id}_q2`,
-                  type: 'playoff',
-                  rank: 3
-                },
-                {
-                  league_name: this.league.name,
-                  status: "upcoming",
-                  team_one: {
-                    balls: 0,
-                    id: '',
-                    name: 'TBD',
-                    runs: 0,
-                    logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
-                    wickets: 0
-                  },
-                  league_id: this.league.id,
-                  match_number: 'Final',
-                  team_two: {
-                    balls: 0,
-                    id: '',
-                    name: 'TBD',
-                    runs: 0,
-                    logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
-                    wickets: 0
-                  },
-                  id: `${this.league.id}_final`,
-                  type: 'playoff',
-                  rank: 4
-                },
-              ]
-            }
-
-            this.playOffs = this.playOffs.sort((a, b) => a.rank - b.rank);
-            await this.dataService.saveMatches(this.playOffs);
-            this.isPlayOffLoading = false;
-            this.messageService.add({ severity: 'success', summary: 'League', detail: 'Playoffs Generated Successfully!' });
-          }
         }
         this.cd.detectChanges();
       }, 1000);
+    } else {
+      if(this.playOffs[0].team_one.id === '') {
+        if(completedMatches == totalMatches && sortedTable.length) {
+          // https://i.postimg.cc/65sS9ZdX/pngwing-com.png
+          this.playOffs = [
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: sortedTable[0].id,
+                name: sortedTable[0].team,
+                runs: 0,
+                logo: sortedTable[0].team_logo,
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Qualifier 1',
+              team_two: {
+                balls: 0,
+                id: sortedTable[1].id,
+                name: sortedTable[1].team,
+                runs: 0,
+                logo: sortedTable[1].team_logo,
+                wickets: 0
+              },
+              id: `${this.league.id}_q1`,
+              type: 'playoff',
+              rank: 1
+            },
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: sortedTable[2].id,
+                name: sortedTable[2].team,
+                runs: 0,
+                logo: sortedTable[2].team_logo,
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Eliminator',
+              team_two: {
+                balls: 0,
+                id: sortedTable[3].id,
+                name: sortedTable[3].team,
+                runs: 0,
+                logo: sortedTable[3].team_logo,
+                wickets: 0
+              },
+              id: `${this.league.id}_eliminator`,
+              type: 'playoff',
+              rank: 2
+            },
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Qualifier 2',
+              team_two: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              id: `${this.league.id}_q2`,
+              type: 'playoff',
+              rank: 3
+            },
+            {
+              league_name: this.league.name,
+              status: "upcoming",
+              team_one: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              league_id: this.league.id,
+              match_number: 'Final',
+              team_two: {
+                balls: 0,
+                id: '',
+                name: 'TBD',
+                runs: 0,
+                logo: 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+                wickets: 0
+              },
+              id: `${this.league.id}_final`,
+              type: 'playoff',
+              rank: 4
+            },
+          ]
+        }
+
+        this.playOffs = this.playOffs.sort((a, b) => a.rank - b.rank);
+        await this.dataService.saveMatches(this.playOffs);
+        this.isPlayOffLoading = false;
+        this.messageService.add({ severity: 'success', summary: 'League', detail: 'Playoffs Generated Successfully!' });
+      } else {
+        this.isPlayOffLoading = false;
+      }
     }
   }
 

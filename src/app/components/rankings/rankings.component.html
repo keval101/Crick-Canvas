@@ -1,16 +1,32 @@
 <div class="max-w-7xl mx-auto">
     <h1 class="text-4xl font-bold text-gray-800 mb-12 text-center">Cricket Rankings 2025</h1>
   
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div>
+      <button (click)="ranking = 'Team'">Team</button>
+      <button (click)="ranking = 'Batting'">Batting</button>
+      <button (click)="ranking = 'Bowling'">Bowling</button>
+    </div>
+    <div class="grid grid-cols-1 gap-8 bg-grid">
       <!-- Team Rankings Card -->
-      <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">Team Rankings</h2>
-          <div class="w-8 h-8 flex items-center justify-center">
-            <i class="ri-team-line text-primary text-2xl"></i>
+      <div class="shadow-lg p-6 card-hover" *ngIf="ranking === 'Team'">
+        <div class="relative rank-card" *ngFor="let team of mockData.teams" >
+          <div class="flex justify-between">
+            <div>
+              <div>
+                <!-- <img [src]="team.logo" class="object-cover rounded-lg" width="50" height="50" alt="team logo"> -->
+                <p>{{team.name}}</p>
+              </div>
+              <div class="text-sm text-gray-600">
+                <span class="text-green-600">{{ team.wins }}W</span> &nbsp;
+                <span class="text-red-600">{{ team.losses }}L</span>
+              </div>
+            </div>
+
+            <p>{{team.points}}</p>
           </div>
+          
         </div>
-        <div class="space-y-4">
+        <!-- <div class="space-y-4">
           <div *ngFor="let team of mockData.teams" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
             <span class="font-bold text-lg w-8">{{ team.rank }}</span>
             <div class="flex-1 ml-4">
@@ -18,15 +34,18 @@
               <div class="text-sm text-gray-600">Win rate: {{ calculateWinRate(team.wins, team.losses) }}%</div>
             </div>
             <div class="text-right">
-              <div class="font-bold text-primary">{{ team.points }}</div>
-              <div class="text-sm text-gray-600">{{ team.wins }}W {{ team.losses }}L</div>
+              <div class="font-bold text-primary text-4xl text-purple-600">{{ team.points }}</div>
+              <div class="text-sm text-gray-600">
+                <span class="text-green-600">{{ team.wins }}W</span> &nbsp;
+                <span class="text-red-600">{{ team.losses }}L</span>
+              </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
   
       <!-- Batting Rankings Card -->
-      <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+      <div class="shadow-lg p-6 rank-card card-hover" *ngIf="ranking === 'Batting'">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-bold text-gray-800">Batting Rankings</h2>
           <div class="w-8 h-8 flex items-center justify-center">
@@ -49,7 +68,7 @@
       </div>
   
       <!-- Bowling Rankings Card -->
-      <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+      <div class="shadow-lg p-6 rank-card card-hover" *ngIf="ranking === 'Bowling'">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-bold text-gray-800">Bowling Rankings</h2>
           <div class="w-8 h-8 flex items-center justify-center">

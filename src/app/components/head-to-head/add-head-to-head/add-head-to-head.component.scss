@@ -1,0 +1,21 @@
+.add-headr-to-head-form {
+    width: 600px;
+}
+
+.p-dropdown,
+.p-calendar {
+    @apply shadow-sm flex bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5;
+
+    &:focus {
+        @apply ring-blue-500 border-blue-500;
+    }
+}
+
+.p-dropdown-label {
+    @apply w-full p-0;
+    font-size: 14px
+}
+
+.p-inputtext {
+    @apply bg-transparent rounded-none shadow-none;
+}

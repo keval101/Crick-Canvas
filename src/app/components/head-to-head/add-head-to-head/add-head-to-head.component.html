@@ -1,0 +1,42 @@
+<form [formGroup]="matchForm" (ngSubmit)="createMatch()" class="add-headr-to-head-form">
+    <div class="mb-5">
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900">You</label>
+        <p-dropdown [appendTo]="'body'" optionValue="uid" [options]="teamOne" optionLabel="name" placeholder="Select a Team 1" formControlName="team_one" (onChange)="updateTeamTwoDropdown()" readonly>
+            
+            <ng-template let-team pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <img 
+                        [src]="team.team.logo"
+                        style="width: 30px; height: 30px; border-radius: 100px; object-fit: cover;" />
+                    <div>{{ team.team.name }}</div>
+                </div>
+            </ng-template>
+
+        </p-dropdown>
+    </div>
+
+    <div class="mb-5">
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Opponent</label>
+        <p-dropdown [appendTo]="'body'" optionValue="uid" [options]="teamTwo" optionLabel="name" placeholder="Select Opponent" formControlName="team_two" (onChange)="updateTeamOneDropdown()">
+            <ng-template let-team pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <img 
+                        [src]="team.team.logo"
+                        style="width: 30px; height: 30px; border-radius: 100px; object-fit: cover;" />
+                    <div>{{ team.team.name }}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+    </div>
+
+    <div class="mb-5">
+        <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
+        <p-calendar [appendTo]="'body'" formControlName="date"></p-calendar>
+    </div>
+
+    <button class="btn w-full flex justify-center items-center" type="submit" [disabled]="matchForm.invalid">
+        <ng-container *ngIf="isLoading"><app-spinner [white]="true"></app-spinner> </ng-container>
+        <ng-container *ngIf="!isLoading">Create Match</ng-container>
+    </button>
+
+</form>

@@ -14,6 +14,7 @@ import { LeagueDetailComponent } from './components/leagues/league-detail/league
 import { ProfileComponent } from './components/profile/profile.component';
 import { StatsComponent } from './components/stats/stats.component';
 import { RankingsComponent } from './components/rankings/rankings.component';
+import { HeadToHeadComponent } from './components/head-to-head/head-to-head.component';
 
 const routes: Routes = [
   {
@@ -44,9 +45,14 @@ const routes: Routes = [
     component: PlayerDetailComponent,
     canActivate: [AuthGuard]
   },
+  // {
+  //   path: 'matches',
+  //   component: MatchesComponent,
+  //   canActivate: [AuthGuard]
+  // },
   {
     path: 'matches',
-    component: MatchesComponent,
+    component: HeadToHeadComponent,
     canActivate: [AuthGuard]
   },
   {
