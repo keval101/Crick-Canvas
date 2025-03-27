@@ -333,18 +333,24 @@ export class DataService {
     return this.firestore.collection('league-matches').valueChanges();
   }
 
-  getUserMatches(userId: string) {
-    return this.firestore.collection(`/matches`, ref => ref.where('team_one.id', '==', userId).limit(100))
-      .snapshotChanges()
-      .pipe(
-        map((actions) => {
-          return actions.map((a) => {
-            const data: any = a.payload.doc.data();
-            const id = a.payload.doc.id;
-            return { ...data, id };
-          });
-        })
-      );
+  async getUserMatches(userId: string) {
+      const teamOneQuery = this.firestore.collection('matches', ref => 
+        ref.where('team_one.id', '==', userId)
+      ).get().toPromise();;
+
+      const teamTwoQuery = this.firestore.collection('matches', ref => 
+        ref.where('team_two.id', '==', userId)
+      ).get().toPromise();;
+
+      const [teamOneSnapshot, teamTwoSnapshot] = await Promise.all([teamOneQuery, teamTwoQuery]);
+
+      const teamOneMatches = teamOneSnapshot.docs.map(doc => doc.data());
+      const teamTwoMatches = teamTwoSnapshot.docs.map(doc => doc.data());
+
+      // Optional: remove duplicates if needed
+      const allMatches = [...teamOneMatches, ...teamTwoMatches];
+
+      return allMatches;
   }
 
   // Get league-matches where playerId is in either team_one.id or team_two.id

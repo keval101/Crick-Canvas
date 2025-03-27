@@ -36,7 +36,7 @@ export class HeadToHeadComponent {
     this.authService.getCurrentUserDetail().subscribe(user => {
       this.user = user;
       this.getTeams();
-      this.dataService.getUserMatches(this.user.uid).subscribe(matches => {
+      this.dataService.getUserMatches(this.user.uid).then(matches => {
         this.matches = matches;
         this.fixturesLoading = false;
         this.allMatches = _.cloneDeep(this.matches);

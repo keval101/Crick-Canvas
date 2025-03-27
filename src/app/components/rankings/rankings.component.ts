@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 
 interface TeamRanking {
@@ -18,8 +19,9 @@ interface TeamRanking {
   styleUrls: ['./rankings.component.scss']
 })
 export class RankingsComponent {
-
+  teams: any[] = [];
   ranking = 'Team';
+  destroy$ = new Subject();
   mockData: any = {
     teams: [
       { rank: 1, name: "Australia", points: 128, wins: 25, losses: 8 },
@@ -49,12 +51,13 @@ export class RankingsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.dataService.getAllLeagueMatches().subscribe(matches => {
-      console.log(matches);
-      const teamRankings = this.calculateTeamRankings(matches);
-      this.mockData.teams = teamRankings;
-      console.log(this.mockData.teams);
-    })
+    // this.dataService.getAllLeagueMatches().subscribe(matches => {
+    //   console.log(matches);
+    //   this.getTeams();
+    //   const teamRankings = this.calculateTeamRankings(matches);
+    //   this.mockData.teams = teamRankings;
+    //   console.log(this.mockData.teams);
+    // })
   }
 
   calculateTeamRankings(matches: any[]): TeamRanking[] {
@@ -114,9 +117,24 @@ export class RankingsComponent {
         rankings[teamTwoId].points += 1;
       }
     });
+    console.log(rankings)
   
     return Object.values(rankings).sort((a, b) => b.points - a.points);
   }
+
+  getTeams() {
+    this.dataService.getAllusers().pipe(takeUntil(this.destroy$)).subscribe((teams) => {
+      this.teams = teams;
+      console.log(this.teams);
+    });
+  }
+
+    getTeamDetails(team: any) {
+      const teamData = this.teams.find((x) => x.uid === team?.id);
+      console.log(team, teamData)
+      return teamData;
+    }
+  
 
   // Calculate win rate for teams
   calculateWinRate(wins: number, losses: number): string {
