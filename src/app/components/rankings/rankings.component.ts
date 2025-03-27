@@ -209,7 +209,7 @@ export class RankingsComponent {
   }
 
     getTeamDetails(team: any) {
-      const teamData = this.teams.find((x) => x.uid === team?.id);
+      const teamData = this.teams.find((x) => x.uid === (team?.id ?? team));
       return teamData;
     }
   

@@ -68,7 +68,7 @@
             <div class="rank-card__image">
               <!-- https://i.postimg.cc/65sS9ZdX/pngwing-com.png -->
               <!-- getTeamDetails(team)?.team?.logo -->
-              <img [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'" class="object-cover team-logo rounded-lg" width="50" height="50" alt="team logo"> 
+              <img [src]="getTeamDetails(team?.teamId)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'" class="object-cover team-logo rounded-lg" width="50" height="50" alt="team logo"> 
             </div>
             <div class="rank-card__detail">
               <div class="rank-card__number">
@@ -125,7 +125,7 @@
             <div class="rank-card__image">
               <!-- https://i.postimg.cc/65sS9ZdX/pngwing-com.png -->
               <!-- getTeamDetails(team)?.team?.logo -->
-              <img [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'" class="object-cover team-logo rounded-lg" width="50" height="50" alt="team logo"> 
+              <img [src]="getTeamDetails(team.teamId)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'" class="object-cover team-logo rounded-lg" width="50" height="50" alt="team logo"> 
             </div>
             <div class="rank-card__detail">
               <div class="rank-card__number">
