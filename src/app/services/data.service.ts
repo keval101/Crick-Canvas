@@ -368,6 +368,27 @@ export class DataService {
     return allMatches;
   }
 
+    // Get league-matches where playerId is in either team_one.id or team_two.id
+    async getPlayerH2HMatches(playerId: string) {
+      const teamOneQuery = this.firestore.collection('matches', ref => 
+        ref.where('team_one.id', '==', playerId)
+      ).get().toPromise();;
+  
+      const teamTwoQuery = this.firestore.collection('matches', ref => 
+        ref.where('team_two.id', '==', playerId)
+      ).get().toPromise();;
+  
+      const [teamOneSnapshot, teamTwoSnapshot] = await Promise.all([teamOneQuery, teamTwoQuery]);
+  
+      const teamOneMatches = teamOneSnapshot.docs.map(doc => doc.data());
+      const teamTwoMatches = teamTwoSnapshot.docs.map(doc => doc.data());
+  
+      // Optional: remove duplicates if needed
+      const allMatches = [...teamOneMatches, ...teamTwoMatches];
+  
+      return allMatches;
+    }
+
   deleteLeagueMatches(leagueId: string) {
     // Delete all matches first
     this.firestore.collection('league-matches', ref => ref.where('league_id', '==', leagueId))

@@ -45,9 +45,10 @@ export class StatsComponent {
   getPlayerDetails() {
     console.log(this.playerId)
     this.dataService.getPlayerMatches(this.playerId).then(matches => {
-      this.stats = this.getPlayerStats(this.playerId, matches);
-      console.log(this.stats, matches)
-      this.isLoading = false;
+      this.dataService.getPlayerH2HMatches(this.playerId).then(h2hMatches => {
+        this.stats = this.getPlayerStats(this.playerId, [...matches, ...h2hMatches]);
+        this.isLoading = false;
+      })
     })
   }
 
