@@ -59,65 +59,107 @@
             </div>
           </div>
         </div>
-        <!-- <div class="space-y-4">
-          <div *ngFor="let team of mockData.teams" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-            <span class="font-bold text-lg w-8">{{ team.rank }}</span>
-            <div class="flex-1 ml-4">
-              <div class="font-semibold">{{ team.name }}</div>
-              <div class="text-sm text-gray-600">Win rate: {{ calculateWinRate(team.wins, team.losses) }}%</div>
-            </div>
-            <div class="text-right">
-              <div class="font-bold text-primary text-4xl text-purple-600">{{ team.points }}</div>
-              <div class="text-sm text-gray-600">
-                <span class="text-green-600">{{ team.wins }}W</span> &nbsp;
-                <span class="text-red-600">{{ team.losses }}L</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
   
       <!-- Batting Rankings Card -->
-      <div class="shadow-lg p-6 rank-card card-hover" *ngIf="ranking === 'Batting'">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">Batting Rankings</h2>
-          <div class="w-8 h-8 flex items-center justify-center">
-            <i class="ri-cricket-line text-primary text-2xl"></i>
-          </div>
-        </div>
-        <div class="space-y-4">
-          <div *ngFor="let batsman of mockData.batsmen" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-            <span class="font-bold text-lg w-8">{{ batsman.rank }}</span>
-            <div class="flex-1 ml-4">
-              <div class="font-semibold">{{ batsman.name }}</div>
-              <div class="text-sm text-gray-600">{{ batsman.country }}</div>
+      <div class="shadow-lg p-8 card-hover" *ngIf="ranking === 'Batting'">
+        <div class="relative rank-card" *ngFor="let team of mockData.batsmen; let i = index" >
+          <div class="flex justify-between w-full">
+            <div class="rank-card__image">
+              <!-- https://i.postimg.cc/65sS9ZdX/pngwing-com.png -->
+              <!-- getTeamDetails(team)?.team?.logo -->
+              <img [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'" class="object-cover team-logo rounded-lg" width="50" height="50" alt="team logo"> 
             </div>
-            <div class="text-right">
-              <div class="font-bold text-primary">{{ batsman.runs }}</div>
-              <div class="text-sm text-gray-600">Avg: {{ batsman.avg }} SR: {{ batsman.sr }}</div>
+            <div class="rank-card__detail">
+              <div class="rank-card__number">
+                <p>{{i + 1}}</p>
+                <span>Place</span>
+              </div>
+              <div class="rank-card__team">
+                <p>{{team.name}}</p>
+              </div>
+            </div>
+
+            <div class="rank-card__points">
+
+              <!-- <div class="rank-card__point">
+                <p>{{team.points}}</p>
+                <span>Points</span>
+              </div> -->
+
+              <div class="rank-card__point">
+                <p>{{team.matches}}</p>
+                <span>Matches</span>
+              </div>
+
+              <div class="rank-card__point">
+                <p>{{team.runs}}</p>
+                <span>Runs</span>
+              </div>
+
+              <div class="rank-card__point">
+                <p>{{team.strikeRate.toFixed(2)}}</p>
+                <span>SR</span>
+              </div>
+
+              <div class="rank-card__point">
+                <p>{{ballsToOvers(team.ballsFaced)}}</p>
+                <span>OF</span>
+              </div>
+
+              <div class="rank-card__point">
+                <p>{{team.average.toFixed(2)}}</p>
+                <span>Avg</span>
+              </div>
+
+
             </div>
           </div>
         </div>
       </div>
   
       <!-- Bowling Rankings Card -->
-      <div class="shadow-lg p-6 rank-card card-hover" *ngIf="ranking === 'Bowling'">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">Bowling Rankings</h2>
-          <div class="w-8 h-8 flex items-center justify-center">
-            <i class="ri-ball-line text-primary text-2xl"></i>
-          </div>
-        </div>
-        <div class="space-y-4">
-          <div *ngFor="let bowler of mockData.bowlers" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-            <span class="font-bold text-lg w-8">{{ bowler.rank }}</span>
-            <div class="flex-1 ml-4">
-              <div class="font-semibold">{{ bowler.name }}</div>
-              <div class="text-sm text-gray-600">{{ bowler.country }}</div>
+      <div class="shadow-lg p-8 card-hover" *ngIf="ranking === 'Bowling'">
+        <div class="relative rank-card" *ngFor="let team of mockData.bowlers; let i = index" >
+          <div class="flex justify-between w-full">
+            <div class="rank-card__image">
+              <!-- https://i.postimg.cc/65sS9ZdX/pngwing-com.png -->
+              <!-- getTeamDetails(team)?.team?.logo -->
+              <img [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'" class="object-cover team-logo rounded-lg" width="50" height="50" alt="team logo"> 
             </div>
-            <div class="text-right">
-              <div class="font-bold text-primary">{{ bowler.wickets }}</div>
-              <div class="text-sm text-gray-600">Eco: {{ bowler.economy }} Avg: {{ bowler.avg }}</div>
+            <div class="rank-card__detail">
+              <div class="rank-card__number">
+                <p>{{i + 1}}</p>
+                <span>Place</span>
+              </div>
+              <div class="rank-card__team">
+                <p>{{team.name}}</p>
+              </div>
+            </div>
+
+            <div class="rank-card__points">
+
+              <div class="rank-card__point">
+                <p>{{team.matches}}</p>
+                <span>Matches</span>
+              </div>
+
+              <div class="rank-card__point">
+                <p>{{ballsToOvers(team.ballsBowled)}}</p>
+                <span>Overs</span>
+              </div>
+
+              <div class="rank-card__point">
+                <p>{{team.wickets}}</p>
+                <span>Wickets</span>
+              </div>
+
+              <div class="rank-card__point">
+                <p>{{team.economy.toFixed(2)}}</p>
+                <span>Economy</span>
+              </div>
+
+
             </div>
           </div>
         </div>

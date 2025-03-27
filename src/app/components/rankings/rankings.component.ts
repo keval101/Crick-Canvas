@@ -13,6 +13,26 @@ interface TeamRanking {
   points: number;
 }
 
+interface BatsmanRanking {
+  name: string;
+  teamId: string;
+  runs: number;
+  ballsFaced: number;
+  average?: number;
+  matches?: number;
+  strikeRate?: number;
+}
+
+interface BowlerRanking {
+  name: string;
+  teamId: string;
+  wickets: number;
+  ballsBowled: number;
+  economy?: number;
+  matches?: number;
+  runsConceded?: number;
+}
+
 @Component({
   selector: 'app-rankings',
   templateUrl: './rankings.component.html',
@@ -25,20 +45,8 @@ export class RankingsComponent {
   isLoading = true;
   mockData: any = {
     teams: [],
-    batsmen: [
-      { rank: 1, name: "Steve Smith", country: "AUS", runs: 12456, avg: 61.8, sr: 86.5 },
-      { rank: 2, name: "Virat Kohli", country: "IND", runs: 12380, avg: 59.2, sr: 93.2 },
-      { rank: 3, name: "Kane Williamson", country: "NZ", runs: 11890, avg: 57.4, sr: 82.1 },
-      { rank: 4, name: "Joe Root", country: "ENG", runs: 11234, avg: 56.8, sr: 88.7 },
-      { rank: 5, name: "Babar Azam", country: "PAK", runs: 10987, avg: 55.9, sr: 89.3 },
-    ],
-    bowlers: [
-      { rank: 1, name: "Pat Cummins", country: "AUS", wickets: 342, economy: 2.8, avg: 21.5 },
-      { rank: 2, name: "Jasprit Bumrah", country: "IND", wickets: 328, economy: 2.9, avg: 22.1 },
-      { rank: 3, name: "Kagiso Rabada", country: "SA", wickets: 315, economy: 3.1, avg: 22.8 },
-      { rank: 4, name: "James Anderson", country: "ENG", wickets: 298, economy: 2.7, avg: 23.2 },
-      { rank: 5, name: "Trent Boult", country: "NZ", wickets: 289, economy: 3.0, avg: 23.5 },
-    ],
+    batsmen: [],
+    bowlers: [],
   };
 
   constructor(
@@ -51,6 +59,8 @@ export class RankingsComponent {
       this.getTeams();
       const teamRankings = this.calculateTeamRankings(matches);
       this.mockData.teams = teamRankings;
+      this.updatePlayerRankings(matches);
+
       console.log(this.mockData.teams);
     })
   }
@@ -118,16 +128,88 @@ export class RankingsComponent {
     return Object.values(rankings).sort((a, b) => b.points - a.points);
   }
 
+  // New method to update player rankings (placeholder for individual player data)
+  updatePlayerRankings(matches: any[]): void {
+    const batsmen: Record<string, BatsmanRanking> = {};
+    const bowlers: Record<string, BowlerRanking> = {};
+
+    matches.forEach(match => {
+      const { team_one, team_two } = match;
+
+      // Placeholder: Assuming player data will come later
+      // For now, we'll aggregate team-level batting/bowling stats
+      // Replace this with actual player data when available
+      const teamOneBatsman = `${team_one.name}`; // Dummy key
+      const teamTwoBatsman = `${team_two.name}`; // Dummy key
+      const teamOneBowler = `${team_one.name}`; // Dummy key
+      const teamTwoBowler = `${team_two.name}`; // Dummy key
+
+      if (!batsmen[teamOneBatsman]) {
+        batsmen[teamOneBatsman] = { name: teamOneBatsman, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0 };
+      }
+      if (!batsmen[teamTwoBatsman]) {
+        batsmen[teamTwoBatsman] = { name: teamTwoBatsman, teamId: team_two.id, runs: 0, ballsFaced: 0, matches: 0 };
+      }
+      if (!bowlers[teamOneBowler]) {
+        bowlers[teamOneBowler] = { name: teamOneBowler, teamId: team_one.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0 };
+      }
+      if (!bowlers[teamTwoBowler]) {
+        bowlers[teamTwoBowler] = { name: teamTwoBowler, teamId: team_two.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0 };
+      }
+
+      batsmen[teamOneBatsman].runs += team_one.runs;
+      batsmen[teamOneBatsman].ballsFaced += team_one.balls;
+      batsmen[teamTwoBatsman].runs += team_two.runs;
+      batsmen[teamTwoBatsman].ballsFaced += team_two.balls;
+
+      batsmen[teamOneBatsman].matches++;
+      batsmen[teamTwoBatsman].matches++;
+
+      bowlers[teamOneBowler].matches++;
+      bowlers[teamTwoBowler].matches++;
+
+      bowlers[teamOneBowler].wickets += team_two.wickets;
+      bowlers[teamOneBowler].ballsBowled += team_two.balls;
+      bowlers[teamOneBowler].runsConceded += team_two.runs;
+
+      bowlers[teamTwoBowler].wickets += team_one.wickets;
+      bowlers[teamTwoBowler].wickets += team_one.wickets;
+      bowlers[teamTwoBowler].runsConceded += team_one.runs;
+    });
+
+    // Calculate averages and strike rates/economy
+    this.mockData.batsmen = Object.values(batsmen).map(b => ({
+      ...b,
+      average: b.ballsFaced > 0 ? b.runs / (b.ballsFaced / 6) : 0, // Simplified average
+      strikeRate: b.ballsFaced > 0 ? (b.runs / b.ballsFaced) * 100 : 0,
+    })).sort((a, b) => b.runs - a.runs);
+
+    this.mockData.bowlers = Object.values(bowlers).map(b => ({
+      ...b,
+      // economy: b.ballsBowled > 0 ? (b.wickets * 6 / b.ballsBowled) : 0, // Simplified economy
+      economy: this.calculateEconomy(b.runsConceded, b.ballsBowled),
+    })).sort((a, b) => b.wickets - a.wickets);
+
+    console.log('Batsmen Rankings:', this.mockData.batsmen);
+    console.log('Bowlers Rankings:', this.mockData.bowlers);
+  }
+
+  calculateEconomy(runsConceded: number, ballsBowled: number): number {
+    if (ballsBowled === 0) {
+      return 0; // Avoid division by zero
+    }
+    const oversBowled = ballsBowled / 6; // Convert balls to overs
+    return parseFloat((runsConceded / oversBowled).toFixed(2)); // Round to 2 decimal places
+  }
+  
   getTeams() {
     this.dataService.getAllusers().pipe(takeUntil(this.destroy$)).subscribe((teams) => {
       this.teams = teams;
-      console.log(this.teams);
     });
   }
 
     getTeamDetails(team: any) {
       const teamData = this.teams.find((x) => x.uid === team?.id);
-      console.log(team, teamData)
       return teamData;
     }
   
@@ -136,5 +218,25 @@ export class RankingsComponent {
   calculateWinRate(wins: number, losses: number): string {
     return ((wins / (wins + losses)) * 100).toFixed(1);
   }
+
+  
+  ballsToOvers(balls) {
+    // Handle invalid inputs
+    if (typeof balls !== 'number' || balls < 0) {
+        return "Please provide a valid positive number of balls";
+    }
+
+    // Calculate complete overs and remaining balls
+    const overs = Math.floor(balls / 6);
+    const remainingBalls = balls % 6;
+    
+    // Return formatted result
+    if (remainingBalls === 0) {
+        return `${overs}`;
+    } else {
+        return `${overs}.${remainingBalls}`;
+    }
+}
+
 }
 
