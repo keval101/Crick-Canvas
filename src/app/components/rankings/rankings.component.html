@@ -64,7 +64,7 @@
         <tr class="bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.teams; let i = index"
         [class.!bg-white]="i % 2 === 0">
           <td class="px-6 py-4">
-            <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team]">
+            <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
               <img
                 [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                 alt="Royal Challengers"

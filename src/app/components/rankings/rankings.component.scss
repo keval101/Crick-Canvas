@@ -143,5 +143,10 @@
     &:hover {
       @apply text-purple-700;
       transition: all 0.2s ease-in;
+
+      span {
+        @apply text-purple-700;
+        transition: all 0.2s ease-in;
+      }
     }
   }
