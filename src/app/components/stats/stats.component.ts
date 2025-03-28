@@ -87,6 +87,9 @@ export class StatsComponent {
     let bestFigures = { wickets: 0, runs: 0 };
   
     matches.forEach(match => {
+      if(match.status != 'completed' || match.team_one.balls === 0) {
+        return;
+      }
       let isPlayerInMatch = false;
       const playerTeam = match.team_one.id === playerId ? match.team_one : (match.team_two.id === playerId ? match.team_two : null);
       const opponentTeam = match.team_one.id === playerId ? match.team_two : (match.team_two.id === playerId ? match.team_one : null);

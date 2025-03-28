@@ -49,7 +49,7 @@ export class RankingsComponent {
     bowlers: [],
   };
 
-  sorting = 'rank';
+  sorting = '-rank';
 
   constructor(
     private dataService: DataService
@@ -75,7 +75,7 @@ export class RankingsComponent {
       const teamOneId = team_one.id;
       const teamTwoId = team_two.id;
   
-      if(teamOneId === '' || teamTwoId === '') {
+      if(teamOneId === '' || teamTwoId === '' || match.status != 'completed' || team_one.balls === 0) {  
         return;
       }
       if (!rankings[teamOneId]) {
@@ -204,7 +204,7 @@ export class RankingsComponent {
       return 0; // Avoid division by zero
     }
     const oversBowled = ballsBowled / 6; // Convert balls to overs
-    return parseFloat((runsConceded / oversBowled).toFixed(2)); // Round to 2 decimal places
+    return (runsConceded / oversBowled); // Round to 2 decimal places
   }
   
   getTeams() {
@@ -273,5 +273,56 @@ sortByTeams(key: string, direction: 'asc' | 'desc' = 'desc') {
   });
 }
 
+sortByBatsman(key: string, direction: 'asc' | 'desc' = 'desc') {
+  if (direction === 'desc') {
+    this.sorting = '-' + key;
+  } else {
+    this.sorting = key;
+  }
+
+  this.mockData.batsmen = this.mockData.batsmen.sort((a, b) => {
+    // Determine the multiplier based on sort direction
+    const sortMultiplier = direction === 'asc' ? 1 : -1;
+
+    if (key.includes('rank')) {
+      return (b.rank - a.rank) * sortMultiplier;
+    } else if (key.includes('runs')) {
+      return (b.runs - a.runs) * sortMultiplier;
+    } else if (key.includes('average')) {
+      return (b.average - a.average) * sortMultiplier;
+    } else if (key.includes('strikeRate')) {
+      return (b.strikeRate - a.strikeRate) * sortMultiplier;
+    } else {
+      // Default sorting by rank
+      return (b.rank - a.rank) * sortMultiplier;
+    }
+  });
+}
+
+sortByBowler(key: string, direction: 'asc' | 'desc' = 'desc') {
+  if (direction === 'desc') {
+    this.sorting = '-' + key;
+  } else {
+    this.sorting = key;
+  }
+
+  this.mockData.bowlers = this.mockData.bowlers.sort((a, b) => {
+    // Determine the multiplier based on sort direction
+    const sortMultiplier = direction === 'asc' ? 1 : -1;
+
+    if (key.includes('rank')) {
+      return (b.rank - a.rank) * sortMultiplier;
+    } else if (key.includes('wickets')) {
+      return (b.wickets - a.wickets) * sortMultiplier;
+    } else if (key.includes('economy')) {
+      return (b.economy - a.economy) * sortMultiplier;
+    } else if (key.includes('matches')) {
+      return (b.matches - a.matches) * sortMultiplier;
+    } else {
+      // Default sorting by rank
+      return (b.rank - a.rank) * sortMultiplier;
+    }
+  });
+}
 }
 
