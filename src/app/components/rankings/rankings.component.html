@@ -17,37 +17,43 @@
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center gap-2 cursor-pointer" (click)="sortByTeams('rank', sorting === 'rank' ? 'desc' : sorting === '-rank' ? 'asc' : 'desc')">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('rank', sorting === 'rank' ? 'desc' : sorting === '-rank' ? 'asc' : 'desc')">
               Rank 
               <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('rank')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-rank'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center gap-2 cursor-pointer" (click)="sortByTeams('matches', sorting === 'matches' ? 'desc' : sorting === '-matches' ? 'asc' : 'desc' )">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('points', sorting === 'points' ? 'desc' : sorting === '-points' ? 'asc' : 'desc' )">
+              Points 
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('points')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-points'">
+            </div>
+          </th>
+          <th class="px-4 py-4 text-center">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('matches', sorting === 'matches' ? 'desc' : sorting === '-matches' ? 'asc' : 'desc' )">
               Matches 
               <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('matches')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-matches'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center gap-2 cursor-pointer" (click)="sortByTeams('won', sorting === 'won' ? 'desc' : sorting === '-won' ? 'asc' : 'desc')">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('won', sorting === 'won' ? 'desc' : sorting === '-won' ? 'asc' : 'desc')">
               Won 
               <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('won')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-won'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center gap-2 cursor-pointer" (click)="sortByTeams('draw', sorting === 'draw' ? 'desc' : sorting === '-draw' ? 'asc' : 'desc')">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('draw', sorting === 'draw' ? 'desc' : sorting === '-draw' ? 'asc' : 'desc')">
               Draw 
               <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('draw')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-draw'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center gap-2 cursor-pointer" (click)="sortByTeams('lose', sorting === 'lose' ? 'desc' : sorting === '-lose' ? 'asc' : 'desc')">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('lose', sorting === 'lose' ? 'desc' : sorting === '-lose' ? 'asc' : 'desc')">
               Lose 
               <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('lose')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-lose'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center gap-2 cursor-pointer" (click)="sortByTeams('winp', sorting === 'winp' ? 'desc' : sorting === '-winp' ? 'asc' : 'desc')">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('winp', sorting === 'winp' ? 'desc' : sorting === '-winp' ? 'asc' : 'desc')">
               Win% 
               <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('winp')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-winp'">
             </div>
@@ -68,6 +74,7 @@
             </div>
           </td>
           <td class="px-4 py-4 text-center">{{team.rank + 1}}</td>
+          <td class="px-4 py-4 text-center">{{team?.points}}</td>
           <td class="px-4 py-4 text-center">{{team?.matches}}</td>
           <td class="px-4 py-4 text-center text-green-600 font-medium">{{team?.wins}}</td>
           <td class="px-4 py-4 text-center text-yellow-600 font-medium">{{team?.draws}}</td> 

@@ -261,6 +261,8 @@ sortByTeams(key: string, direction: 'asc' | 'desc' = 'desc') {
     console.log(sortMultiplier, this.sorting)
     if (key.includes('rank')) {
       return (b.rank - a.rank) * sortMultiplier;
+    } else if (key.includes('points')) {
+      return (b.points - a.points) * sortMultiplier;
     } else if (key.includes('matches')) {
       return (b.matches - a.matches) * sortMultiplier;
     } else if (key.includes('won')) {
