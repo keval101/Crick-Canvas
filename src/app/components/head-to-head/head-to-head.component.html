@@ -55,13 +55,13 @@
             <div *ngIf="fixture?.team_one?.runs > fixture?.team_two?.runs"
               class=" w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
-              <span>{{fixture?.team_one?.name ?? getTeamDetails(fixture?.team_one)?.name}} Won The Match!</span>
+              <span>{{getTeamDetails(fixture?.team_one)?.name}} Won The Match!</span>
             </div>
 
             <div *ngIf="fixture?.team_two?.runs > fixture?.team_one?.runs"
               class=" w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
-              <span>{{fixture?.team_two?.name ?? getTeamDetails(fixture?.team_two)?.name}} Won The Match!</span>
+              <span>{{getTeamDetails(fixture?.team_two)?.name}} Won The Match!</span>
             </div>
             
             <div *ngIf="fixture?.team_two?.runs === fixture?.team_one?.runs"
@@ -79,10 +79,10 @@
             </div>
             <div class="flex items-center justify-between mb-8">
               <div class="flex items-center gap-4 flex-1">
-                <img [src]="fixture?.team_one?.logo ?? getTeamDetails(fixture?.team_one)?.logo"
+                <img [src]="getTeamDetails(fixture?.team_one)?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                   class="w-12 h-12 rounded-full object-cover" alt="New Zealand">
                 <div>
-                  <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg text-gray-900">{{fixture?.team_one?.name ?? getTeamDetails(fixture?.team_one)?.name}}</div>
+                  <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_one)?.name}}</div>
                   <div *ngIf="fixture?.status !== 'upcoming'" 
                     [class.text-red-500]="fixture?.team_two?.runs > fixture?.team_one?.runs" 
                     [class.text-green-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" class="text-2xl font-bold text-gray-900">{{fixture?.team_one?.runs}}/{{fixture?.team_one?.wickets}}</div>
@@ -94,14 +94,14 @@
               </div>
               <div class="flex items-center gap-4 flex-1 justify-end">
                 <div class="text-right">
-                  <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg text-gray-900">{{fixture?.team_two?.name ??  getTeamDetails(fixture?.team_two)?.name}}</div>
+                  <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_two)?.name}}</div>
                   <div *ngIf="fixture?.status !== 'upcoming'" 
                     [class.text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 
                     [class.text-green-500]="fixture?.team_two?.runs > fixture?.team_one?.runs"
                    class="text-2xl font-bold text-gray-900">{{fixture?.team_two?.runs}}/{{fixture?.team_two?.wickets}}</div>
                   <div *ngIf="fixture?.status !== 'upcoming'" class="text-sm text-gray-500">{{ballsToOvers(fixture?.team_two?.balls)}} overs</div>
                 </div>
-                <img [src]="fixture?.team_two?.logo ?? getTeamDetails(fixture?.team_two)?.logo"
+                <img [src]="getTeamDetails(fixture?.team_two)?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                   class="w-12 h-12 rounded-full object-cover" alt="Pakistan">
               </div>
             </div>

@@ -49,6 +49,8 @@ export class RankingsComponent {
     bowlers: [],
   };
 
+  sorting = 'rank';
+
   constructor(
     private dataService: DataService
   ) { }
@@ -125,7 +127,8 @@ export class RankingsComponent {
     console.log(rankings)
   
     this.isLoading = false;
-    return Object.values(rankings).sort((a, b) => b.points - a.points);
+    const data = Object.values(rankings).sort((a, b) => b.points - a.points);
+    return data.map((x, i) => ({ ...x, rank: i++ }));
   }
 
   // New method to update player rankings (placeholder for individual player data)
@@ -178,14 +181,16 @@ export class RankingsComponent {
     });
 
     // Calculate averages and strike rates/economy
-    this.mockData.batsmen = Object.values(batsmen).map(b => ({
+    this.mockData.batsmen = Object.values(batsmen).map((b, i) => ({
       ...b,
+      rank: i++,
       average: b.ballsFaced > 0 ? b.runs / (b.ballsFaced / 6) : 0, // Simplified average
       strikeRate: b.ballsFaced > 0 ? (b.runs / b.ballsFaced) * 100 : 0,
     })).sort((a, b) => b.runs - a.runs);
 
-    this.mockData.bowlers = Object.values(bowlers).map(b => ({
+    this.mockData.bowlers = Object.values(bowlers).map((b, i) => ({
       ...b,
+      rank: i++,
       // economy: b.ballsBowled > 0 ? (b.wickets * 6 / b.ballsBowled) : 0, // Simplified economy
       economy: this.calculateEconomy(b.runsConceded, b.ballsBowled),
     })).sort((a, b) => b.wickets - a.wickets);
@@ -236,6 +241,36 @@ export class RankingsComponent {
     } else {
         return `${overs}.${remainingBalls}`;
     }
+}
+
+sortByTeams(key: string, direction: 'asc' | 'desc' = 'desc') {
+  if(direction === 'desc') {
+    this.sorting = '-' + key;
+  } else {
+    this.sorting = key;
+  }
+  console.log(this.sorting)
+  this.mockData.teams = this.mockData.teams.sort((a, b) => {
+    // Determine the multiplier based on sort direction
+    const sortMultiplier = direction === 'asc' ? 1 : -1;
+    console.log(sortMultiplier, this.sorting)
+    if (key.includes('rank')) {
+      return (b.rank - a.rank) * sortMultiplier;
+    } else if (key.includes('matches')) {
+      return (b.matches - a.matches) * sortMultiplier;
+    } else if (key.includes('won')) {
+      return (b.wins - a.wins) * sortMultiplier;
+    } else if (key.includes('draw')) {
+      return (b.draws - a.draws) * sortMultiplier;
+    } else if (key.includes('lose')) {
+      return (b.losses - a.losses) * sortMultiplier;
+    } else if (key.includes('winp')) {
+      return (((b?.wins / b?.matches) * 100) - ((a?.wins / a?.matches) * 100)) * sortMultiplier;
+    } else {
+      // Default sorting by rank
+      return (b.rank - a.rank) * sortMultiplier;
+    }
+  });
 }
 
 }

@@ -20,10 +20,22 @@
   
 
   .bg-grid {
-    background-image: url('./../../../assets/icons/bg2.jpg');
-    background-size: contain;
+    background-image: url('./../../../assets/icons/bg-5.jpg');
+    background-size: cover;
+    background-position: center;
     width: 100%;
     height: 100%;
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+    }
   }
 
   .rank-card {
@@ -48,7 +60,7 @@
       p {
         @apply mb-0 font-semibold;
         line-height: normal;
-        font-size: 2.2rem;
+        font-size: 1.6rem;
       }
 
       span {
@@ -66,7 +78,7 @@
     }
 
     &__detail {
-      @apply flex py-6 bg-orange-600 items-center;
+      @apply flex py-4 bg-orange-600 items-center;
       min-width: 420px;
     }
 
@@ -74,7 +86,7 @@
       p {
         @apply mb-0 pl-12 font-semibold text-white;
         line-height: normal;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
       }
     }
 
@@ -88,7 +100,7 @@
       p {
         @apply mb-0 font-semibold text-white;
         line-height: 0.8;
-        font-size: 2.2rem;
+        font-size: 1.8rem;
       }
 
       span {
@@ -113,4 +125,23 @@
     width: 50px;
     height: 50px;
     border-radius: 100px;
+  }
+
+  .team-name {
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+  
+    span {
+      cursor: pointer;
+      transition: all 0.2s ease-in;
+    
+      &:hover {
+        @apply text-purple-700;
+        transition: all 0.2s ease-in;
+      }
+    }
+    &:hover {
+      @apply text-purple-700;
+      transition: all 0.2s ease-in;
+    }
   }
