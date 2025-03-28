@@ -133,9 +133,9 @@
 
   
  <p-dialog header="Create Match" [(visible)]="visible" [modal]="true" [draggable]="false" [resizable]="false">
-    <app-add-head-to-head (close)="closeModal()"></app-add-head-to-head>
+    <app-add-head-to-head [length]="allMatches?.length" (close)="closeModal()"></app-add-head-to-head>
  </p-dialog>
 
  <p-dialog header="Match Result" [(visible)]="matchResultModal" [modal]="true" [draggable]="false" [resizable]="false">
-  <app-match-result [isH2H]="true" [length]="allMatches?.length" [match]="selectedMatch" (closeMatchResultModal)="closeMatchResultModal($event)"></app-match-result>
+  <app-match-result [isH2H]="true" [match]="selectedMatch" (closeMatchResultModal)="closeMatchResultModal($event)"></app-match-result>
 </p-dialog>
