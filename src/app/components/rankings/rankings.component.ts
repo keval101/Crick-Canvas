@@ -181,7 +181,7 @@ export class RankingsComponent {
       bowlers[teamOneBowler].runsConceded += team_two.runs;
 
       bowlers[teamTwoBowler].wickets += team_one.wickets;
-      bowlers[teamTwoBowler].wickets += team_one.wickets;
+      bowlers[teamTwoBowler].ballsBowled += team_one.balls;
       bowlers[teamTwoBowler].runsConceded += team_one.runs;
     });
 
