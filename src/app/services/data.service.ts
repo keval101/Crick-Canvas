@@ -273,6 +273,7 @@ export class DataService {
   }
 
   async saveH2HToFirebase(fixture) {
+    console.log(fixture)
     return this.firestore.collection('matches').doc(fixture.id).set(fixture);
   }
 
