@@ -334,6 +334,7 @@ export class DataService {
   }
 
   async getUserMatches(userId: string) {
+    console.log(userId)
       const teamOneQuery = this.firestore.collection('matches', ref => 
         ref.where('team_one.id', '==', userId)
       ).get().toPromise();;

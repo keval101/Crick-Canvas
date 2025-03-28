@@ -76,7 +76,6 @@ export class HeadToHeadComponent {
 
   getTeamDetails(team: any) {
     const teamData = this.teams.find((x) => x.uid === team?.id);
-    console.log(this.teams, team)
     team['name'] = teamData?.team?.name;
     team['logo'] = teamData?.team?.logo;
     // this.allMatches = JSON.parse(JSON.stringify(this.fixtures));

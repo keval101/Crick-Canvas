@@ -65,8 +65,6 @@
                 class="w-8 h-8 rounded-full object-cover"
               />
               <span class="font-semibold text-gray-900">{{team?.name}}</span>
-              <!-- <img src="/assets/icons/orangecap.png" alt="" width="30" height="30" *ngIf="team?.id === orangecap?.id">
-              <img src="/assets/icons/purplecap.png" alt="" width="30" height="30" *ngIf="team?.id === purplecap?.id"> -->
             </div>
           </td>
           <td class="px-4 py-4 text-center">{{team.rank + 1}}</td>
@@ -74,13 +72,6 @@
           <td class="px-4 py-4 text-center text-green-600 font-medium">{{team?.wins}}</td>
           <td class="px-4 py-4 text-center text-yellow-600 font-medium">{{team?.draws}}</td> 
           <td class="px-4 py-4 text-center text-red-600 font-medium">{{team?.losses}}</td>
-          <!-- <td class="px-4 py-4 text-center">{{team?.draw}}</td>
-          <td class="px-4 py-4 text-center">{{team?.runsFor}}</td>
-          <td class="px-4 py-4 text-center">{{team?.oversFaced}}</td>
-          <td class="px-4 py-4 text-center">{{team?.runsAgainst}}</td>
-          <td class="px-4 py-4 text-center">{{team?.oversBowled}}</td>
-          <td class="px-4 py-4 text-center">{{team?.wicketsTaken}}</td>
-          <td class="px-4 py-4 text-center font-semibold">{{team?.pts}}</td> -->
           <td class="px-4 py-4 text-center">{{((team?.wins / team?.matches) * 100).toFixed(0)}}</td>
         </tr>
 
