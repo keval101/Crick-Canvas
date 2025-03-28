@@ -188,17 +188,23 @@ export class RankingsComponent {
     // Calculate averages and strike rates/economy
     this.mockData.batsmen = Object.values(batsmen).map((b, i) => ({
       ...b,
-      rank: i++,
       average: b.ballsFaced > 0 ? b.runs / (b.ballsFaced / 6) : 0, // Simplified average
       strikeRate: b.ballsFaced > 0 ? (b.runs / b.ballsFaced) * 100 : 0,
     })).sort((a, b) => b.runs - a.runs);
 
     this.mockData.bowlers = Object.values(bowlers).map((b, i) => ({
       ...b,
-      rank: i++,
       // economy: b.ballsBowled > 0 ? (b.wickets * 6 / b.ballsBowled) : 0, // Simplified economy
       economy: this.calculateEconomy(b.runsConceded, b.ballsBowled),
     })).sort((a, b) => b.wickets - a.wickets);
+
+    this.mockData.batsmen.map((x, i) => {
+      x['rank'] = i;
+    })
+
+    this.mockData.bowlers.map((x, i) => {
+      x['rank'] = i;
+    })
 
     console.log('Batsmen Rankings:', this.mockData.batsmen);
     console.log('Bowlers Rankings:', this.mockData.bowlers);
