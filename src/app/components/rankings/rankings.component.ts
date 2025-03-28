@@ -78,6 +78,7 @@ export class RankingsComponent {
       if(teamOneId === '' || teamTwoId === '' || match.status != 'completed' || team_one.balls === 0) {  
         return;
       }
+
       if (!rankings[teamOneId]) {
         rankings[teamOneId] = {
           id: teamOneId,
@@ -138,6 +139,10 @@ export class RankingsComponent {
 
     matches.forEach(match => {
       const { team_one, team_two } = match;
+
+      if(team_one?.id === '' || team_two?.id === '' || match.status != 'completed' || team_one.balls === 0) {  
+        return;
+      }
 
       // Placeholder: Assuming player data will come later
       // For now, we'll aggregate team-level batting/bowling stats
