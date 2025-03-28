@@ -291,8 +291,8 @@ sortByBatsman(key: string, direction: 'asc' | 'desc' = 'desc') {
 
     if (key.includes('rank')) {
       return (b.rank - a.rank) * sortMultiplier;
-    } else if (key.includes('runs')) {
-      return (b.runs - a.runs) * sortMultiplier;
+    } else if (key.includes('matches')) {
+      return (b.matches - a.matches) * sortMultiplier;
     } else if (key.includes('average')) {
       return (b.average - a.average) * sortMultiplier;
     } else if (key.includes('strikeRate')) {
