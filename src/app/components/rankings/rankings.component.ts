@@ -69,13 +69,13 @@ export class RankingsComponent {
 
   calculateTeamRankings(matches: any[]): TeamRanking[] {
     const rankings: Record<string, TeamRanking> = {};
-  
+
     matches.forEach(match => {
       const { team_one, team_two } = match;
       const teamOneId = team_one.id;
       const teamTwoId = team_two.id;
-  
-      if(teamOneId === '' || teamTwoId === '' || match.status != 'completed' || team_one.balls === 0) {  
+
+      if (teamOneId === '' || teamTwoId === '' || match.status != 'completed' || team_one.balls === 0) {
         return;
       }
 
@@ -91,7 +91,7 @@ export class RankingsComponent {
           points: 0
         };
       }
-  
+
       if (!rankings[teamTwoId]) {
         rankings[teamTwoId] = {
           id: teamTwoId,
@@ -104,10 +104,10 @@ export class RankingsComponent {
           points: 0
         };
       }
-  
+
       rankings[teamOneId].matches++;
       rankings[teamTwoId].matches++;
-  
+
       if (team_one.runs > team_two.runs) {
         rankings[teamOneId].wins++;
         rankings[teamOneId].points += 2;
@@ -126,7 +126,7 @@ export class RankingsComponent {
       }
     });
     console.log(rankings)
-  
+
     this.isLoading = false;
     const data = Object.values(rankings).sort((a, b) => b.points - a.points);
     return data.map((x, i) => ({ ...x, rank: i++ }));
@@ -140,17 +140,14 @@ export class RankingsComponent {
     matches.forEach(match => {
       const { team_one, team_two } = match;
 
-      if(team_one?.id === '' || team_two?.id === '' || match.status != 'completed' || team_one.balls === 0) {  
+      if (team_one?.id === '' || team_two?.id === '' || match.status != 'completed' || team_one.balls === 0) {
         return;
       }
 
-      // Placeholder: Assuming player data will come later
-      // For now, we'll aggregate team-level batting/bowling stats
-      // Replace this with actual player data when available
-      const teamOneBatsman = `${team_one.name}`; // Dummy key
-      const teamTwoBatsman = `${team_two.name}`; // Dummy key
-      const teamOneBowler = `${team_one.name}`; // Dummy key
-      const teamTwoBowler = `${team_two.name}`; // Dummy key
+      const teamOneBatsman = `${team_one.name}`;
+      const teamTwoBatsman = `${team_two.name}`;
+      const teamOneBowler = `${team_one.name}`;
+      const teamTwoBowler = `${team_two.name}`;
 
       if (!batsmen[teamOneBatsman]) {
         batsmen[teamOneBatsman] = { name: teamOneBatsman, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0 };
@@ -217,125 +214,125 @@ export class RankingsComponent {
     const oversBowled = ballsBowled / 6; // Convert balls to overs
     return (runsConceded / oversBowled); // Round to 2 decimal places
   }
-  
+
   getTeams() {
     this.dataService.getAllusers().pipe(takeUntil(this.destroy$)).subscribe((teams) => {
       this.teams = teams;
     });
   }
 
-    getTeamDetails(team: any) {
-      const teamData = this.teams.find((x) => x.uid === (team?.id ?? team));
-      return teamData;
-    }
-  
+  getTeamDetails(team: any) {
+    const teamData = this.teams.find((x) => x.uid === (team?.id ?? team));
+    return teamData;
+  }
+
 
   // Calculate win rate for teams
   calculateWinRate(wins: number, losses: number): string {
     return ((wins / (wins + losses)) * 100).toFixed(1);
   }
 
-  
+
   ballsToOvers(balls) {
     // Handle invalid inputs
     if (typeof balls !== 'number' || balls < 0) {
-        return "Please provide a valid positive number of balls";
+      return "Please provide a valid positive number of balls";
     }
 
     // Calculate complete overs and remaining balls
     const overs = Math.floor(balls / 6);
     const remainingBalls = balls % 6;
-    
+
     // Return formatted result
     if (remainingBalls === 0) {
-        return `${overs}`;
+      return `${overs}`;
     } else {
-        return `${overs}.${remainingBalls}`;
+      return `${overs}.${remainingBalls}`;
     }
-}
-
-sortByTeams(key: string, direction: 'asc' | 'desc' = 'desc') {
-  if(direction === 'desc') {
-    this.sorting = '-' + key;
-  } else {
-    this.sorting = key;
-  }
-  console.log(this.sorting)
-  this.mockData.teams = this.mockData.teams.sort((a, b) => {
-    // Determine the multiplier based on sort direction
-    const sortMultiplier = direction === 'asc' ? 1 : -1;
-    console.log(sortMultiplier, this.sorting)
-    if (key.includes('rank')) {
-      return (b.rank - a.rank) * sortMultiplier;
-    } else if (key.includes('points')) {
-      return (b.points - a.points) * sortMultiplier;
-    } else if (key.includes('matches')) {
-      return (b.matches - a.matches) * sortMultiplier;
-    } else if (key.includes('won')) {
-      return (b.wins - a.wins) * sortMultiplier;
-    } else if (key.includes('draw')) {
-      return (b.draws - a.draws) * sortMultiplier;
-    } else if (key.includes('lose')) {
-      return (b.losses - a.losses) * sortMultiplier;
-    } else if (key.includes('winp')) {
-      return (((b?.wins / b?.matches) * 100) - ((a?.wins / a?.matches) * 100)) * sortMultiplier;
-    } else {
-      // Default sorting by rank
-      return (b.rank - a.rank) * sortMultiplier;
-    }
-  });
-}
-
-sortByBatsman(key: string, direction: 'asc' | 'desc' = 'desc') {
-  if (direction === 'desc') {
-    this.sorting = '-' + key;
-  } else {
-    this.sorting = key;
   }
 
-  this.mockData.batsmen = this.mockData.batsmen.sort((a, b) => {
-    // Determine the multiplier based on sort direction
-    const sortMultiplier = direction === 'asc' ? 1 : -1;
-
-    if (key.includes('rank')) {
-      return (b.rank - a.rank) * sortMultiplier;
-    } else if (key.includes('matches')) {
-      return (b.matches - a.matches) * sortMultiplier;
-    } else if (key.includes('average')) {
-      return (b.average - a.average) * sortMultiplier;
-    } else if (key.includes('strikeRate')) {
-      return (b.strikeRate - a.strikeRate) * sortMultiplier;
+  sortByTeams(key: string, direction: 'asc' | 'desc' = 'desc') {
+    if (direction === 'desc') {
+      this.sorting = '-' + key;
     } else {
-      // Default sorting by rank
-      return (b.rank - a.rank) * sortMultiplier;
+      this.sorting = key;
     }
-  });
-}
-
-sortByBowler(key: string, direction: 'asc' | 'desc' = 'desc') {
-  if (direction === 'desc') {
-    this.sorting = '-' + key;
-  } else {
-    this.sorting = key;
+    console.log(this.sorting)
+    this.mockData.teams = this.mockData.teams.sort((a, b) => {
+      // Determine the multiplier based on sort direction
+      const sortMultiplier = direction === 'asc' ? 1 : -1;
+      console.log(sortMultiplier, this.sorting)
+      if (key.includes('rank')) {
+        return (b.rank - a.rank) * sortMultiplier;
+      } else if (key.includes('points')) {
+        return (b.points - a.points) * sortMultiplier;
+      } else if (key.includes('matches')) {
+        return (b.matches - a.matches) * sortMultiplier;
+      } else if (key.includes('won')) {
+        return (b.wins - a.wins) * sortMultiplier;
+      } else if (key.includes('draw')) {
+        return (b.draws - a.draws) * sortMultiplier;
+      } else if (key.includes('lose')) {
+        return (b.losses - a.losses) * sortMultiplier;
+      } else if (key.includes('winp')) {
+        return (((b?.wins / b?.matches) * 100) - ((a?.wins / a?.matches) * 100)) * sortMultiplier;
+      } else {
+        // Default sorting by rank
+        return (b.rank - a.rank) * sortMultiplier;
+      }
+    });
   }
 
-  this.mockData.bowlers = this.mockData.bowlers.sort((a, b) => {
-    // Determine the multiplier based on sort direction
-    const sortMultiplier = direction === 'asc' ? 1 : -1;
-
-    if (key.includes('rank')) {
-      return (b.rank - a.rank) * sortMultiplier;
-    } else if (key.includes('wickets')) {
-      return (b.wickets - a.wickets) * sortMultiplier;
-    } else if (key.includes('economy')) {
-      return (b.economy - a.economy) * sortMultiplier;
-    } else if (key.includes('matches')) {
-      return (b.matches - a.matches) * sortMultiplier;
+  sortByBatsman(key: string, direction: 'asc' | 'desc' = 'desc') {
+    if (direction === 'desc') {
+      this.sorting = '-' + key;
     } else {
-      // Default sorting by rank
-      return (b.rank - a.rank) * sortMultiplier;
+      this.sorting = key;
     }
-  });
-}
+
+    this.mockData.batsmen = this.mockData.batsmen.sort((a, b) => {
+      // Determine the multiplier based on sort direction
+      const sortMultiplier = direction === 'asc' ? 1 : -1;
+
+      if (key.includes('rank')) {
+        return (b.rank - a.rank) * sortMultiplier;
+      } else if (key.includes('matches')) {
+        return (b.matches - a.matches) * sortMultiplier;
+      } else if (key.includes('average')) {
+        return (b.average - a.average) * sortMultiplier;
+      } else if (key.includes('strikeRate')) {
+        return (b.strikeRate - a.strikeRate) * sortMultiplier;
+      } else {
+        // Default sorting by rank
+        return (b.rank - a.rank) * sortMultiplier;
+      }
+    });
+  }
+
+  sortByBowler(key: string, direction: 'asc' | 'desc' = 'desc') {
+    if (direction === 'desc') {
+      this.sorting = '-' + key;
+    } else {
+      this.sorting = key;
+    }
+
+    this.mockData.bowlers = this.mockData.bowlers.sort((a, b) => {
+      // Determine the multiplier based on sort direction
+      const sortMultiplier = direction === 'asc' ? 1 : -1;
+
+      if (key.includes('rank')) {
+        return (b.rank - a.rank) * sortMultiplier;
+      } else if (key.includes('wickets')) {
+        return (b.wickets - a.wickets) * sortMultiplier;
+      } else if (key.includes('economy')) {
+        return (b.economy - a.economy) * sortMultiplier;
+      } else if (key.includes('matches')) {
+        return (b.matches - a.matches) * sortMultiplier;
+      } else {
+        // Default sorting by rank
+        return (b.rank - a.rank) * sortMultiplier;
+      }
+    });
+  }
 }
 
