@@ -130,7 +130,7 @@ export class LeagueDetailComponent {
     this.messageService.add({ severity: 'success', summary: 'League', detail: 'Fixtures Generated Successfully!' });
     this.fixtures = fixtures;
     this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
-    this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
+    this.allMatches = _.cloneDeep(this.fixtures)
     this.fixturesLoading = false;
     this.cd.detectChanges();
 
@@ -142,7 +142,6 @@ export class LeagueDetailComponent {
     team['name'] = teamData?.team?.name;
     team['logo'] = teamData?.team?.logo;
     // this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
-    this.allMatches = _.cloneDeep(this.fixtures);
     return teamData;
   }
 
@@ -152,7 +151,7 @@ export class LeagueDetailComponent {
       this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
       this.playOffs = matches.filter(match => match?.type === 'playoff');
       this.playOffs = this.playOffs.length ? this.playOffs.sort((a, b) => a.rank - b.rank) : [];
-      this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
+      this.allMatches = _.cloneDeep(this.fixtures)
       this.fixturesLoading = false;
       console.log(this.fixtures)
       this.finalMatch = this.playOffs.find(m => m.id.includes('final'));
@@ -279,6 +278,7 @@ export class LeagueDetailComponent {
 
   setMatchType(type: string) {
     this.matchType = type;
+    console.log(type, this.allMatches);
     if (type === 'all') {
       this.fixtures = this.allMatches;
       this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
