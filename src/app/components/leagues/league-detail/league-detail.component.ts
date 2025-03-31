@@ -391,7 +391,16 @@ async generatePointsTable() {
   );
 
   this.orangecap = pointTable.sort((a, b) => b.runsFor - a.runsFor)[0];
-  this.purplecap = pointTable.sort((a, b) => b.wicketsTaken - a.wicketsTaken)[0];
+  this.purplecap = pointTable.sort((a, b) => {
+  if (a.wicketsTaken === b.wicketsTaken) {
+    const economyA = this.calculateEconomy(a.runsAgainst, a.oversBowled);
+    const economyB = this.calculateEconomy(b.runsAgainst, b.oversBowled);
+    return economyA - economyB;
+  } else {
+    return b.wicketsTaken - a.wicketsTaken
+  }
+  })[0];
+  
   this.pointTable = await this.sortPointsTable(pointTable);
   console.log('pointTable:', this.pointTable);
 }
@@ -404,6 +413,14 @@ calculateNRR(runsFor: number, oversFaced: number, runsAgainst: number, oversBowl
   } else {
     return 0;
   }
+}
+
+calculateEconomy(runsConceded: number, ballsBowled: number): number {
+  if (ballsBowled === 0) {
+    return 0; // Avoid division by zero
+  }
+  const oversBowled = ballsBowled; // Convert balls to overs
+  return (runsConceded / oversBowled); // Round to 2 decimal places
 }
 
   async generatePlayOffs() {
