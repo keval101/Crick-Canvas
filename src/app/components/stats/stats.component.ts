@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -16,6 +17,10 @@ export class StatsComponent {
   isLoading = true;
   finalTitles: any[] = [];
   runnerUpTitles: any[] = [];
+  participatedLeagues: any[] = [];
+  orangecap: any[] = [];
+  purplecap: any[] = [];
+  destroy$ = new Subject();
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -25,7 +30,7 @@ export class StatsComponent {
   ngOnInit(): void {
 
     this.playerId = this.route.snapshot.paramMap.get('userId');
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.isLoading = true;
       this.finalTitles = [];
       this.runnerUpTitles = [];
@@ -34,12 +39,24 @@ export class StatsComponent {
 
       if(this.playerId) {
         this.getPlayerDetails();
-        this.authService.getCurrentUserDetail(this.playerId).subscribe(user => {
+        this.authService.getCurrentUserDetail(this.playerId).pipe(takeUntil(this.destroy$)).subscribe(user => {
           this.user = user;
         })
+        this.getParticipatedLeagues()
       }
     })
 
+  }
+
+  getParticipatedLeagues() {
+    this.dataService.getParticipatedLeagues(this.playerId).pipe(takeUntil(this.destroy$)).subscribe(leagues => {
+      this.participatedLeagues = leagues;
+      this.orangecap = this.participatedLeagues.filter(league => league.orangecap?.id === this.playerId);
+      this.orangecap = this.orangecap.length ? this.orangecap.map(league => league.name) : [];
+      this.purplecap = this.participatedLeagues.filter(league => league.purplecap?.id === this.playerId);
+      this.purplecap = this.purplecap.length ? this.purplecap.map(league => league.name) : [];
+      console.log(this.participatedLeagues, this.orangecap, this.purplecap)
+    })
   }
 
   getPlayerDetails() {
@@ -211,6 +228,11 @@ export class StatsComponent {
     return matchesWithDate.slice(0, 5).map(match => ({
       ...match,
     }));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
   
 }

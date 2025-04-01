@@ -11,3 +11,8 @@
           transition: all 0.2s ease-in;
         }
       }
+
+.league-pill {
+  @apply px-4 py-1 rounded-full text-center;
+  font-size: 12px;
+}

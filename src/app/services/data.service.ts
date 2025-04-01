@@ -426,4 +426,18 @@ export class DataService {
       });
   }
 
+  getParticipatedLeagues(playerId: string) {
+    return this.firestore.collection('leagues', ref => ref.where('teams', 'array-contains', playerId))
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const data: any = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { ...data, id };
+          });
+        })
+      );
+  }
+
 }
