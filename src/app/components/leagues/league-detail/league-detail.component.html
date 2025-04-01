@@ -50,7 +50,7 @@
     <ng-container *ngIf="allMatches?.length > 0">
       <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="selectedTab === 'fixtures'" (click)="selectedTab = 'fixtures'"> Fixtures </button>
       <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="selectedTab === 'point-table'"  (click)="setMatchType('all'); selectedTab = 'point-table'; generatePointsTable();"> Point Tables </button>
-      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="selectedTab === 'playoffs'" (click)="selectedTab = 'playoffs'; generatePlayOffs()" > PlayOffs </button>
+      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="selectedTab === 'playoffs'" (click)="selectedTab = 'playoffs'; generatePlayOffs()" [class.disabled]="totalMatches === completedMatches"> PlayOffs </button>
     </ng-container>
 
     <ng-container *ngIf="!allMatches?.length && league?.userId === user?.uid">

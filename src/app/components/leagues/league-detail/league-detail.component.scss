@@ -46,6 +46,12 @@
     &:hover {
       @apply bg-gradient-to-r from-blue-700 to-purple-700 text-white;
     }
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
   }
 
   @media screen and (max-width: 600px) {

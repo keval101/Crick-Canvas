@@ -33,6 +33,8 @@ export class LeagueDetailComponent {
   purplecap: any;
   searchText: string = '';
   view = 'list';
+  totalMatches = 0
+  completedMatches = 0
 
   constructor(
     private route: ActivatedRoute,
@@ -429,6 +431,8 @@ calculateEconomy(runsConceded: number, ballsBowled: number): number {
     const sortedTable = this.sortPointsTable(this.pointTable);
     const totalMatches = this.allMatches.length;
     const completedMatches = this.fixtures.filter(match => (match.status === 'completed' && match?.type != 'playoff') ).length;
+    this.completedMatches = completedMatches
+    this.totalMatches = totalMatches
     if(!this.playOffs.length) {
       setTimeout(async () => {
         if(this.playOffs.length === 0) {
