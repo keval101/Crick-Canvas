@@ -26,3 +26,8 @@ body { font-family: 'Inter', sans-serif; }
         height: 30px;
     }
 }
+
+.win-pill {
+    @apply bg-gray-50 py-1 px-6 rounded-full text-center;
+    font-size: 14px;
+}

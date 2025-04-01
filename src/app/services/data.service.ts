@@ -204,6 +204,13 @@ export class DataService {
     return this.firestore.collection('leagues').doc(customId).set(leagueData);
   }
 
+  // Method to create a league with a unique ID
+  updateLeague(leagueData: any, leagueId: string): Promise<void> {
+    // Using custom ID for the document
+    return this.firestore.collection('leagues').doc(leagueId).set(leagueData);
+  }
+
+
   // Get leagues collection
   getLeagues(): Observable<any[]> {
     return this.firestore
