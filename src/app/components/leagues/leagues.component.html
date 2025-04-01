@@ -1,5 +1,5 @@
 
-<div class="flex justify-between items-center">
+<div class="flex justify-between items-center flex-wrap">
     <h1 class="section-heading">Leagues</h1>
     <div class="flex gap-2">
         <button type="button" class="btn" (click)="generateLeague()">Create League</button>
@@ -12,7 +12,7 @@
        <!-- League 1 -->
        <div class="league-card relative bg-white rounded-lg shadow-sm p-6 transition-all duration-200 cursor-pointer" *ngFor="let league of leagues$ | async" [routerLink]="['/leagues', league.id]">
            <div class="flex items-center">
-               <div class="w-12 h-12 bg-icon rounded-full flex items-center justify-center mr-4">
+               <div class="w-12 h-12 bg-icon rounded-full flex items-center justify-center mr-4 md:inline-block hidden" >
                     <img src="./assets/icons/cricket.png" alt="" width="24px"> 
                </div>
                <div class="flex-1">

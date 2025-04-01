@@ -64,7 +64,7 @@
     </ng-container>
   </div>
 
-  <div class="max-w-7xl mx-auto px-8 pb-16" *ngIf="selectedTab === 'fixtures'">
+  <div class="max-w-7xl mx-auto sm:px-8 px-2 pb-4 sm:pb-16" *ngIf="selectedTab === 'fixtures'">
     <div class="flex items-center justify-between mb-6" *ngIf="allMatches?.length > 0"> 
       <div class="flex items-center gap-8">
         <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'all'" [class.font-medium]="matchType === 'all'" (click)="setMatchType('all')">
@@ -104,7 +104,7 @@
       </button>
     </div>
 
-    <div class="grid gap-6" [class.grid-cols-1]="view === 'list'" [class.grid-cols-2]="view === 'grid'" id="matchContainer">
+    <div class="grid matches-container gap-6" [class.grid-cols-1]="view === 'list'" [class.grid-cols-2]="view === 'grid'" id="matchContainer">
 
       <ng-container *ngFor="let fixture of fixtures">
         <div
@@ -148,7 +148,7 @@
                 <i class="ri-trophy-line text-primary"></i>
                 <span class="font-medium text-gray-900">{{league?.name}}: Match {{fixture?.match_number}}</span>
               </div>
-              <div class="flex items-center justify-between mb-8">
+              <div class="flex sm:items-center items-start justify-center sm:justify-between mb-8 flex-wrap flex-col sm:flex-row gap-5 sm:gap-1"> 
                 <div class="flex items-center gap-4 flex-1">
                   <img [src]="getTeamDetails(fixture?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                     class="w-12 h-12 rounded-full object-cover" alt="New Zealand">
@@ -160,11 +160,11 @@
                     <div *ngIf="fixture?.status !== 'upcoming'"  class="text-sm text-gray-500">{{ballsToOvers(fixture?.team_one?.balls)}} overs</div>
                   </div>
                 </div>
-                <div class="px-6">
+                <div class="px-6 sm:mx-0 mx-auto">
                   <div class="text-gray-400 font-medium text-lg mb-2">VS</div>
                 </div>
-                <div class="flex items-center gap-4 flex-1 justify-end">
-                  <div class="text-right">
+                <div class="flex items-center gap-4 flex-1 justify-end sm:flex-row flex-row-reverse">
+                  <div class="sm:text-right text-left">
                     <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_two)?.team?.name}}</div>
                     <div *ngIf="fixture?.status !== 'upcoming'" 
                       [class.text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 

@@ -155,7 +155,7 @@ export class StatsComponent {
     const economy = totalBallsBowled ? ((totalRunsConceded / (totalBallsBowled / 6))).toFixed(2) : '0.00';
   
     console.log('headToHeadArray', headToHead);
-    const headToHeadArray = Object.values(headToHead).map((team: any) => {
+    let headToHeadArray = Object.values(headToHead).map((team: any) => {
       const teamSR = team.ballsFaced ? ((team.totalRuns / team.ballsFaced) * 100).toFixed(2) : '0.00';
       const avg = team.totalMatchesPlayed ? (team.totalRuns / team.totalMatchesPlayed).toFixed(2) : '0.00';
       const winRate =
@@ -174,10 +174,10 @@ export class StatsComponent {
         winRate,
       };
     });
-  
-    // display only last 5 matches
-    // recentMatches = recentMatches.reverse();
-    recentMatches.length = recentMatches.length > 5 ? 5 : recentMatches.length;
+
+    headToHeadArray = headToHeadArray.sort((a, b) => (b.totalRuns || 0) - (a.totalRuns || 0));
+    recentMatches = this.sortAndLimitMatches(recentMatches)
+    console.log(recentMatches, this.sortAndLimitMatches(recentMatches));
     return {
       matchStats: {
         totalMatches,
@@ -197,6 +197,20 @@ export class StatsComponent {
       recentMatches,
       headToHead: headToHeadArray
     };
+  }
+
+  // Function to sort matches by date and limit to 5 most recent
+  sortAndLimitMatches(recentMatches): any[] {
+    // Filter matches that have a "date" field
+    const matchesWithDate = recentMatches.filter(match => match.date !== undefined);
+
+    // Sort matches by date in descending order (most recent first)
+    matchesWithDate.sort((a, b) => (b.date || 0) - (a.date || 0));
+
+    // Limit to the 5 most recent matches
+    return matchesWithDate.slice(0, 5).map(match => ({
+      ...match,
+    }));
   }
   
 }

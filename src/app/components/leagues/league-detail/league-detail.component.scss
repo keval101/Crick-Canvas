@@ -14,6 +14,11 @@
   background-size: cover;
   background-position: center;
   height: 340px;
+
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+    height: auto;
+  }
 }
 
 .table-container::-webkit-scrollbar {
@@ -60,5 +65,12 @@
   &:hover {
     @apply text-purple-700;
     transition: all 0.2s ease-in;
+  }
+}
+
+.matches-container {
+  @media screen and (max-width: 768px) {
+    display: grid;
+    grid-template-columns: 1fr !important;
   }
 }

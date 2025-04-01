@@ -44,7 +44,15 @@
 
 
         ul {
-            @apply flex-row justify-between p-0 border-t border-gray-200;
+            @apply grid grid-cols-7;
+        }
+
+        .nav-item {
+            @apply m-0;
+        }
+
+        .legue-icon {
+            width: 34px;
         }
 
         li {
@@ -57,7 +65,14 @@
         }
 
         .side-nav{
-            @apply flex justify-center items-center;
+            @apply flex justify-center items-center p-0 border-t-4 border-r-0 border-l-0;
+            transition: all 0.3s ease-in-out;
+
+            &:hover,
+            &.active {
+                @apply border-indigo-500;  
+                transition: all 0.3s ease-in-out;
+            }
         }
     }
 }
