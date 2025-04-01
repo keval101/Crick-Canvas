@@ -47,6 +47,24 @@
       @apply bg-gradient-to-r from-blue-700 to-purple-700 text-white;
     }
   }
+
+  @media screen and (max-width: 600px) {
+    @apply w-full mb-8 mt-8 gap-2 justify-center;
+    top: 0;
+    padding: 10px 2px;
+    
+    button {
+      font-size: 12px;
+      padding: 6px 14px;
+    }
+  }
+}
+
+.pill {
+  @media screen and (max-width: 600px) {
+    font-size: 14px;
+    padding: 6px 14px;
+  }
 }
 
 .team-name {
@@ -72,5 +90,13 @@
   @media screen and (max-width: 768px) {
     display: grid;
     grid-template-columns: 1fr !important;
+  }
+}
+
+.search-input {
+  @media screen and (max-width: 600px) {
+    div, input {
+      width: 100%;
+    }
   }
 }

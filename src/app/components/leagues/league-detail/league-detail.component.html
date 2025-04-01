@@ -6,36 +6,36 @@
   
   <div class="hero-bg w-full relative rounded-md">
     <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent rounded-md"></div>
-    <div class="max-w-7xl mx-auto h-full flex items-center relative px-8">
-      <div class="text-white max-w-2xl">
-        <h1 class="text-5xl font-bold mb-6">{{league?.name}}</h1>
-        <p class="text-xl text-gray-200 mb-8">
+    <div class="max-w-7xl mx-auto h-full flex items-center relative sm:px-8 p-4">
+      <div class="text-white sm:max-w-2xl sm:w-auto w-full">
+        <h1 class="sm:text-5xl text-2xl font-bold sm:mb-6 mb-3">{{league?.name}}</h1>
+        <p class="sm:text-xl text-sm text-gray-200 sm:mb-8 mb-4">
           Stay updated with live runs, match schedules and results from
           around the world
         </p>
-        <div class="flex items-center gap-6">
-          <div class="flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full" *ngIf="!(league?.teams?.length > 1)">
+        <div class="flex items-center sm:gap-6 flex-wrap gap-2">
+          <div class="flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full pill" *ngIf="!(league?.teams?.length > 1)">
             <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
             <span class="text-white">No Teams Joined Yet</span>
           </div>
 
-          <div class="flex whitespace-nowrap items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full cursor-pointer" (click)="copyToClipBoard()" *ngIf="league?.userId === user?.uid">
+          <div class="flex whitespace-nowrap items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full pill cursor-pointer" (click)="copyToClipBoard()" *ngIf="league?.userId === user?.uid">
             <input type="text" value="{{league?.leagueCode}}" class="mt-1 hidden" id="copylink" style="width: 90%">
             <span class="text-white">Leguge Code: {{league?.leagueCode}}</span>
             <i class="ri-file-copy-line"></i>
           </div>
 
-          <div class="whitespace-nowrap flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full cursor-pointer" *ngIf="league?.teams?.length > 1">
+          <div class="whitespace-nowrap flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full pill cursor-pointer" *ngIf="league?.teams?.length > 1">
             <i class="ri-team-line mr-1"></i>
             <span class="text-white">Teams: {{league?.teams?.length}}</span>
           </div>
 
-          <div class="whitespace-nowrap flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full cursor-pointer" *ngIf="league?.teams?.length > 1">
+          <div class="whitespace-nowrap flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full pill cursor-pointer" *ngIf="league?.teams?.length > 1">
             <i class="ri-basketball-fill"></i>
             <span class="text-white">{{league?.oversMatch}} Overs Match</span>
           </div>
 
-          <div class="whitespace-nowrap flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full cursor-pointer" *ngIf="allMatches?.length">
+          <div class="whitespace-nowrap flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full pill cursor-pointer" *ngIf="allMatches?.length">
             <i class="ri-basketball-fill"></i>
             <span class="text-white"> Total {{allMatches?.length}} Matches</span>
           </div>
@@ -65,8 +65,8 @@
   </div>
 
   <div class="max-w-7xl mx-auto sm:px-8 px-2 pb-4 sm:pb-16" *ngIf="selectedTab === 'fixtures'">
-    <div class="flex items-center justify-between mb-6" *ngIf="allMatches?.length > 0"> 
-      <div class="flex items-center gap-8">
+    <div class="flex items-center justify-between mb-6 flex-wrap gap-3 sm:gap-0" *ngIf="allMatches?.length > 0"> 
+      <div class="flex items-center sm:gap-8 flex-wrap gap-4">
         <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'all'" [class.font-medium]="matchType === 'all'" (click)="setMatchType('all')">
           All Matches
         </button>
@@ -85,7 +85,7 @@
           {{fixtures?.length}} Matches
         </button>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 search-input">
         <div class="relative">
           <input type="text" placeholder="Search matches..." (input)="searchMatches($event)"
             class="pl-10 pr-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 w-64" />
