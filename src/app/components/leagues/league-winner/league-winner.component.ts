@@ -1,4 +1,5 @@
 import { Component, Input, Renderer2 } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-league-winner',
@@ -7,6 +8,7 @@ import { Component, Input, Renderer2 } from '@angular/core';
 })
 export class LeagueWinnerComponent {
   @Input() match: any;
+  @Input() league: any;
   winningTeam: any;
   loserTeam: any;
   // winningTeam: string = 'Mumbai Titans';
@@ -14,7 +16,7 @@ export class LeagueWinnerComponent {
   backgroundImage: string = 'https://public.readdy.ai/ai/img_res/121aa8f4f0f09a7ad5a607e3647115a7.jpg';
   trophyImage: string = 'https://public.readdy.ai/ai/img_res/0a7f7a534d10bf91b04e8e76ed3a2d4a.jpg';
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, private dataService: DataService) {}
 
   ngOnInit(): void {
     const winner = this.match.team_one.runs > this.match.team_two.runs ? this.match.team_one : this.match.team_two;
@@ -22,6 +24,13 @@ export class LeagueWinnerComponent {
     this.winningTeam = winner;
     this.finalScore = `Final Score: ${winner.name} ${winner.runs}/${winner.wickets} vs ${loser.name} ${loser.runs}/${loser.wickets}`;
   }
+
+  ngOnChanges(changes: any) {
+    if(!this.league.winner) { 
+      this.league['winner'] = this.winningTeam
+      this.dataService.updateLeague(this.league, this.league.id)
+    }
+  } 
 
   
   startConfetti() {

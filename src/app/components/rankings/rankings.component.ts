@@ -11,12 +11,14 @@ interface TeamRanking {
   losses: number;
   draws: number;
   points: number;
+  recentMatches: any
 }
 
 interface BatsmanRanking {
   name: string;
   teamId: string;
   runs: number;
+  recentMatches: any;
   ballsFaced: number;
   average?: number;
   matches?: number;
@@ -27,6 +29,7 @@ interface BowlerRanking {
   name: string;
   teamId: string;
   wickets: number;
+  recentMatches: any;
   ballsBowled: number;
   economy?: number;
   matches?: number;
@@ -88,7 +91,8 @@ export class RankingsComponent {
           wins: 0,
           losses: 0,
           draws: 0,
-          points: 0
+          points: 0,
+          recentMatches: []
         };
       }
 
@@ -101,12 +105,16 @@ export class RankingsComponent {
           wins: 0,
           losses: 0,
           draws: 0,
-          points: 0
+          points: 0,
+          recentMatches: []
         };
       }
 
       rankings[teamOneId].matches++;
       rankings[teamTwoId].matches++;
+
+      rankings[teamOneId].recentMatches.push(match);
+      rankings[teamTwoId].recentMatches.push(match);
 
       if (team_one.runs > team_two.runs) {
         rankings[teamOneId].wins++;
@@ -128,7 +136,28 @@ export class RankingsComponent {
     console.log(rankings)
 
     this.isLoading = false;
-    const data = Object.values(rankings).sort((a, b) => b.points - a.points);
+    const data = Object.values(rankings).sort((a, b) => {
+      const recentMatchesB = this.sortAndLimitMatches(b.recentMatches)
+      const recentMatchesA = this.sortAndLimitMatches(a.recentMatches)
+      const recentFormB = recentMatchesB.map(match => {
+        if(match.team_one.id === b.id) {
+          return match.team_one.runs > match.team_two.runs ? 1 : 0
+        } else {
+          return match.team_two.runs > match.team_one.runs ? 1 : 0
+        }
+      })
+      const recentFormA = recentMatchesA.map(match => {
+        if(match.team_one.id === a.id) {
+          return match.team_one.runs > match.team_two.runs ? 1 : 0
+        } else {
+          return match.team_two.runs > match.team_one.runs ? 1 : 0
+        }
+      })
+      a['recentForm'] = recentFormA;
+      b['recentForm'] = recentFormB;
+
+      return b.points - a.points
+    });
     return data.map((x, i) => ({ ...x, rank: i++ }));
   }
 
@@ -150,16 +179,16 @@ export class RankingsComponent {
       const teamTwoBowler = `${team_two.name}`;
 
       if (!batsmen[teamOneBatsman]) {
-        batsmen[teamOneBatsman] = { name: teamOneBatsman, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0 };
+        batsmen[teamOneBatsman] = { name: teamOneBatsman, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [] };
       }
       if (!batsmen[teamTwoBatsman]) {
-        batsmen[teamTwoBatsman] = { name: teamTwoBatsman, teamId: team_two.id, runs: 0, ballsFaced: 0, matches: 0 };
+        batsmen[teamTwoBatsman] = { name: teamTwoBatsman, teamId: team_two.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [] };
       }
       if (!bowlers[teamOneBowler]) {
-        bowlers[teamOneBowler] = { name: teamOneBowler, teamId: team_one.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0 };
+        bowlers[teamOneBowler] = { name: teamOneBowler, teamId: team_one.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [] };
       }
       if (!bowlers[teamTwoBowler]) {
-        bowlers[teamTwoBowler] = { name: teamTwoBowler, teamId: team_two.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0 };
+        bowlers[teamTwoBowler] = { name: teamTwoBowler, teamId: team_two.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [] };
       }
 
       batsmen[teamOneBatsman].runs += team_one.runs;
@@ -167,11 +196,17 @@ export class RankingsComponent {
       batsmen[teamTwoBatsman].runs += team_two.runs;
       batsmen[teamTwoBatsman].ballsFaced += team_two.balls;
 
+      batsmen[teamOneBatsman].recentMatches.push(match)
+      batsmen[teamTwoBatsman].recentMatches.push(match)
+
       batsmen[teamOneBatsman].matches++;
       batsmen[teamTwoBatsman].matches++;
 
       bowlers[teamOneBowler].matches++;
       bowlers[teamTwoBowler].matches++;
+
+      bowlers[teamOneBowler].recentMatches.push(match)
+      bowlers[teamTwoBowler].recentMatches.push(match)
 
       bowlers[teamOneBowler].wickets += team_two.wickets;
       bowlers[teamOneBowler].ballsBowled += team_two.balls;
@@ -182,18 +217,114 @@ export class RankingsComponent {
       bowlers[teamTwoBowler].runsConceded += team_one.runs;
     });
 
-    // Calculate averages and strike rates/economy
-    this.mockData.batsmen = Object.values(batsmen).map((b, i) => ({
-      ...b,
-      average: b.ballsFaced > 0 ? b.runs / (b.ballsFaced / 6) : 0, // Simplified average
-      strikeRate: b.ballsFaced > 0 ? (b.runs / b.ballsFaced) * 100 : 0,
-    })).sort((a, b) => b.runs - a.runs);
+    // this.mockData.batsmen = this.sortAndLimitMatches(this.mockData.batsmen)
+    // this.mockData.bowlers = this.sortAndLimitMatches(this.mockData.bowlers)
 
-    this.mockData.bowlers = Object.values(bowlers).map((b, i) => ({
-      ...b,
-      // economy: b.ballsBowled > 0 ? (b.wickets * 6 / b.ballsBowled) : 0, // Simplified economy
-      economy: this.calculateEconomy(b.runsConceded, b.ballsBowled),
-    })).sort((a, b) => b.wickets - a.wickets);
+    // Calculate averages and strike rates/economy
+    this.mockData.batsmen = Object.values(batsmen).map((b, i) => {
+      b.recentMatches = this.sortAndLimitMatches(b.recentMatches)
+      const runs = b.recentMatches.map(match => {
+        if(match.team_one.id === b.teamId) {
+          return match.team_one.runs
+        } else {
+          return match.team_two.runs
+        }
+      }).reduce((a, b) => a + b, 0);
+      
+      const recentForm = b.recentMatches.map(match => {
+        if(match.team_one.id === b.teamId) {
+          return match.team_one.runs > match.team_two.runs ? 1 : 0
+        } else {
+          return match.team_two.runs > match.team_one.runs ? 1 : 0
+        }
+      })
+
+      console.log(recentForm, b.name);
+
+      const ballsFaced = b.recentMatches.map(match => {
+        if(match.team_one.id === b.teamId) {
+          return match.team_one.balls
+        } else {
+          return match.team_two.balls
+        }
+      }).reduce((a, b) => a + b, 0);
+
+      const wickets = b.recentMatches.map(match => {
+        if(match.team_one.id === b.teamId) {
+          return match.team_one.wickets
+        } else {
+          return match.team_two.wickets
+        }
+      }).reduce((a, b) => a + b, 0);
+
+      const average = ballsFaced > 0 ? runs / (ballsFaced / 6) : 0;
+      const strikeRate = ballsFaced > 0 ? (runs / ballsFaced) * 100 : 0;
+      const winning = recentForm.map(x => x == 1 ? 1 : -2).reduce((a, b) => a + b, 0);
+
+      const points = (average * 0.30) + (strikeRate * 0.30) + (runs * 0.20) - (wickets * 0.20) + winning;  
+
+      return {
+        ...b,
+        recentForm,
+        average: b.ballsFaced > 0 ? b.runs / (b.ballsFaced / 6) : 0, // Simplified average
+        strikeRate: b.ballsFaced > 0 ? (b.runs / b.ballsFaced) * 100 : 0,
+        points: Math.round(points)
+      }
+    }).sort((a, b) => b.points - a.points);
+
+    this.mockData.bowlers = Object.values(bowlers).map((b, i) => {
+      b.recentMatches = this.sortAndLimitMatches(b.recentMatches)
+
+      const wickets = b.recentMatches.map(match => {
+        if(match.team_one.id != b.teamId) {
+          return match.team_one.wickets
+        } else {
+          return match.team_two.wickets
+        }
+      }).reduce((a, b) => a + b, 0);
+
+      const ballsBowled = b.recentMatches.map(match => {
+        if(match.team_one.id != b.teamId) {
+          return match.team_one.balls
+        } else {
+          return match.team_two.balls
+        }
+      }).reduce((a, b) => a + b, 0);
+
+      const runsConceded = b.recentMatches.map(match => {
+        if(match.team_one.id != b.teamId) {
+          return match.team_one.runs
+        } else {
+          return match.team_two.runs
+        }
+      }).reduce((a, b) => a + b, 0);
+
+      const recentForm = b.recentMatches.map(match => {
+        if(match.team_one.id === b.teamId) {
+          return match.team_one.runs > match.team_two.runs ? 1 : 0
+        } else {
+          return match.team_two.runs > match.team_one.runs ? 1 : 0
+        }
+      })
+
+      const average = ballsBowled > 0 ? wickets / (ballsBowled / 6) : 0;
+      const strikeRate = ballsBowled > 0 ? (wickets / ballsBowled) * 100 : 0;
+      const economy = this.calculateEconomy(runsConceded, ballsBowled);
+      const winning = recentForm.map(x => x == 1 ? 1 : -2).reduce((a, b) => a + b, 0);
+      
+      console.log(average, strikeRate, wickets, runsConceded, b.name)
+      
+      // const points = (average * 0.10) + (strikeRate * 0.35) + (wickets * 0.45) - ((runsConceded / 50) * 0.05);
+      const points = (average * 0.40) + (strikeRate * 0.40) + (wickets * 0.20) + winning; 
+
+      return {
+        ...b,
+        recentForm,
+        // economy: b.ballsBowled > 0 ? (b.wickets * 6 / b.ballsBowled) : 0, // Simplified economy
+        economy: this.calculateEconomy(b.runsConceded, b.ballsBowled),
+        points: Math.round(points)
+      }
+    }).sort((a, b) => b.points - a.points);
 
     this.mockData.batsmen.map((x, i) => {
       x['rank'] = i;
@@ -333,6 +464,20 @@ export class RankingsComponent {
         return (b.rank - a.rank) * sortMultiplier;
       }
     });
+  }
+
+  // Function to sort matches by date and limit to 5 most recent
+  sortAndLimitMatches(recentMatches): any[] {
+    // Filter matches that have a "date" field
+    // const matchesWithDate = recentMatches.filter(match => match.date !== undefined);
+
+    // Sort matches by date in descending order (most recent first)
+    recentMatches.sort((a, b) => (b?.date || 0) - (a?.date || 0));
+
+    // Limit to the 5 most recent matches
+    return recentMatches.slice(0, 5).map(match => ({
+      ...match,
+    }));
   }
 }
 

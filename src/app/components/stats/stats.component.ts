@@ -219,13 +219,13 @@ export class StatsComponent {
   // Function to sort matches by date and limit to 5 most recent
   sortAndLimitMatches(recentMatches): any[] {
     // Filter matches that have a "date" field
-    const matchesWithDate = recentMatches.filter(match => match.date !== undefined);
+    // const matchesWithDate = recentMatches.filter(match => match.date !== undefined);
 
     // Sort matches by date in descending order (most recent first)
-    matchesWithDate.sort((a, b) => (b.date || 0) - (a.date || 0));
+    recentMatches.sort((a, b) => (b?.date || 0) - (a?.date || 0));
 
     // Limit to the 5 most recent matches
-    return matchesWithDate.slice(0, 5).map(match => ({
+    return recentMatches.slice(0, 5).map(match => ({
       ...match,
     }));
   }

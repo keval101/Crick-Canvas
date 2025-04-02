@@ -1,7 +1,7 @@
 <div>
 
   <div class="mb-8" *ngIf="finalMatch?.status === 'completed'">
-    <app-league-winner [match]="finalMatch"></app-league-winner>
+    <app-league-winner [match]="finalMatch" [league]="league"></app-league-winner>
   </div>
   
   <div class="hero-bg w-full relative rounded-md">
