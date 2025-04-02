@@ -140,13 +140,13 @@
                     <div class="text-right">
                       <ng-container *ngIf="playerId === match?.team_one.id || playerId === match?.team_two.id">
                         <div *ngIf="(playerId === match?.team_one.id && match?.team_one.runs > match?.team_two.runs) || (playerId === match?.team_two.id && match?.team_two.runs > match?.team_one.runs)" class="text-green-600">
-                          You Won!
+                          Victory!
                         </div>
                         <div *ngIf="(playerId === match?.team_one.id && match?.team_one.runs < match?.team_two.runs) || (playerId === match?.team_two.id && match?.team_two.runs < match?.team_one.runs)" class="text-red-600">
-                          You Lose!
+                          Lost!
                         </div>
                         <div *ngIf="match?.team_one.runs === match?.team_two.runs" class="text-yellow-600">
-                          Draw!
+                          Tied!
                         </div>
                         <p class="text-gray-400 text-xs">{{getDate(match?.date) | date: 'dd MMM, yyyy'}}</p>
                       </ng-container>
