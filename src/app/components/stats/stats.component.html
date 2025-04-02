@@ -148,6 +148,7 @@
                         <div *ngIf="match?.team_one.runs === match?.team_two.runs" class="text-yellow-600">
                           Draw!
                         </div>
+                        <p class="text-gray-400 text-xs">{{getDate(match?.date) | date: 'dd MMM, yyyy'}}</p>
                       </ng-container>
                     </div>
                 </div>

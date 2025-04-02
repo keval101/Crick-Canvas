@@ -234,5 +234,10 @@ export class StatsComponent {
     this.destroy$.next(true);
     this.destroy$.complete();
   }
+
+  getDate(timestamp) {
+    const date = new Date(timestamp);
+    return date;
+  }
   
 }
