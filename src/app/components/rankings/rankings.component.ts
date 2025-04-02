@@ -270,7 +270,13 @@ export class RankingsComponent {
         strikeRate: b.ballsFaced > 0 ? (b.runs / b.ballsFaced) * 100 : 0,
         points: Math.round(points)
       }
-    }).sort((a, b) => b.points - a.points);
+    }).sort((a, b) => {
+      if(a.points === b.points) {
+        return b.runs - a.runs
+      } else {
+        return b.points - a.points
+      }
+    });
 
     this.mockData.bowlers = Object.values(bowlers).map((b, i) => {
       b.recentMatches = this.sortAndLimitMatches(b.recentMatches)
@@ -324,7 +330,13 @@ export class RankingsComponent {
         economy: this.calculateEconomy(b.runsConceded, b.ballsBowled),
         points: Math.round(points)
       }
-    }).sort((a, b) => b.points - a.points);
+    }).sort((a, b) => {
+      if(a.points === b.points) {
+        return b.wickets - a.wickets
+      } else {
+        return b.points - a.points
+      }
+    });
 
     this.mockData.batsmen.map((x, i) => {
       x['rank'] = i;
