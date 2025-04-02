@@ -141,10 +141,17 @@ export class LeagueDetailComponent {
 
   getTeamDetails(team: any) {
     const teamData = this.teams.find((x) => x.id === team?.id);
-    team['name'] = teamData?.team?.name;
-    team['logo'] = teamData?.team?.logo;
-    // this.allMatches = JSON.parse(JSON.stringify(this.fixtures));
-    return teamData;
+    team['name'] = teamData?.team?.name ?? 'TBD';
+    team['logo'] = teamData?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png';
+    const dummyTeam = {
+      id: teamData?.id ?? 'TBD',
+      name: teamData?.team?.name ?? 'TBD',
+      logo: teamData?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png',
+      runs: 0,
+      wickets: 0,
+      balls: 0,
+    }
+    return teamData?.id ? teamData : dummyTeam;
   }
 
   getLeagueMatches() {
