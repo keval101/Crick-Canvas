@@ -280,7 +280,6 @@ export class DataService {
   }
 
   async saveH2HToFirebase(fixture) {
-    console.log(fixture)
     return this.firestore.collection('matches').doc(fixture.id).set(fixture);
   }
 
@@ -297,7 +296,6 @@ export class DataService {
   }
 
   saveMatches(matches: any[]): Promise<void> {
-    console.log(matches)
     // Assuming you want to save to a 'league-matches' collection
     const collectionRef = this.firestore.collection('league-matches');
     
@@ -342,7 +340,6 @@ export class DataService {
   }
 
   async getUserMatches(userId: string) {
-    console.log(userId)
       const teamOneQuery = this.firestore.collection('matches', ref => 
         ref.where('team_one.id', '==', userId)
       ).get().toPromise();;
@@ -419,7 +416,6 @@ export class DataService {
           // After deleting all matches, delete the league
           this.firestore.collection('leagues').doc(leagueId).delete()
             .then(() => {
-              console.log('League and all its matches deleted successfully!');
             })
             .catch(err => console.error('Error deleting league:', err));
         }).catch(err => console.error('Error deleting matches:', err));

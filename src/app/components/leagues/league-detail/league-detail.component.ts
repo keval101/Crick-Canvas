@@ -49,7 +49,6 @@ export class LeagueDetailComponent {
     this.view = localStorage.getItem('view') || 'list';
     this.authService.getCurrentUserDetail().pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.user = user;
-      console.log(this.user)
     });
 
     this.leagueId = this.route.snapshot.paramMap.get('id');
@@ -57,7 +56,6 @@ export class LeagueDetailComponent {
     this.dataService.getLeagueDetails(this.leagueId).then((league) => {
       this.league = league;
       this.getTeams();
-      console.log('league', this.league, this.user);
     });
   }
 
@@ -82,18 +80,15 @@ export class LeagueDetailComponent {
 
   getTeams() {
     const teams = this.league.teams;
-    console.log(teams);
     this.dataService.getUserTeams(teams).then((teams) => {
       this.teams = teams;
       this.fixturesLoading = false;
-      console.log(this.teams);
     });
   }
 
   async generateFixtures() {
     this.fixturesLoading = true;
     const teamIds = this.league.teams.map((team) => team);
-    console.log(teamIds);
     const fixtures: any[] = [];
     const matchesPerPair = this.league.matchesPerPair;
     let matchNumber = 1;
@@ -136,7 +131,6 @@ export class LeagueDetailComponent {
     this.fixturesLoading = false;
     this.cd.detectChanges();
 
-    console.log(fixtures);
   }
 
   getTeamDetails(team: any) {
@@ -162,7 +156,8 @@ export class LeagueDetailComponent {
       this.playOffs = this.playOffs.length ? this.playOffs.sort((a, b) => a.rank - b.rank) : [];
       this.allMatches = _.cloneDeep(this.fixtures)
       this.fixturesLoading = false;
-      console.log(this.fixtures)
+      this.totalMatches = this.allMatches.length;
+      this.completedMatches = this.fixtures.filter(match => (match.status === 'completed' && match?.type != 'playoff') ).length;
       this.finalMatch = this.playOffs.find(m => m.id.includes('final'));
 
       this.cd.detectChanges();
@@ -176,7 +171,6 @@ export class LeagueDetailComponent {
     const totalMatches = this.allMatches.length;
     const completedMatches = this.fixtures.filter(match => (match.status === 'completed' && match?.type != 'playoff') ).length;
 
-    console.log(totalMatches, completedMatches, match)
     if(totalMatches == completedMatches) {
       if (match?.id?.includes('q1') && match.status === 'completed') {
         // Fetch the result of Qualifier 1
@@ -186,7 +180,6 @@ export class LeagueDetailComponent {
 
         // Update the Final with the winner of Q1
         const finalMatch = this.playOffs.find(m => m.id.includes('final'));
-        console.log('finalMatch', finalMatch)
         if (finalMatch) {
           finalMatch.team_one = { ...winner };
         }
@@ -196,7 +189,6 @@ export class LeagueDetailComponent {
         if (q2Match) {
           q2Match.team_one = { ...loser };
         }
-        console.log('q2Match', q2Match)
 
         await this.dataService.updateMatchResult(finalMatch, finalMatch.id)
         await this.dataService.updateMatchResult(q2Match, q2Match.id)
@@ -211,7 +203,6 @@ export class LeagueDetailComponent {
 
         // Update the Final with the winner of Q1
         const q2Match = this.playOffs.find(m => m.id.includes('q2'));
-        console.log('q2', q2Match)
         if (q2Match) {
           q2Match.team_two = { ...winner };
         }
@@ -253,13 +244,11 @@ export class LeagueDetailComponent {
   openMatchResultModal(fixture: any) {
     this.matchResultModal = true;
     this.selectedMatch = fixture;
-    console.log(fixture, this.matchResultModal)
     this.cd.detectChanges();
   }
 
   searchMatches(e: any, value?: string): any {
     const searchText = value ?? (e.target as HTMLInputElement).value;
-    console.log(searchText)
     this.searchText = searchText;
     if (!searchText) {
       this.fixtures = this.allMatches;
@@ -274,7 +263,6 @@ export class LeagueDetailComponent {
       const teamOneName = match.team_one?.name?.toLowerCase() || '';
       const teamTwoName = match.team_two?.name?.toLowerCase() || '';
   
-      console.log(matchNumber == lowerSearch)
       return (
         matchNumber == lowerSearch ||
         teamOneName.includes(lowerSearch) ||
@@ -293,7 +281,6 @@ export class LeagueDetailComponent {
 
   setMatchType(type: string) {
     this.matchType = type;
-    console.log(type, this.allMatches);
     if (type === 'all') {
       this.fixtures = this.allMatches;
       this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
@@ -328,7 +315,6 @@ async generatePointsTable() {
   const table: any = {};
   let pointTable = [];
 
-  console.log(this.fixtures);
 
   for (const match of this.fixtures) {
     const teams = [
@@ -423,11 +409,9 @@ async generatePointsTable() {
     this.league['purplecap'] = this.purplecap
     this.dataService.updateLeague(this.league, this.league.id)
   }
-  console.log('pointTable:', this.pointTable);
 }
 
 calculateNRR(runsFor: number, oversFaced: number, runsAgainst: number, oversBowled: number): number {
-  console.log(runsFor, oversFaced, runsAgainst, oversBowled)
   if (oversFaced > 0 && oversBowled > 0) {
     const nrr = (runsFor / (oversFaced / 6)) - (runsAgainst / (oversBowled / 6));
     return parseFloat(nrr.toFixed(3));

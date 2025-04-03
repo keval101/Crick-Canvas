@@ -29,7 +29,6 @@ export class LeaguesComponent {
 
     this.authService.getCurrentUserDetail().subscribe(user => {
       this.getLeagues();
-      console.log(user)
       this.user = user;
       this.userId = user.uid
     })
@@ -37,7 +36,6 @@ export class LeaguesComponent {
 
   getLeagues() {
     this.dataService.getLeagues().pipe(takeUntil(this.destroy$)).subscribe(leagues => {
-      console.log(leagues)
       // by timestamp
       let sortedLeagues = leagues.sort((a, b) => b.id - a.id);
       this.leagues$.next(sortedLeagues)

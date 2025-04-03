@@ -35,7 +35,6 @@ export class StatsComponent {
       this.finalTitles = [];
       this.runnerUpTitles = [];
       this.playerId = params.get('userId');
-      console.log(this.playerId)
 
       if(this.playerId) {
         this.getPlayerDetails();
@@ -55,12 +54,10 @@ export class StatsComponent {
       this.orangecap = this.orangecap.length ? this.orangecap.map(league => league.name) : [];
       this.purplecap = this.participatedLeagues.filter(league => league.purplecap?.id === this.playerId);
       this.purplecap = this.purplecap.length ? this.purplecap.map(league => league.name) : [];
-      console.log(this.participatedLeagues, this.orangecap, this.purplecap)
     })
   }
 
   getPlayerDetails() {
-    console.log(this.playerId)
     this.dataService.getPlayerMatches(this.playerId).then(matches => {
       this.dataService.getPlayerH2HMatches(this.playerId).then(h2hMatches => {
         this.stats = this.getPlayerStats(this.playerId, [...matches, ...h2hMatches]);
@@ -76,7 +73,6 @@ export class StatsComponent {
     let recentMatches: any[] = [];
     const headToHead: { [opponentId: string]: any } = {};
     const finalMatches = matches.filter(match => match?.id?.includes('final') && match.status === 'completed');
-    console.log(finalMatches)
 
     const runnerUpTitles = []
     const finalTitles = []
@@ -171,7 +167,6 @@ export class StatsComponent {
     const strikeRate = totalBallsFaced ? ((totalRuns / totalBallsFaced) * 100).toFixed(2) : '0.00';
     const economy = totalBallsBowled ? ((totalRunsConceded / (totalBallsBowled / 6))).toFixed(2) : '0.00';
   
-    console.log('headToHeadArray', headToHead);
     let headToHeadArray = Object.values(headToHead).map((team: any) => {
       const teamSR = team.ballsFaced ? ((team.totalRuns / team.ballsFaced) * 100).toFixed(2) : '0.00';
       const avg = team.totalMatchesPlayed ? (team.totalRuns / team.totalMatchesPlayed).toFixed(2) : '0.00';
@@ -194,7 +189,6 @@ export class StatsComponent {
 
     headToHeadArray = headToHeadArray.sort((a, b) => (b.totalRuns || 0) - (a.totalRuns || 0));
     recentMatches = this.sortAndLimitMatches(recentMatches)
-    console.log(recentMatches, this.sortAndLimitMatches(recentMatches));
     return {
       matchStats: {
         totalMatches,

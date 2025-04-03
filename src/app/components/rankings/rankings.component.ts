@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import * as _ from 'lodash';
 
 interface TeamRanking {
+  prev_rank: number;
+  curr_rank: number;
   id: string;
   name: string;
   logo: string;
@@ -15,6 +18,8 @@ interface TeamRanking {
 }
 
 interface BatsmanRanking {
+  prev_rank: number;
+  curr_rank: number;
   name: string;
   teamId: string;
   runs: number;
@@ -26,6 +31,8 @@ interface BatsmanRanking {
 }
 
 interface BowlerRanking {
+  prev_rank: number;
+  curr_rank: number;
   name: string;
   teamId: string;
   wickets: number;
@@ -60,13 +67,10 @@ export class RankingsComponent {
 
   ngOnInit(): void {
     this.dataService.getAllLeagueMatches().subscribe(matches => {
-      console.log(matches);
-      this.getTeams();
-      const teamRankings = this.calculateTeamRankings(matches);
-      this.mockData.teams = teamRankings;
+      
       this.updatePlayerRankings(matches);
+      this.getTeams();
 
-      console.log(this.mockData.teams);
     })
   }
 
@@ -85,6 +89,8 @@ export class RankingsComponent {
       if (!rankings[teamOneId]) {
         rankings[teamOneId] = {
           id: teamOneId,
+          curr_rank: 0,
+          prev_rank: 0,
           name: team_one.name,
           logo: team_one.logo,
           matches: 0,
@@ -99,6 +105,8 @@ export class RankingsComponent {
       if (!rankings[teamTwoId]) {
         rankings[teamTwoId] = {
           id: teamTwoId,
+          curr_rank: 0,
+          prev_rank: 0,
           name: team_two.name,
           logo: team_one.logo,
           matches: 0,
@@ -133,9 +141,7 @@ export class RankingsComponent {
         rankings[teamTwoId].points += 1;
       }
     });
-    console.log(rankings)
 
-    this.isLoading = false;
     const data = Object.values(rankings).sort((a, b) => {
       const recentMatchesB = this.sortAndLimitMatches(b.recentMatches)
       const recentMatchesA = this.sortAndLimitMatches(a.recentMatches)
@@ -158,7 +164,7 @@ export class RankingsComponent {
 
       return b.points - a.points
     });
-    return data.map((x, i) => ({ ...x, rank: i++ }));
+    return data.map((x, i) => ({ ...x, rank: i + 1 }));
   }
 
   // New method to update player rankings (placeholder for individual player data)
@@ -179,16 +185,16 @@ export class RankingsComponent {
       const teamTwoBowler = `${team_two.name}`;
 
       if (!batsmen[teamOneBatsman]) {
-        batsmen[teamOneBatsman] = { name: teamOneBatsman, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [] };
+        batsmen[teamOneBatsman] = { name: teamOneBatsman, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
       }
       if (!batsmen[teamTwoBatsman]) {
-        batsmen[teamTwoBatsman] = { name: teamTwoBatsman, teamId: team_two.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [] };
+        batsmen[teamTwoBatsman] = { name: teamTwoBatsman, teamId: team_two.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
       }
       if (!bowlers[teamOneBowler]) {
-        bowlers[teamOneBowler] = { name: teamOneBowler, teamId: team_one.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [] };
+        bowlers[teamOneBowler] = { name: teamOneBowler, teamId: team_one.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
       }
       if (!bowlers[teamTwoBowler]) {
-        bowlers[teamTwoBowler] = { name: teamTwoBowler, teamId: team_two.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [] };
+        bowlers[teamTwoBowler] = { name: teamTwoBowler, teamId: team_two.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
       }
 
       batsmen[teamOneBatsman].runs += team_one.runs;
@@ -239,7 +245,6 @@ export class RankingsComponent {
         }
       })
 
-      console.log(recentForm, b.name);
 
       const ballsFaced = b.recentMatches.map(match => {
         if(match.team_one.id === b.teamId) {
@@ -318,7 +323,6 @@ export class RankingsComponent {
       const economy = this.calculateEconomy(runsConceded, ballsBowled);
       const winning = recentForm.map(x => x == 1 ? 1 : -2).reduce((a, b) => a + b, 0);
       
-      console.log(average, strikeRate, wickets, runsConceded, b.name)
       
       // const points = (average * 0.10) + (strikeRate * 0.35) + (wickets * 0.45) - ((runsConceded / 50) * 0.05);
       const points = (average * 0.40) + (strikeRate * 0.40) + (wickets * 0.20) + winning; 
@@ -339,15 +343,16 @@ export class RankingsComponent {
     });
 
     this.mockData.batsmen.map((x, i) => {
-      x['rank'] = i;
+      x['rank'] = i + 1;
     })
 
     this.mockData.bowlers.map((x, i) => {
-      x['rank'] = i;
+      x['rank'] = i + 1;
     })
 
-    console.log('Batsmen Rankings:', this.mockData.batsmen);
-    console.log('Bowlers Rankings:', this.mockData.bowlers);
+    const teamRankings = this.calculateTeamRankings(matches);
+    this.mockData.teams = teamRankings;
+    this.isLoading = false;
   }
 
   calculateEconomy(runsConceded: number, ballsBowled: number): number {
@@ -359,9 +364,99 @@ export class RankingsComponent {
   }
 
   getTeams() {
-    this.dataService.getAllusers().pipe(takeUntil(this.destroy$)).subscribe((teams) => {
+    this.dataService.getAllusers().pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe((teams) => {
       this.teams = teams;
+
+      if(this.mockData.batsmen.length) {
+        this.mockData.batsmen.map(async (x, i) => {
+          const team = this.teams.find((y) => y.uid === x.teamId);
+          let isFirstTime = false;
+          if(team?.team) {
+            const cloneteam = _.cloneDeep(team)
+            if(!cloneteam.team['battingRank']) {
+              cloneteam.team['battingRank'] = x.rank;
+              cloneteam.team['prev_battingRank'] = x.rank;
+              x['curr_rank'] = x.rank;
+              x['prev_rank'] = x.rank;
+              isFirstTime = true;
+            } else {
+              if(x.rank !== cloneteam.team['battingRank']) {            
+                cloneteam.team['prev_battingRank'] = _.cloneDeep(cloneteam.team['battingRank']);
+                cloneteam.team['battingRank'] = x.rank;
+                x['curr_rank'] = cloneteam.team['battingRank'];
+                x['prev_rank'] = cloneteam.team['prev_battingRank'];
+              }
+            }
+
+            if(isFirstTime || team.team['prev_battingRank'] !== team.team['battingRank']) {
+              await this.updateTeam(team);
+            }
+          }
+        })
+      }
+
+      if(this.mockData.bowlers.length) {
+        this.mockData.bowlers.map(async (x, i) => {
+          const team = this.teams.find((y) => y.uid === x.teamId);
+          let isFirstTime = false;
+          if(team?.team) {
+            const cloneteam = _.cloneDeep(team)
+            if(!cloneteam.team['bowlingRank']) {
+              cloneteam.team['bowlingRank'] = x.rank;
+              cloneteam.team['prev_bowlingRank'] = x.rank;
+              isFirstTime = true;
+              x['curr_rank'] = x.rank;
+              x['prev_rank'] = x.rank;
+            } else {
+              if(x.rank !== cloneteam.team['bowlingRank']) {                          
+                cloneteam.team['prev_bowlingRank'] = JSON.parse(JSON.stringify(cloneteam.team['bowlingRank']));
+                cloneteam.team['bowlingRank'] = x.rank;
+                x['curr_rank'] = cloneteam.team['bowlingRank'];
+                x['prev_rank'] = cloneteam.team['prev_bowlingRank'];
+              }
+            }
+            
+            if(isFirstTime || team.team['prev_battingRank'] !== team.team['battingRank']) {
+              await this.updateTeam(team);
+            }
+          }
+        })
+      }
+
+      if(this.mockData.teams.length) {
+        this.mockData.teams.map(async (x, i) => {
+          const team = this.teams.find((y) => y.uid === x.id);
+          let isFirstTime = false;
+          if(team?.team) {
+            const cloneteam = _.cloneDeep(team)
+            if(!cloneteam.team['teamRank']) {
+              cloneteam.team['teamRank'] = x.rank;
+              cloneteam.team['prev_teamRank'] = x.rank;
+              x['curr_rank'] = x.rank;
+              x['prev_rank'] = x.rank;
+              isFirstTime = true;
+            } else {
+              if(x.rank !== cloneteam.team['teamRank']) {                                        
+                cloneteam.team['prev_teamRank'] = JSON.parse(JSON.stringify(cloneteam.team['teamRank']));
+                cloneteam.team['teamRank'] = x.rank;
+                x['curr_rank'] = cloneteam.team['teamRank'];
+                x['prev_rank'] = cloneteam.team['prev_teamRank'];
+              }
+            }
+            if(isFirstTime || cloneteam.team['prev_battingRank'] !== cloneteam.team['battingRank']) {
+              await this.updateTeam(team);
+            }
+          }
+        })
+      }
+
+      console.log(this.teams)
+
     });
+  }
+
+  async updateTeam(team: any) {
+    await this.dataService.updateUserDetail(team, team.uid);
   }
 
   getTeamDetails(team: any) {
@@ -400,11 +495,9 @@ export class RankingsComponent {
     } else {
       this.sorting = key;
     }
-    console.log(this.sorting)
     this.mockData.teams = this.mockData.teams.sort((a, b) => {
       // Determine the multiplier based on sort direction
       const sortMultiplier = direction === 'asc' ? 1 : -1;
-      console.log(sortMultiplier, this.sorting)
       if (key.includes('rank')) {
         return (b.rank - a.rank) * sortMultiplier;
       } else if (key.includes('points')) {
@@ -490,6 +583,10 @@ export class RankingsComponent {
     return recentMatches.slice(0, 5).map(match => ({
       ...match,
     }));
+  }
+
+  getAbsValue(value) {
+    return Math.abs(value);
   }
 }
 

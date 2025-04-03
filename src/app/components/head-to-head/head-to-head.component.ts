@@ -70,7 +70,6 @@ export class HeadToHeadComponent {
     this.dataService.getAllusers().pipe(takeUntil(this.destroy$)).subscribe((teams) => {
       this.teams = teams;
       this.fixturesLoading = false;
-      console.log(this.teams);
     });
   }
 

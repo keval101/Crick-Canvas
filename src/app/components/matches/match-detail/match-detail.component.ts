@@ -302,10 +302,8 @@ export class MatchDetailComponent {
         }
       })
       this.mvpPlayer = mvpPlayer;
-      console.log(this.mvpPlayer)
   
       this.bestData = this.findHighestStats(team1Results, team2Results)
-      console.log(this.bestData)
     }
   }
 

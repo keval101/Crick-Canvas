@@ -88,10 +88,19 @@
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="font-semibold text-gray-900 whitespace-nowrap">{{getTeamDetails(team)?.team?.name}}</span>
+              <span class="flex gap-2 font-semibold text-gray-900 whitespace-nowrap rank-team items-center">{{getTeamDetails(team)?.team?.name}}
+                <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
+                  <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
+                  <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
+                  <span class="text-sm"
+                  [class.text-green-600]="team.curr_rank < team.prev_rank"
+                  [class.text-red-600]="team.curr_rank > team.prev_rank"
+                  >{{getAbsValue(team.prev_rank - team.curr_rank)}}</span>
+                </div>
+              </span>
             </div>
           </td>
-          <td class="px-4 py-4 text-center">{{team.rank + 1}}</td>
+          <td class="px-4 py-4 text-center">{{team.rank}}</td>
           <td class="px-4 py-4 text-center">{{team?.points}}</td>
           <td class="px-4 py-4 text-center">{{team?.matches}}</td>
           <td class="px-4 py-4 text-center text-green-600 font-medium">{{team?.wins}}</td>
@@ -169,10 +178,19 @@
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="font-semibold text-gray-900 whitespace-nowrap">{{getTeamDetails(team?.teamId)?.team?.name}}</span>
+              <span class="flex gap-2 font-semibold text-gray-900 whitespace-nowrap rank-team items-center">{{getTeamDetails(team?.teamId)?.team?.name}}
+                <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
+                  <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
+                  <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
+                  <span class="text-sm"
+                    [class.text-green-600]="team.curr_rank < team.prev_rank"
+                    [class.text-red-600]="team.curr_rank > team.prev_rank"
+                    >{{getAbsValue(team.prev_rank - team.curr_rank)}}</span>
+                </div>
+              </span>
             </div>
           </td>
-          <td class="px-4 py-4 text-center">{{team.rank + 1}}</td>
+          <td class="px-4 py-4 text-center">{{team.rank}}</td>
           <td class="px-4 py-4 text-center">{{team.points}}</td>
           <td class="px-4 py-4 text-center">{{team?.matches}}</td>
           <td class="px-4 py-4 text-center font-medium">{{team?.runs}}</td>
@@ -244,10 +262,19 @@
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="font-semibold text-gray-900 whitespace-nowrap">{{getTeamDetails(team?.teamId)?.team?.name}}</span>
+              <span class="flex gap-2 font-semibold text-gray-900 whitespace-nowrap rank-team items-center">{{getTeamDetails(team?.teamId)?.team?.name}}
+                <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
+                  <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
+                  <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
+                  <span class="text-sm"
+                  [class.text-green-600]="team.curr_rank < team.prev_rank"
+                  [class.text-red-600]="team.curr_rank > team.prev_rank"
+                  >{{getAbsValue(team.prev_rank - team.curr_rank)}}</span>
+                </div>
+              </span>
             </div>
           </td>
-          <td class="px-4 py-4 text-center">{{team.rank + 1}}</td>
+          <td class="px-4 py-4 text-center">{{team.rank}}</td>
           <td class="px-4 py-4 text-center">{{team.points}}</td>
           <td class="px-4 py-4 text-center">{{team?.matches}}</td>
           <td class="px-4 py-4 text-center font-medium">{{ballsToOvers(team.ballsBowled)}}</td> 

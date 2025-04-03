@@ -34,7 +34,6 @@ export class AddHeadToHeadComponent {
       date: ['',Validators.required],
     })
     this.authService.getCurrentUserDetail().pipe(takeUntil(this.destroy$)).subscribe(user => {
-      console.log(user)
       if(user) {
         this.matchForm.get('team_one').setValue(user?.uid);
       }
@@ -48,7 +47,6 @@ export class AddHeadToHeadComponent {
       this.teamOne = teams;
       this.teamTwo = teams;
       this.updateTeamTwoDropdown();
-      console.log(this.teams)
     })
   }
 
@@ -73,7 +71,6 @@ export class AddHeadToHeadComponent {
 
     await this.dataService.saveH2HToFirebase(match)
     this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Created Successfully!' });
-    console.log(match)
     this.close.emit();
   }
 
@@ -82,7 +79,6 @@ export class AddHeadToHeadComponent {
   }
 
   updateTeamOneDropdown() {
-    console.log(this.matchForm.value.team_two)
     this.teamOne = this.teams.filter(x => x.uid != this.matchForm.value.team_two.uid)
   }
 

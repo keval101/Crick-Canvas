@@ -61,7 +61,6 @@ export class SetupTeamComponent {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.logoPreview = e.target?.result;
-        console.log(this.logoPreview);
         this.teamForm.patchValue({ logo: file });
       };
       reader.readAsDataURL(file);
@@ -83,7 +82,6 @@ export class SetupTeamComponent {
     this.isLoading = true;
     league.teams.push(this.user.uid);
     const payload = { ...league}
-    console.log(payload)
     await this.dataService.joinLeague(payload, league?.id);
     this.messageService.add({ severity: 'success', summary: 'League', detail: 'Joined Successfully!' });
     this.isLoading = false;
@@ -101,9 +99,7 @@ export class SetupTeamComponent {
     this.isLoading = true;
     if (this.logo) {
       this.imageUploadService.convertBlobToBase64(this.logo).subscribe(async (downloadURL) => {
-        console.log('Image uploaded successfully, URL:', downloadURL);
         const payload = { ...this.user, team: { name: this.teamForm.value.teamName, logo: downloadURL } }
-        console.log(payload)
         await this.dataService.updateUserDetail(payload, this.user.uid);
         this.messageService.add({ severity: 'success', summary: 'Team', detail: 'Saved Successfully!' });
         this.isLoading = false;
@@ -111,7 +107,6 @@ export class SetupTeamComponent {
       });
     } else if(this.logoPreview) {
       const payload = { ...this.user, team: { name: this.teamForm.value.teamName, logo: this.logoPreview } }
-      console.log(payload)
       await this.dataService.updateUserDetail(payload, this.user.uid);
       this.isLoading = false;
       this.messageService.add({ severity: 'success', summary: 'Team', detail: 'Saved Successfully!' });

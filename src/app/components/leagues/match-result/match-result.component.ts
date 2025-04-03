@@ -37,7 +37,6 @@ export class MatchResultComponent {
   }
 
   ngOnChanges(): void {
-    console.log(this.match)
   }
 
   swapResults() {
