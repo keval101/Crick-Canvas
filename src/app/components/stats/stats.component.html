@@ -15,22 +15,6 @@
         <span>{{user?.team?.name}}</span>
       </div>
       <div class="flex gap-4 mt-4">
-
-        <div class="px-4 py-2 bg-gray-50 rounded-lg" *ngIf="user?.team?.teamRank">
-          <div class="text-sm text-gray-600">Team Rank</div>
-          <div class="text-xl font-semibold">{{addNumberSuffix(user?.team?.teamRank)}}</div>
-        </div>
-
-        <div class="px-4 py-2 bg-gray-50 rounded-lg" *ngIf="user?.team?.battingRank">
-          <div class="text-sm text-gray-600">Batting Rank</div>
-          <div class="text-xl font-semibold">{{addNumberSuffix(user?.team?.battingRank)}}</div>
-        </div>
-
-        <div class="px-4 py-2 bg-gray-50 rounded-lg" *ngIf="user?.team?.bowlingRank">
-          <div class="text-sm text-gray-600">Bowling Rank</div>
-          <div class="text-xl font-semibold">{{addNumberSuffix(user?.team?.bowlingRank)}}</div>
-        </div>
-
         <div class="px-4 py-2 bg-gray-50 rounded-lg">
           <div class="text-sm text-gray-600">Matches</div>
           <div class="text-xl font-semibold">{{stats?.matchStats?.totalMatches}}</div>
