@@ -67,7 +67,7 @@ export class HeadToHeadComponent {
   }
 
   getTeams() {
-    this.dataService.getAllusers().pipe(takeUntil(this.destroy$)).subscribe((teams) => {
+    this.dataService.getAllUsers().then((teams) => {
       this.teams = teams;
       this.fixturesLoading = false;
     });

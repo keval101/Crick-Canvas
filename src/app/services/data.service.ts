@@ -198,6 +198,18 @@ export class DataService {
     return this.firestore.collection(`/users`).valueChanges();
   }
 
+  async getAllUsers() {
+    try {
+      const users = await firstValueFrom(this.firestore.collection('/users').get().pipe(
+        map(snapshot => snapshot.docs.map(doc => doc.data()))
+      ));
+      return users || [];
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
+  }
+
   // Method to create a league with a unique ID
   createLeague(leagueData: any, customId: string): Promise<void> {
     // Using custom ID for the document

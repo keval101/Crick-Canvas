@@ -42,7 +42,7 @@ export class AddHeadToHeadComponent {
   }
 
   getTeams() {
-    this.dataService.getAllusers().pipe(takeUntil(this.destroy$)).subscribe(teams => {
+    this.dataService.getAllUsers().then(teams => {
       this.teams = teams;
       this.teamOne = teams;
       this.teamTwo = teams;

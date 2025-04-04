@@ -352,7 +352,6 @@ export class RankingsComponent {
 
     const teamRankings = this.calculateTeamRankings(matches);
     this.mockData.teams = teamRankings;
-    this.isLoading = false;
   }
 
   calculateEconomy(runsConceded: number, ballsBowled: number): number {
@@ -363,8 +362,8 @@ export class RankingsComponent {
     return (runsConceded / oversBowled); // Round to 2 decimal places
   }
 
-  getTeams() {
-    this.dataService.getAllusers().pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe((teams) => {
+  async getTeams() {
+    this.dataService.getAllUsers().then((teams) => {
       this.teams = teams;
 
       if(this.mockData.batsmen.length) {
@@ -388,7 +387,8 @@ export class RankingsComponent {
               }
             }
 
-            if(isFirstTime || team.team['prev_battingRank'] !== team.team['battingRank']) {
+            console.log(x.rank, cloneteam.team['battingRank'], cloneteam.name)
+            if(isFirstTime || x.rank !== cloneteam.team['battingRank']) {
               await this.updateTeam(team);
             }
           }
@@ -415,8 +415,8 @@ export class RankingsComponent {
                 x['prev_rank'] = cloneteam.team['prev_bowlingRank'];
               }
             }
-            
-            if(isFirstTime || team.team['prev_bowlingRank'] !== team.team['bowlingRank']) {
+            console.log(x.rank, cloneteam.team['bowlingRank'], cloneteam.name)
+            if(isFirstTime || x.rank !== cloneteam.team['bowlingRank']) {
               await this.updateTeam(team);
             }
           }
@@ -443,7 +443,8 @@ export class RankingsComponent {
                 x['prev_rank'] = cloneteam.team['prev_teamRank'];
               }
             }
-            if(isFirstTime || cloneteam.team['prev_teamRank'] !== cloneteam.team['teamRank']) {
+            console.log(x.rank, cloneteam.team['teamRank'], cloneteam.name)
+            if(isFirstTime || x.rank !== cloneteam.team['teamRank']) {
               await this.updateTeam(team);
             }
           }
@@ -451,6 +452,7 @@ export class RankingsComponent {
       }
 
       console.log(this.teams)
+      this.isLoading = false;
 
     });
   }
