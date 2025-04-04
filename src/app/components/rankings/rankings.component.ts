@@ -416,7 +416,7 @@ export class RankingsComponent {
               }
             }
             
-            if(isFirstTime || team.team['prev_battingRank'] !== team.team['battingRank']) {
+            if(isFirstTime || team.team['prev_bowlingRank'] !== team.team['bowlingRank']) {
               await this.updateTeam(team);
             }
           }
@@ -443,7 +443,7 @@ export class RankingsComponent {
                 x['prev_rank'] = cloneteam.team['prev_teamRank'];
               }
             }
-            if(isFirstTime || cloneteam.team['prev_battingRank'] !== cloneteam.team['battingRank']) {
+            if(isFirstTime || cloneteam.team['prev_teamRank'] !== cloneteam.team['teamRank']) {
               await this.updateTeam(team);
             }
           }
