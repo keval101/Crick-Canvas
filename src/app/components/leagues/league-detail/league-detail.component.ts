@@ -170,6 +170,8 @@ export class LeagueDetailComponent {
 
     const totalMatches = this.allMatches.length;
     const completedMatches = this.fixtures.filter(match => (match.status === 'completed' && match?.type != 'playoff') ).length;
+    this.totalMatches = totalMatches;
+    this.completedMatches = completedMatches;
 
     if(totalMatches == completedMatches) {
       if (match?.id?.includes('q1') && match.status === 'completed') {

@@ -233,5 +233,23 @@ export class StatsComponent {
     const date = new Date(timestamp);
     return date;
   }
+
+  ballsToOvers(balls) {
+    // Handle invalid inputs
+    if (typeof balls !== 'number' || balls < 0) {
+        return "Please provide a valid positive number of balls";
+    }
+
+    // Calculate complete overs and remaining balls
+    const overs = Math.floor(balls / 6);
+    const remainingBalls = balls % 6;
+    
+    // Return formatted result
+    if (remainingBalls === 0) {
+        return `${overs}`;
+    } else {
+        return `${overs}.${remainingBalls}`;
+    }
+}
   
 }
