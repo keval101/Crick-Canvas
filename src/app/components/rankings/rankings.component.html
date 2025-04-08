@@ -232,9 +232,9 @@
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('overs', sorting === 'overs' ? 'desc' : sorting === '-overs' ? 'asc' : 'desc' )">
+            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('ballsBowled', sorting === 'ballsBowled' ? 'desc' : sorting === '-ballsBowled' ? 'asc' : 'desc' )">
               Overs 
-              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('overs')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-overs'">
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('ballsBowled')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-ballsBowled'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">

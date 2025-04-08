@@ -540,9 +540,15 @@ export class RankingsComponent {
         return (b.average - a.average) * sortMultiplier;
       } else if (key.includes('strikeRate')) {
         return (b.strikeRate - a.strikeRate) * sortMultiplier;
+      } else if (key.includes('runs')) {
+        return (b.runs - a.runs) * sortMultiplier;
+      } else if (key.includes('ballsFaced')) {
+        return (b.ballsFaced - a.ballsFaced) * sortMultiplier;
+      } else if (key.includes('points')) {
+        return (b.points - a.points) * sortMultiplier;
       } else {
         // Default sorting by rank
-        return (b.rank - a.rank) * sortMultiplier;
+        return (b.rank - a.rank) * sortMultiplier; 
       }
     });
   }
@@ -566,6 +572,10 @@ export class RankingsComponent {
         return (b.economy - a.economy) * sortMultiplier;
       } else if (key.includes('matches')) {
         return (b.matches - a.matches) * sortMultiplier;
+      } else if (key.includes('points')) {
+        return (b.points - a.points) * sortMultiplier;
+      } else if (key.includes('ballsBowled')) {
+        return (b.ballsBowled - a.ballsBowled) * sortMultiplier;
       } else {
         // Default sorting by rank
         return (b.rank - a.rank) * sortMultiplier;
