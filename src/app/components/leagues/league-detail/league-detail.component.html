@@ -153,7 +153,7 @@
                   <img [src]="getTeamDetails(fixture?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                     class="w-12 h-12 rounded-full object-cover" alt="New Zealand">
                   <div>
-                    <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_one)?.team?.name}}</div>
+                    <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_one)?.team?.name ?? 'TBD'}}</div>
                     <div *ngIf="fixture?.status !== 'upcoming'" 
                       [class.text-red-500]="fixture?.team_two?.runs > fixture?.team_one?.runs" 
                       [class.text-green-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" class="text-2xl font-bold text-gray-900">{{fixture?.team_one?.runs}}/{{fixture?.team_one?.wickets}}</div>
@@ -165,7 +165,7 @@
                 </div>
                 <div class="flex items-center gap-4 flex-1 justify-end sm:flex-row flex-row-reverse">
                   <div class="sm:text-right text-left">
-                    <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_two)?.team?.name}}</div>
+                    <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_two)?.team?.name ?? 'TBD'}}</div>
                     <div *ngIf="fixture?.status !== 'upcoming'" 
                       [class.text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 
                       [class.text-green-500]="fixture?.team_two?.runs > fixture?.team_one?.runs"
@@ -183,7 +183,7 @@
                 </div>
                 
                 <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
-                *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
+                *ngIf="(fixture?.status != 'completed') && fixture?.team_two?.id && fixture?.team_one?.id && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                   <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30">
                   Update Result
                 </button>

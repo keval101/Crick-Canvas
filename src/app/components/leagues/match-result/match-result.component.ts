@@ -70,4 +70,28 @@ export class MatchResultComponent {
     this.team_two.reset();
     this.closeMatchResultModal.emit(this.match); 
   }
+
+  async matchAbandon() {
+    this.team_one.reset();
+    this.team_two.reset();
+
+    this.isLoading = true;
+    const payload = {
+      ...this.match,
+      team_one: {...this.match.team_one, ...this.team_one.value},
+      team_two: {...this.match.team_two, ...this.team_two.value},
+      status: 'completed',
+      result: 'abandoned',
+      date: new Date().getTime()
+    }
+
+    if(this.isH2H) {
+      await this.dataService.updateH2HResult(payload, this.match.id)
+    } else {
+      await this.dataService.updateMatchResult(payload, this.match.id)
+    }
+    this.closeMatchResultModal.emit(this.match);
+    this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Match Abondoned!' });
+    this.isLoading = false;
+  }
 }

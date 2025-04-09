@@ -97,6 +97,10 @@
   </div>
   
   <div class="flex items-center justify-centerw-full gap-4 w-full">
+    <button class="btn w-full flex justify-center items-center" (click)="matchAbandon()">
+      <span *ngIf="isLoading"><app-spinner [white]="true"></app-spinner></span>
+      <span *ngIf="!isLoading">Abandon Match</span>
+    </button>
     <button class="btn w-full flex justify-center items-center" (click)="swapResults()"> 
       <i class="ri-arrow-left-right-line mr-4"></i> Swap Results
     </button>
