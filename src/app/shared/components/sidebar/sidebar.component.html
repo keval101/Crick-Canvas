@@ -1,76 +1,5 @@
-<!-- <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased side-bgparent text-gray-800 sidebar-container">
-    <div class="fixed flex flex-col top-0 left-0 w-64 side-bg h-full border-r sidebar-width">
-      <div class="flex items-center justify-center side-bg h-24 border-b hide-in-mobile">
-        <div class="flex items-center justify-center">
-          <img src="./assets/icons/logoo.png" alt="" width="50" height="50">
-          <span class="font-bold text-2xl">Cricket Score</span>
-        </div>
-      </div>
-      <div class="overflow-y-auto overflow-x-hidden flex-grow sidebar side-bg">
-        <ul class="flex flex-col space-y-1">
-          <li>
-            <a routerLinkActive="active" [routerLink]="'/dashboard'" class="relative flex cursor-pointer flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a routerLinkActive="active" [routerLink]="'/matches'" class="relative flex flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <img src="./assets/icons/matchess.png" alt="" width="40" height="40">
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Matches</span>
-            </a>
-          </li>
-          <li>
-            <a routerLinkActive="active" [routerLink]="'/leagues'" class="relative flex cursor-pointer flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <img src="./assets/icons/league.png" alt="" width="40" height="40" class="legue-icon">
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Leagues</span>
-            </a>
-          </li>
-          <li>
-            <a routerLinkActive="active" [routerLink]="['/stats', userId]" class="relative flex cursor-pointer flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <img src="./assets/icons/stats.svg" alt="" width="24" height="24">
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Stats</span>
-            </a>
-          </li>
-          <li>
-            <a routerLinkActive="active" [routerLink]="['/rankings']" class="relative flex cursor-pointer flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <img src="./assets/icons/ranking.svg" alt="" width="24" height="24">
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Rankings</span>
-            </a>
-          </li>
-          <li>
-            <a routerLinkActive="active" [routerLink]="'/profile'" class="relative flex cursor-pointer flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <img src="./assets/icons/profile.svg" alt="" width="26" height="26">
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Profile</span>
-            </a>
-          </li>
-          <li (click)="signOut()">
-            <a class="relative flex cursor-pointer flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Logout</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div> -->
-
   <aside
-  class="sidebar cricket-stump-pattern w-[280px] h-screen flex flex-col fixed"
+  class="sidebar cricket-stump-pattern w-[280px]  h-screen flex flex-col fixed"
 >
   <!-- Header Section -->
   <div class="flex flex-col items-center pt-8 pb-6 relative">
@@ -92,7 +21,7 @@
   ></div>
 
   <!-- Navigation Menu -->
-  <nav class="flex-1 px-4 py-2">
+  <nav class="px-4 py-2">
     <ul class="space-y-1">
       <li>
         <a
@@ -177,12 +106,12 @@
     </ul>
   </nav>
 
-  <div
+  <!-- <div
     class="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent my-2"
-  ></div>
+  ></div> -->
 
   <!-- Footer Section -->
-  <div class="p-4">
+  <div class="p-4 sm:mt-auto mt-5">
     <div class="flex items-center space-x-3 mb-4 cursor-pointer" [routerLink]="'/profile'">
       <div
         class="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center overflow-hidden"
