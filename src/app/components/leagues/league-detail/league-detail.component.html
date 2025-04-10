@@ -116,9 +116,14 @@
                 <span class="text-gray-600 font-medium">Upcoming</span>
               </div>
 
-              <div class="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full" *ngIf="fixture?.status === 'completed'">
+              <div class="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full" *ngIf="fixture?.status === 'completed' && fixture?.result !== 'abondoned'">
                 <i class="ri-checkbox-circle-line text-green-600"></i>
                 <span class="text-green-600 font-medium">Completed</span>
+              </div>
+
+              <div class="flex items-center gap-2 bg-red-50 px-3 py-1 rounded-full" *ngIf="fixture?.result === 'abondoned'"> 
+                <i class="ri-checkbox-circle-line text-red-600"></i>
+                <span class="text-red-600 font-medium">Abondoned</span>
               </div>
             </div>
 
