@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -24,11 +25,13 @@ export class StatsComponent {
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    private title: Title
   ) { }
 
   ngOnInit(): void {
 
+    this.title.setTitle('Player Stats | Batting, Bowling, Fielding Records');
     this.playerId = this.route.snapshot.paramMap.get('userId');
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.isLoading = true;
@@ -101,7 +104,7 @@ export class StatsComponent {
     let bestFigures = { wickets: 0, runs: 0 };
   
     matches.forEach(match => {
-      if(match.status != 'completed' || match.team_one.balls === 0) {
+      if(match.status != 'completed' || match.team_one.balls === 0 || match.result == 'abandoned') {
         return;
       }
       let isPlayerInMatch = false;

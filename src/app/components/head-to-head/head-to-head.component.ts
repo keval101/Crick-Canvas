@@ -4,6 +4,7 @@ import { DataService } from 'src/app/services/data.service';
 import * as _ from 'lodash';
 import { Subject, takeUntil } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-head-to-head',
@@ -27,7 +28,8 @@ export class HeadToHeadComponent {
   constructor(
     private dataService: DataService,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private title: Title
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +44,8 @@ export class HeadToHeadComponent {
         this.allMatches = _.cloneDeep(this.matches);
       })
     })
+
+    this.title.setTitle('Cricket Head-to-Head (H2H) Records | Compare Teams & Players');
   }
 
   setMatchType(type: string) {

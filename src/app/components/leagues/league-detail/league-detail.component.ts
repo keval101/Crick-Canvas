@@ -6,6 +6,7 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import * as _ from 'lodash';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-league-detail',
@@ -41,11 +42,12 @@ export class LeagueDetailComponent {
     private authService: AuthService,
     private dataService: DataService,
     private cd: ChangeDetectorRef,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private title: Title
   ) {}
 
   ngOnInit() {
-
+    this.title.setTitle(`League Details`);
     this.view = localStorage.getItem('view') || 'list';
     this.authService.getCurrentUserDetail().pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.user = user;
@@ -55,6 +57,7 @@ export class LeagueDetailComponent {
     this.getLeagueMatches()
     this.dataService.getLeagueDetails(this.leagueId).then((league) => {
       this.league = league;
+      this.title.setTitle(`${this.league.name} - League Details`);
       this.getTeams();
     });
   }

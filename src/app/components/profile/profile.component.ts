@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -11,10 +12,13 @@ export class ProfileComponent {
   isLoading = true;
   user: any;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private title: Title,
+    private authService: AuthService) {}
 
   ngOnInit() {
     this.authService.getCurrentUserDetail().subscribe(user => {
+      this.title.setTitle('Your Profiles - ' + user.name);
       this.user = user;
       this.isLoading = false;
     })

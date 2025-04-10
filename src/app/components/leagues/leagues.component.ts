@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -22,6 +23,7 @@ export class LeaguesComponent {
     private fb: FormBuilder,
     private messageService: MessageService,
     private authService: AuthService,
+    private title: Title,
     private dataService: DataService) {
     }
 
@@ -32,6 +34,8 @@ export class LeaguesComponent {
       this.user = user;
       this.userId = user.uid
     })
+
+    this.title.setTitle('Leagues Overview | Fixtures, Results & Standings');
   }
 
   getLeagues() {

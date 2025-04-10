@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import * as _ from 'lodash';
+import { Title } from '@angular/platform-browser';
 
 interface TeamRanking {
   prev_rank: number;
@@ -62,10 +63,12 @@ export class RankingsComponent {
   sorting = '-rank';
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private title: Title
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Cricket Rankings | Top Players & Teams')
     this.dataService.getAllLeagueMatches().subscribe(matches => {
       
       this.updatePlayerRankings(matches);
