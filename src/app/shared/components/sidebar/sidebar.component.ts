@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class SidebarComponent {
 
   userId: string;
+  user: any
   navigations = [
     {
       name: 'Dashboard',
@@ -48,6 +49,7 @@ export class SidebarComponent {
     private router: Router) {
       this.authService.getCurrentUserDetail().subscribe(user => {
         this.userId = user.uid
+        this.user = user;
       })
     }
 

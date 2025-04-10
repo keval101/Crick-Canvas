@@ -1,12 +1,12 @@
-<div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800 sidebar-container">
-    <div class="fixed flex flex-col top-0 left-0 w-64 bg-white h-full border-r sidebar-width">
-      <div class="flex items-center justify-center h-24 border-b hide-in-mobile">
+<!-- <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased side-bgparent text-gray-800 sidebar-container">
+    <div class="fixed flex flex-col top-0 left-0 w-64 side-bg h-full border-r sidebar-width">
+      <div class="flex items-center justify-center side-bg h-24 border-b hide-in-mobile">
         <div class="flex items-center justify-center">
           <img src="./assets/icons/logoo.png" alt="" width="50" height="50">
           <span class="font-bold text-2xl">Cricket Score</span>
         </div>
       </div>
-      <div class="overflow-y-auto overflow-x-hidden flex-grow sidebar bg-white">
+      <div class="overflow-y-auto overflow-x-hidden flex-grow sidebar side-bg">
         <ul class="flex flex-col space-y-1">
           <li>
             <a routerLinkActive="active" [routerLink]="'/dashboard'" class="relative flex cursor-pointer flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
@@ -16,22 +16,6 @@
               <span class="ml-2 text-sm tracking-wide nav-text truncate">Dashboard</span>
             </a>
           </li>
-          <!-- <li>
-            <a routerLinkActive="active" [routerLink]="'/teams'" class="relative flex flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <img src="./assets/icons/teamss.png" alt="" width="40" height="40">
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Teams</span>
-            </a>
-          </li> -->
-          <!-- <li>
-            <a routerLinkActive="active" [routerLink]="'/players'" class="relative flex flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center nav-item items-center ml-4">
-                <img src="./assets/icons/players.png" alt="" width="40" height="40">
-              </span>
-              <span class="ml-2 text-sm tracking-wide nav-text truncate">Players</span>
-            </a>
-          </li> -->
           <li>
             <a routerLinkActive="active" [routerLink]="'/matches'" class="relative flex flex-row side-nav items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
               <span class="inline-flex justify-center nav-item items-center ml-4">
@@ -83,4 +67,145 @@
         </ul>
       </div>
     </div>
+  </div> -->
+
+  <aside
+  class="sidebar cricket-stump-pattern w-[280px] h-screen flex flex-col fixed"
+>
+  <!-- Header Section -->
+  <div class="flex flex-col items-center pt-8 pb-6 relative">
+    <div
+      class="avatar-container w-16 h-16 rounded-full flex items-center justify-center mb-4 overflow-hidden"
+    >
+      <div
+        class="cricket-ball w-14 h-14 rounded-full flex items-center justify-center"
+      >
+      <img src="./assets/icons/logoo2.png" alt="" width="50" height="50">
+      </div>
+    </div>
+    <h1 class="text-white font-bold text-xl">Cricket Premier</h1>
+    <p class="text-white text-sm">Fantasy League</p>
   </div>
+
+  <div
+    class="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent my-2"
+  ></div>
+
+  <!-- Navigation Menu -->
+  <nav class="flex-1 px-4 py-2">
+    <ul class="space-y-1">
+      <li>
+        <a
+          [routerLink]="['/dashboard']"
+          routerLinkActive="active"
+          class="sidebar-item flex items-center text-white px-4 py-3 rounded"
+        >
+          <div class="w-8 h-8 flex items-center justify-center mr-3">
+            <i class="ri-dashboard-line ri-lg"></i>
+          </div>
+          <span>Dashboard</span>
+          <span
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            >Dashboard</span
+          >
+        </a>
+      </li>
+      <li>
+        <a
+        [routerLink]="['/matches']"
+        routerLinkActive="active"
+          class="sidebar-item flex items-center text-white hover:text-white px-4 py-3 rounded"
+        >
+          <div class="w-8 h-8 flex items-center justify-center mr-3">
+            <img src="./assets/icons/matches.png" alt="" width="30" height="30">
+          </div>
+          <span>Matches</span>
+          <span
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            >Matches</span
+          >
+        </a>
+      </li>
+      <li>
+        <a
+        [routerLink]="['/leagues']"
+        routerLinkActive="active"
+          class="sidebar-item flex items-center text-white hover:text-white px-4 py-3 rounded"
+        >
+          <div class="w-8 h-8 flex items-center justify-center mr-3">
+            <img src="./assets/icons/leagues.png" alt="" width="24" height="24">
+          </div>
+          <span>Leagues</span>
+          <span
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            >Leagues</span
+          >
+        </a>
+      </li>
+      <li>
+        <a
+        [routerLink]="['/stats', userId]"
+        routerLinkActive="active"
+          class="sidebar-item flex items-center text-white hover:text-white px-4 py-3 rounded"
+        >
+          <div class="w-8 h-8 flex items-center justify-center mr-3">
+            <i class="ri-team-line ri-lg"></i>
+          </div>
+          <span>Stats</span>
+          <span
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            >Stats</span
+          >
+        </a>
+      </li>
+      <li>
+        <a
+        [routerLink]="['/rankings']"
+        routerLinkActive="active"
+          class="sidebar-item flex items-center text-white hover:text-white px-4 py-3 rounded"
+        >
+          <div class="w-8 h-8 flex items-center justify-center mr-3">
+            <i class="ri-trophy-line ri-lg"></i>
+          </div>
+          <span>Rankings</span>
+          <span
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            >Rankings</span
+          >
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div
+    class="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent my-2"
+  ></div>
+
+  <!-- Footer Section -->
+  <div class="p-4">
+    <div class="flex items-center space-x-3 mb-4 cursor-pointer" [routerLink]="'/profile'">
+      <div
+        class="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center overflow-hidden"
+      >
+        <img
+          [src]="user?.team?.logo ?? 'https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20cricket%20player%2C%20male%2C%20short%20hair%2C%20athletic%20build%2C%20wearing%20a%20blue%20cricket%20jersey%2C%20confident%20expression%2C%20studio%20lighting%2C%20high%20quality&width=100&height=100&seq=avatar123&orientation=squarish'"
+          alt="User"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div>
+        <h3 class="text-white text-sm font-medium">{{user?.name}}</h3>
+        <p *ngIf="user?.team" class="text-white text-xs">{{user?.team?.name}}</p>
+      </div>
+    </div>
+
+    <button (click)="signOut()"
+      class="!rounded-button w-full flex items-center justify-center space-x-2 bg-gray-800 hover:bg-gray-700 text-white py-2 px-4 transition-all duration-300"
+    >
+      <div class="w-5 h-5 flex items-center justify-center">
+        <i class="ri-logout-box-line"></i>
+      </div>
+      <span class="whitespace-nowrap">Sign Out</span>
+    </button>
+  </div>
+</aside>

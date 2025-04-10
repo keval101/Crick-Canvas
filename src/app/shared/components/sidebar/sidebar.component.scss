@@ -1,84 +1,76 @@
-.nav-item {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.side-bg,
+.side-bgparent {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari support */
+    background-color: rgba(255, 255, 255, 0.4); /* Needed for visibility */
 }
 
-.menu-button {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 9999;
+// :where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa;
 }
-
-.hide-in-mobile {
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
+.sidebar {
+    background-color: #1A1C20;
+    background-image: linear-gradient(to bottom, rgba(42, 76, 127, 0.2), rgba(26, 28, 32, 0.05));
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
-
-@media screen and (max-width: 768px) {
-    .sidebar-width {
-        width: 100%;
-        height: fit-content;
-        position: fixed;
-        bottom: 0;
-    }
-
-    .sidebar-container {
-        height: fit-content;
-    }
-
-    .nav-item {
-        &:hover {
-            border: none;
-        }
-    }
-
-    .sidebar {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-
-
-        ul {
-            @apply grid grid-cols-7;
-        }
-
-        .nav-item {
-            @apply m-0;
-        }
-
-        .legue-icon {
-            width: 34px;
-        }
-
-        li {
-            @apply border-l border-gray-200 block w-full;
-            height: 50px;
-        }
-
-        .nav-text {
-            display: none;
-        }
-
-        .side-nav{
-            @apply flex justify-center items-center p-0 border-t-4 border-r-0 border-l-0;
-            transition: all 0.3s ease-in-out;
-
-            &:hover,
-            &.active {
-                @apply border-indigo-500;  
-                transition: all 0.3s ease-in-out;
-            }
-        }
-    }
+.sidebar-item {
+    transition: all 0.3s ease;
 }
-
-.side-nav{
-    &.active {
-        @apply border-indigo-500;
-    }
+.sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateX(5px);
+}
+.sidebar-item.active {
+    background-color: rgba(255, 107, 43, 0.15);
+    border-left: 3px solid #FF6B2B;
+}
+.cricket-ball {
+    background: radial-gradient(circle at 30% 30%, #FF6B2B 0%, #d83e00 70%);
+    box-shadow: inset -2px -2px 6px rgba(0, 0, 0, 0.3);
+}
+.cricket-stump-pattern {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.03) 0px,
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 1px,
+        transparent 6px
+    );
+}
+.avatar-container {
+    background: linear-gradient(135deg, #2A4C7F 0%, #4CAF50 100%);
+}
+.collapsed-sidebar {
+    width: 80px;
+}
+.sidebar-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s ease;
+    transform: translateX(10px);
+}
+.collapsed-sidebar .sidebar-item:hover .sidebar-tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+}
+.toggle-switch {
+    transition: all 0.3s ease;
+}
+.toggle-handle {
+    transform: translateX(0);
+    transition: all 0.3s ease;
+}
+input[type="checkbox"]:checked + .toggle-switch {
+    background-color: #4CAF50;
+}
+input[type="checkbox"]:checked + .toggle-switch .toggle-handle {
+    transform: translateX(16px);
 }

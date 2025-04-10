@@ -53,19 +53,19 @@
 
           <ng-container *ngIf="fixture?.status === 'completed'">
             <div *ngIf="fixture?.team_one?.runs > fixture?.team_two?.runs"
-              class=" w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="rounded-t-2xl w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
               <span>{{getTeamDetails(fixture?.team_one)?.name}} Won The Match!</span>
             </div>
 
             <div *ngIf="fixture?.team_two?.runs > fixture?.team_one?.runs"
-              class=" w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="rounded-t-2xl w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
               <span>{{getTeamDetails(fixture?.team_two)?.name}} Won The Match!</span>
             </div>
             
             <div *ngIf="fixture?.team_two?.runs === fixture?.team_one?.runs"
-              class=" w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="rounded-t-2xl w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <span>It's a Draw!</span>
             </div>
 

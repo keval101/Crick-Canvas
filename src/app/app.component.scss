@@ -2,9 +2,9 @@
     display: flex;
 
     &-content {
-        width: calc(100% - 16rem);
+        width: calc(100% - 290px);
         margin-left: auto;
-
+        background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 6px);
         @media screen and (max-width: 768px) {
             width: 100%;
         }
@@ -21,4 +21,48 @@
 
 ::ng-deep app-sidebar {
     z-index: 999;
+    @media screen and (max-width: 768px) {        
+        transform: translate(-500px);
+        transition: all 0.5s ease-in-out;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    &.sidebar-open {
+        transform: translate(0);
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+.humburger  {
+    @apply flex justify-center items-center;;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+    border-radius: 100%;
+    background-color: #fff;
+    width: 50px;
+    height: 50px;
+
+    @media screen and (min-width: 769px) {        
+        display: none;
+    }
+
+    @media screen and (max-width: 768px) {        
+        display: flex;
+    }
+
+    &.animation {
+        animation: rotate 0.5s ease-in-out infinite;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

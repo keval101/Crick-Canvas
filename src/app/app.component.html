@@ -1,7 +1,13 @@
 <p-toast></p-toast>
-<div [class.main]="!isLoginPage" class="bg-gray-50 m">
-    <app-sidebar *ngIf="!isLoginPage && !hideSidebar"></app-sidebar>
+<div [class.main]="!isLoginPage" class="bg-gray-50 main" >
+    <app-sidebar *ngIf="!isLoginPage && !hideSidebar" [class.sidebar-open]="showSidebar"></app-sidebar>
     <div [ngClass]="{'main-content p-8': !isLoginPage && !hideSidebar}" [class.hide-sidebar]="hideSidebar">
         <router-outlet (activate)="checkForLoginPage()"></router-outlet>
     </div>
+</div>
+
+<div class="humburger">
+    <button (click)="toggleSidebar()" class="humburger-button" [class.animation]="showSidebar">
+        <img src="./assets/icons/ball.png" alt="" width="40" height="40">
+    </button>
 </div>
