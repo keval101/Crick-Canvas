@@ -159,6 +159,7 @@ export class LeagueDetailComponent {
       this.totalMatches = this.allMatches.length;
       this.completedMatches = this.fixtures.filter(match => (match.status === 'completed' && match?.type != 'playoff') ).length;
       this.finalMatch = this.playOffs.find(m => m.id.includes('final'));
+      console.log(this.fixtures);
 
       this.cd.detectChanges();
     });
