@@ -227,7 +227,8 @@
           <th class="px-4 py-4 text-center">OF</th>
           <th class="px-4 py-4 text-center">RA</th>
           <th class="px-4 py-4 text-center">OB</th>
-          <td class="px-4 py-4 text-center">Wkts</td>
+          <td class="px-4 py-4 text-center">Wkts T.</td>
+          <td class="px-4 py-4 text-center">Wkts F.</td>
           <th class="px-4 py-4 text-center">Pts</th>
           <th class="px-4 py-4 text-center">NRR</th>
           <th class="px-4 py-4 text-center">Win%</th>
@@ -236,14 +237,14 @@
       <tbody>
         <tr class="bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer" *ngFor="let team of pointTable; let i = index"
         [class.!bg-white]="i % 2 === 0">
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 whitespace-nowrap">
             <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
               <img
                 [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="font-semibold text-gray-900">{{getTeamDetails(team)?.team?.name}}</span>
+              <span class="font-semibold text-gray-900 whitespace-nowrap">{{getTeamDetails(team)?.team?.name}}</span>
               <img src="/assets/icons/orangecap.png" alt="" width="30" height="30" *ngIf="team?.id === orangecap?.id">
               <img src="/assets/icons/purplecap.png" alt="" width="30" height="30" *ngIf="team?.id === purplecap?.id">
             </div>
@@ -257,6 +258,7 @@
           <td class="px-4 py-4 text-center">{{team?.runsAgainst}}</td>
           <td class="px-4 py-4 text-center">{{team?.oversBowled}}</td>
           <td class="px-4 py-4 text-center">{{team?.wicketsTaken}}</td>
+          <td class="px-4 py-4 text-center">{{team?.wicketsFallen}}</td>
           <td class="px-4 py-4 text-center font-semibold">{{team?.pts}}</td>
           <td class="px-4 py-4 text-center"
           [class.text-green-600]="+(team?.nrr) > 0"

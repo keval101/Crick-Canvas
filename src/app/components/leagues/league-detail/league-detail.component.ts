@@ -340,6 +340,7 @@ async generatePointsTable() {
           draw: 0,
           runsFor: 0,
           wicketsTaken: 0,
+          wicketsFallen: 0,
           oversFacedBalls: 0,
           runsAgainst: 0,
           oversBowledBalls: 0,
@@ -354,6 +355,7 @@ async generatePointsTable() {
       table[team.id].runsAgainst += opponent.runs;
       table[team.id].oversBowledBalls += opponent.balls;
       table[team.id].wicketsTaken += opponent.wickets;
+      table[team.id].wicketsFallen += team.wickets;
 
       // Win/Loss/Draw calculation
       if (match.status === 'completed') {
@@ -387,6 +389,7 @@ async generatePointsTable() {
         draw: +team.draw,
         runsFor: +team.runsFor,
         wicketsTaken: +team.wicketsTaken,
+        wicketsFallen: +team.wicketsFallen,
         oversFaced: `${Math.floor(team.oversFacedBalls / 6)}.${team.oversFacedBalls % 6}`,
         runsAgainst: team.runsAgainst,
         oversBowled: `${Math.floor(team.oversBowledBalls / 6)}.${team.oversBowledBalls % 6}`,
