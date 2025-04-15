@@ -223,9 +223,7 @@ export class StatsComponent {
     recentMatches.sort((a, b) => (b?.date || 0) - (a?.date || 0));
 
     // Limit to the 5 most recent matches
-    return recentMatches.slice(0, 5).map(match => ({
-      ...match,
-    }));
+    return recentMatches
   }
 
   ngOnDestroy() {

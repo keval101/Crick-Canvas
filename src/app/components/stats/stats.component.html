@@ -125,10 +125,10 @@
         </div>
       </div>
     <div class="grid sm:grid-cols-2 grid-cols-1 gap-6 mb-8">
-        <div class="bg-white rounded-lg shadow-sm p-6 h-fit">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Recent Matches</h2>
+        <div class="bg-white rounded-lg shadow-sm px-6 pb-6 h-fit" style="max-height: 500px; overflow-y: auto;"> 
+            <h2 class="text-xl font-bold text-gray-900 mt-6 bg-white sticky top-0 pb-6">Recent Matches</h2>
             <div class="space-y-4" *ngFor="let match of stats?.recentMatches">
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div class="flex mb-2 items-center justify-between p-4 bg-gray-50 rounded-lg">
                     <div class="flex items-center space-x-4">
                         <img [src]="playerId === match?.team_one.id ? match.team_two.logo : match?.team_one.logo"
                             class="w-12 h-12 rounded-full object-cover" alt="RCB" /> 
@@ -142,7 +142,7 @@
                           {{playerId === match?.team_one.id ? match?.team_one?.runs : match?.team_two?.runs}}/{{playerId === match?.team_one.id ? match?.team_one?.wickets : match?.team_two?.wickets}} <span class="text-xs">({{ballsToOvers(playerId === match?.team_one.id ? match?.team_two?.balls : match?.team_one?.balls)}} overs)</span></div> 
                         </div>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right" *ngIf="match?.date">
                       <ng-container *ngIf="playerId === match?.team_one.id || playerId === match?.team_two.id">
                         <div *ngIf="(playerId === match?.team_one.id && match?.team_one.runs > match?.team_two.runs) || (playerId === match?.team_two.id && match?.team_two.runs > match?.team_one.runs)" class="text-green-600">
                           Victory!
