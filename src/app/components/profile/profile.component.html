@@ -6,24 +6,24 @@
   <button type="button" class="btn" (click)="setupTeam()" *ngIf="!user?.team">Setup Team</button>
 
   <div *ngIf="user?.team"
-  class="relative w-full bg-top bg-cover py-24 rounded-2xl"
-  style="background-image: url('https://img.freepik.com/free-photo/cricket-equipment-digital-art_23-2151761264.jpg?t=st=1742817675~exp=1742821275~hmac=f3169a5d8db979990eee4522922d6a931640a54180ed9d5dbe1cab9daf00c95d&w=826');"
+  class="relative w-full bg-top bg-cover py-24 rounded-2xl flex flex-column justify-center items-center"
+  style="background-image: url({{user?.team?.logo}}); height: calc(100vh - 64px);"
+
 >
   <div class="absolute inset-0 bg-black/30 rounded-2xl"></div>
-  <div class="container mx-auto px-4 relative">
-    <div class="flex items-center gap-8 sm:flex-row flex-col">
+  <div class="container mx-auto relative">
+    <div class="flex items-center gap-8 sm:flex-row flex-col banner p-5">
       <div
         class="w-40 h-40 rounded-full bg-transparent backdrop-blur-sm p-2 flex items-center justify-center overflow-hidden"
       >
         <img
           [src]="user?.team?.logo"
           alt="Team Logo"
-          class="object-cover rounded-full" 
-          width="144px"
-          height="144px"
+          class="object-cover rounded-full z-10" 
+          style="min-width: 160px; height: 160px;"
         />
       </div>
-      <div class="text-white">
+      <div class="text-white z-10">
         <div class="flex sm:flex-row flex-col gap-2 items-center">
           <h1 class="sm:text-5xl text-2xl font-bold mb-2">{{ user?.team?.name }}</h1>
           <button (click)="setupTeam()"
