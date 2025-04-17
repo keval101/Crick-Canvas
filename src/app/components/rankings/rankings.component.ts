@@ -182,48 +182,52 @@ export class RankingsComponent {
         return;
       }
 
-      const teamOneBatsman = `${team_one.name}`;
-      const teamTwoBatsman = `${team_two.name}`;
-      const teamOneBowler = `${team_one.name}`;
-      const teamTwoBowler = `${team_two.name}`;
+      const teamOneBatsmanName = `${team_one.name}`;
+      const teamTwoBatsmanName = `${team_two.name}`;
+      const teamOneBowlerName = `${team_one.name}`;
+      const teamTwoBowlerName = `${team_two.name}`;
+      const teamOneBatsmanId = `${team_one.id}`;
+      const teamTwoBatsmanId = `${team_two.id}`;
+      const teamOneBowlerId = `${team_one.id}`;
+      const teamTwoBowlerId = `${team_two.id}`;
 
-      if (!batsmen[teamOneBatsman]) {
-        batsmen[teamOneBatsman] = { name: teamOneBatsman, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
+      if (!batsmen[teamOneBatsmanId]) {
+        batsmen[teamOneBatsmanId] = { name: teamOneBatsmanName, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
       }
-      if (!batsmen[teamTwoBatsman]) {
-        batsmen[teamTwoBatsman] = { name: teamTwoBatsman, teamId: team_two.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
+      if (!batsmen[teamTwoBatsmanId]) {
+        batsmen[teamTwoBatsmanId] = { name: teamTwoBatsmanName, teamId: team_two.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
       }
-      if (!bowlers[teamOneBowler]) {
-        bowlers[teamOneBowler] = { name: teamOneBowler, teamId: team_one.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
+      if (!bowlers[teamOneBowlerId]) {
+        bowlers[teamOneBowlerId] = { name: teamOneBowlerName, teamId: team_one.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
       }
-      if (!bowlers[teamTwoBowler]) {
-        bowlers[teamTwoBowler] = { name: teamTwoBowler, teamId: team_two.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
+      if (!bowlers[teamTwoBowlerId]) {
+        bowlers[teamTwoBowlerId] = { name: teamTwoBowlerName, teamId: team_two.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
       }
 
-      batsmen[teamOneBatsman].runs += team_one.runs;
-      batsmen[teamOneBatsman].ballsFaced += team_one.balls;
-      batsmen[teamTwoBatsman].runs += team_two.runs;
-      batsmen[teamTwoBatsman].ballsFaced += team_two.balls;
+      batsmen[teamOneBatsmanId].runs += team_one.runs;
+      batsmen[teamOneBatsmanId].ballsFaced += team_one.balls;
+      batsmen[teamTwoBatsmanId].runs += team_two.runs;
+      batsmen[teamTwoBatsmanId].ballsFaced += team_two.balls;
 
-      batsmen[teamOneBatsman].recentMatches.push(match)
-      batsmen[teamTwoBatsman].recentMatches.push(match)
+      batsmen[teamOneBatsmanId].recentMatches.push(match)
+      batsmen[teamTwoBatsmanId].recentMatches.push(match)
 
-      batsmen[teamOneBatsman].matches++;
-      batsmen[teamTwoBatsman].matches++;
+      batsmen[teamOneBatsmanId].matches++;
+      batsmen[teamTwoBatsmanId].matches++;
 
-      bowlers[teamOneBowler].matches++;
-      bowlers[teamTwoBowler].matches++;
+      bowlers[teamOneBowlerId].matches++;
+      bowlers[teamTwoBowlerId].matches++;
 
-      bowlers[teamOneBowler].recentMatches.push(match)
-      bowlers[teamTwoBowler].recentMatches.push(match)
+      bowlers[teamOneBowlerId].recentMatches.push(match)
+      bowlers[teamTwoBowlerId].recentMatches.push(match)
 
-      bowlers[teamOneBowler].wickets += team_two.wickets;
-      bowlers[teamOneBowler].ballsBowled += team_two.balls;
-      bowlers[teamOneBowler].runsConceded += team_two.runs;
+      bowlers[teamOneBowlerId].wickets += team_two.wickets;
+      bowlers[teamOneBowlerId].ballsBowled += team_two.balls;
+      bowlers[teamOneBowlerId].runsConceded += team_two.runs;
 
-      bowlers[teamTwoBowler].wickets += team_one.wickets;
-      bowlers[teamTwoBowler].ballsBowled += team_one.balls;
-      bowlers[teamTwoBowler].runsConceded += team_one.runs;
+      bowlers[teamTwoBowlerId].wickets += team_one.wickets;
+      bowlers[teamTwoBowlerId].ballsBowled += team_one.balls;
+      bowlers[teamTwoBowlerId].runsConceded += team_one.runs;
     });
 
     // this.mockData.batsmen = this.sortAndLimitMatches(this.mockData.batsmen)
@@ -390,7 +394,6 @@ export class RankingsComponent {
               }
             }
 
-            console.log(x.rank, cloneteam.team['battingRank'], cloneteam.name)
             if(isFirstTime || x.rank !== cloneteam.team['battingRank']) {
               await this.updateTeam(team);
             }
@@ -418,7 +421,6 @@ export class RankingsComponent {
                 x['prev_rank'] = cloneteam.team['prev_bowlingRank'];
               }
             }
-            console.log(x.rank, cloneteam.team['bowlingRank'], cloneteam.name)
             if(isFirstTime || x.rank !== cloneteam.team['bowlingRank']) {
               await this.updateTeam(team);
             }
@@ -446,7 +448,6 @@ export class RankingsComponent {
                 x['prev_rank'] = cloneteam.team['prev_teamRank'];
               }
             }
-            console.log(x.rank, cloneteam.team['teamRank'], cloneteam.name)
             if(isFirstTime || x.rank !== cloneteam.team['teamRank']) {
               await this.updateTeam(team);
             }
@@ -454,7 +455,6 @@ export class RankingsComponent {
         })
       }
 
-      console.log(this.teams)
       this.isLoading = false;
 
     });

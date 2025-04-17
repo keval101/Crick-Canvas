@@ -48,6 +48,5 @@ export class AppComponent {
 
   toggleSidebar() {
     this.showSidebar = !this.showSidebar;
-    console.log(this.showSidebar);
   }
 }

@@ -43,7 +43,6 @@ export class StatsComponent {
         this.getPlayerDetails();
         this.authService.getCurrentUserDetail(this.playerId).pipe(takeUntil(this.destroy$)).subscribe(user => {
           this.user = user;
-          console.log(this.user)
         })
         this.getParticipatedLeagues()
       }

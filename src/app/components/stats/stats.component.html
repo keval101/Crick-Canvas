@@ -1,5 +1,5 @@
 <ng-container *ngIf="!isLoading">
-  <header class="flex items-center gap-6 bg-white rounded-lg p-6 shadow-sm">
+  <header class="flex items-center gap-6 bg-white rounded-lg p-6 shadow-sm sm:flex-row flex-col">
     <img
       [src]="user?.team?.logo"
       class="w-24 h-24 rounded-full object-cover border-4 border-gray-100"
@@ -14,7 +14,7 @@
         ></i>
         <span>{{user?.team?.name}}</span>
       </div>
-      <div class="flex gap-4 mt-4">
+      <div class="flex gap-4 mt-4 flex-wrap">
         <div class="px-4 py-2 bg-gray-50 rounded-lg">
           <div class="text-sm text-gray-600">Matches</div>
           <div class="text-xl font-semibold">{{stats?.matchStats?.totalMatches}}</div>
@@ -131,7 +131,7 @@
                 <div class="flex mb-2 items-center justify-between p-4 bg-gray-50 rounded-lg">
                     <div class="flex items-center space-x-4">
                         <img [src]="playerId === match?.team_one.id ? match.team_two.logo : match?.team_one.logo"
-                            class="w-12 h-12 rounded-full object-cover" alt="RCB" /> 
+                            class="min-w-12 max-w-12 h-12 rounded-full object-cover" alt="RCB" /> 
                         <div>
                           <div class="text-sm text-gray-600">vs <span class="team-name" [routerLink]="['/stats', playerId === match?.team_one.id ? match.team_two.id : match?.team_one.id]">{{playerId === match?.team_one.id ? match.team_two.name : match?.team_one.name}}</span> &nbsp; 
                           <span>{{playerId === match?.team_one.id ? match?.team_two?.runs : match?.team_one?.runs}}/{{playerId === match?.team_one.id ? match?.team_two?.wickets : match?.team_one?.wickets}}</span><span class="text-xs"> ({{ballsToOvers(playerId === match?.team_one.id ? match?.team_two?.balls : match?.team_one?.balls)}} overs)</span></div>
