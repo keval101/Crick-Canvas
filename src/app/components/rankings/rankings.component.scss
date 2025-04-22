@@ -129,6 +129,7 @@
 
   .team-name {
     cursor: pointer;
+    width: max-content;
     transition: all 0.2s ease-in;
   
     span {

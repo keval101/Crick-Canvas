@@ -1,10 +1,12 @@
 .main {
     display: flex;
+    background: var(--bg);
 
     &-content {
         width: calc(100% - 290px);
         margin-left: auto;
-        background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 6px);
+        background: var(--bg);
+        // background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 6px);
         @media screen and (max-width: 768px) {
             width: 100%;
         }

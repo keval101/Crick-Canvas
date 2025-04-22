@@ -26,15 +26,15 @@
   width: 6px;
 }
 .table-container::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: blue;
   border-radius: 3px;
 }
 .table-container::-webkit-scrollbar-thumb {
-  background: #888;
+  background: red;
   border-radius: 3px;
 }
 .table-container::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: yellow;
 }
 
 .league-menu {
@@ -75,6 +75,7 @@
 
 .team-name {
   cursor: pointer;
+  width: max-content;
   transition: all 0.2s ease-in;
 
   span {

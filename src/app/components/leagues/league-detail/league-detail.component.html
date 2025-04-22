@@ -55,10 +55,6 @@
 
     <ng-container *ngIf="!allMatches?.length && league?.userId === user?.uid">
       <button class="text-gray-900 font-medium hover:text-primary transition-colors" (click)="generateFixtures()"> 
-        <span *ngIf="fixturesLoading"> 
-          <app-spinner></app-spinner>
-        </span>
-
         <span *ngIf="!fixturesLoading"> Generate Fixtures </span>
       </button>
     </ng-container>
@@ -365,7 +361,7 @@
     </ng-container>
   </div>
 
-  <ng-container *ngIf="fixturesLoading || isPlayOffLoading">
+  <ng-container *ngIf="isPlayOffLoading">
     <app-spinner></app-spinner> 
   </ng-container>
 </div>

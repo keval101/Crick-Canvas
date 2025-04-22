@@ -3,12 +3,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --bg: #212121;
+    --primary: #FF6B2B;
+    --title: #fff
+}
 
 .btn {
-    @apply px-4 bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg transition duration-300 ease-in-out outline-none border-none;
+    @apply px-4 shadow-sm mt-6 p-2 text-white rounded-lg transition duration-300 ease-in-out outline-none border-none;
+    background: var(--primary) !important;
 
     &:hover {
-        @apply from-purple-500 to-blue-500 transition duration-300 ease-in-out;
+        @apply transition duration-300 ease-in-out;
     }
 
     &:focus {
@@ -44,8 +50,13 @@ input {
 
 .section-heading {
     @apply text-3xl font-bold;
+    color: var(--title);
 
     @media screen and (max-width: 600px) {
         @apply text-xl;
     }
+}
+
+body {
+    background-color: var(--bg);
 }

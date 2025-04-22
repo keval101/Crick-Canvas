@@ -4,6 +4,7 @@
     }
 
     .team-name {
+        width: max-content;
         cursor: pointer;
         transition: all 0.2s ease-in;
         &:hover {
