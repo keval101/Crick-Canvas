@@ -54,9 +54,11 @@ export class StatsComponent {
     this.dataService.getParticipatedLeagues(this.playerId).pipe(takeUntil(this.destroy$)).subscribe(leagues => {
       this.participatedLeagues = leagues;
       this.orangecap = this.participatedLeagues.filter(league => league.orangecap?.id === this.playerId);
-      this.orangecap = this.orangecap.length ? this.orangecap.map(league => league.name) : [];
+      this.orangecap = this.orangecap.length ? this.orangecap.map(league => {return {id: league.id, name: league.name, runs: league.orangecap.runsFor}}) : []; 
       this.purplecap = this.participatedLeagues.filter(league => league.purplecap?.id === this.playerId);
-      this.purplecap = this.purplecap.length ? this.purplecap.map(league => league.name) : [];
+      this.purplecap = this.purplecap.length ? this.purplecap.map(league => {return {id: league.id, name: league.name, wickets: league.purplecap.wicketsTaken}}) : [];
+
+      console.log(this.orangecap, this.purplecap, this.participatedLeagues)
     })
   }
 
