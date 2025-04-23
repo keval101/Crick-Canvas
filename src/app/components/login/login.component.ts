@@ -49,4 +49,9 @@ export class LoginComponent {
       })
     }
   }
+
+  onSubmit() {
+    console.log('Form submitted');
+    // Add your login logic here
+  }
 }

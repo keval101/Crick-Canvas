@@ -7,7 +7,7 @@ body { font-family: 'Inter', sans-serif; }
     background-color: #303030;
     &:hover { 
         // transform: translateY(-2px);
-        border-color: #b5ccf8;
+        border-color: var(--primary);
      }
 }
 

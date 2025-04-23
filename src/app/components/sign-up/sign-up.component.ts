@@ -23,10 +23,10 @@ export class SignUpComponent {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
-      bat: ['', Validators.required],
-      bowl: ['', Validators.required],
+      // bat: ['', Validators.required],
+      // bowl: ['', Validators.required],
+      // type: ['', Validators.required],
       password: ['', Validators.required],
-      type: ['', Validators.required],
       matches: [[]]
     })
   }
