@@ -48,13 +48,13 @@
 
   <div class="league-menu mb-16" *ngIf="(league?.teams?.length > 1)">
     <ng-container *ngIf="allMatches?.length > 0">
-      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="selectedTab === 'fixtures'" (click)="selectedTab = 'fixtures'"> Fixtures </button>
-      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="selectedTab === 'point-table'"  (click)="setMatchType('all'); selectedTab = 'point-table'; generatePointsTable();"> Point Tables </button>
-      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="selectedTab === 'playoffs'" (click)="selectedTab = 'playoffs'; generatePlayOffs()" [class.disabled]="totalMatches != completedMatches"> PlayOffs</button>
+      <button class="text-white font-medium" [class.active]="selectedTab === 'fixtures'" (click)="selectedTab = 'fixtures'"> Fixtures </button>
+      <button class="text-white font-medium" [class.active]="selectedTab === 'point-table'"  (click)="setMatchType('all'); selectedTab = 'point-table'; generatePointsTable();"> Point Tables </button>
+      <button class="text-white font-medium" [class.active]="selectedTab === 'playoffs'" (click)="selectedTab = 'playoffs'; generatePlayOffs()" [class.disabled]="totalMatches != completedMatches"> PlayOffs</button>
     </ng-container>
 
     <ng-container *ngIf="!allMatches?.length && league?.userId === user?.uid">
-      <button class="text-gray-900 font-medium hover:text-primary transition-colors" (click)="generateFixtures()"> 
+      <button class="text-white font-medium" (click)="generateFixtures()"> 
         <span *ngIf="!fixturesLoading"> Generate Fixtures </span>
       </button>
     </ng-container>
@@ -63,29 +63,29 @@
   <div class="max-w-7xl mx-auto sm:px-8 px-2 pb-4 sm:pb-16" *ngIf="selectedTab === 'fixtures'">
     <div class="flex items-center justify-between mb-6 flex-wrap gap-3 sm:gap-0" *ngIf="allMatches?.length > 0"> 
       <div class="flex items-center sm:gap-8 flex-wrap gap-4">
-        <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'all'" [class.font-medium]="matchType === 'all'" (click)="setMatchType('all')">
+        <button class="text-white hover:text-primary btn-tab" [class.active]="matchType === 'all'" (click)="setMatchType('all')">
           All Matches
         </button>
-        <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'completed'" [class.font-medium]="matchType === 'completed'" (click)="setMatchType('completed')">
+        <button class="text-white hover:text-primary btn-tab" [class.active]="matchType === 'completed'" (click)="setMatchType('completed')">
           Completed
         </button>
-        <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'upcoming'" [class.font-medium]="matchType === 'upcoming'" (click)="setMatchType('upcoming')">
+        <button class="text-white hover:text-primary btn-tab" [class.active]="matchType === 'upcoming'" (click)="setMatchType('upcoming')">
           Upcoming
         </button>
 
-        <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'mymatches'" [class.font-medium]="matchType === 'mymatches'" (click)="setMatchType('mymatches')">
+        <button class="text-white hover:text-primary btn-tab" [class.active]="matchType === 'mymatches'" (click)="setMatchType('mymatches')">
           My Matches
         </button>
 
-        <button class="text-gray-500 hover:text-primary transition-colors">
+        <button class="text-white hover:text-primary btn-tab">
           {{fixtures?.length}} Matches
         </button>
       </div>
       <div class="flex items-center gap-3 search-input">
         <div class="relative">
           <input type="text" placeholder="Search matches..." (input)="searchMatches($event)"
-            class="pl-10 pr-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 w-64" />
-          <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            class="pl-10 pr-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 w-64" />
+          <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-white"></i>
         </div>
       </div>
     </div>
@@ -99,6 +99,15 @@
         <img src="./assets/icons/grid.png" alt="" width="40" width="40">
       </button>
     </div>
+
+    
+    <ng-container *ngIf="!fixturesLoading && fixtures?.length === 0">
+      <div class="flex items-center justify-center mt-10 w-full">
+        <div class="text-white text-center">
+          No Fixtures Found
+        </div>
+      </div>
+    </ng-container>
 
     <div class="grid matches-container gap-6" [class.grid-cols-1]="view === 'list'" [class.grid-cols-2]="view === 'grid'" id="matchContainer">
 
@@ -149,7 +158,7 @@
             </ng-container>
 
 
-            <div class="p-6">
+            <div class="p-6 fixture-card">
               <div class="flex items-center gap-2 mb-4">
                 <i class="ri-trophy-line text-primary"></i>
                 <span class="font-medium text-gray-900">{{league?.name}}: Match {{fixture?.match_number}}</span>
@@ -188,21 +197,13 @@
                   <span>{{league?.venue}}</span>
                 </div>
                 
-                <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
+                <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent text-black" 
                 *ngIf="(fixture?.status != 'completed') && fixture?.team_two?.id && fixture?.team_one?.id && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                   <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30">
                   Update Result
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="!fixturesLoading && fixtures?.length === 0">
-        <div class="flex items-center justify-center mt-10 w-full">
-          <div class="text-gray-500 text-center">
-            No Fixtures Found
           </div>
         </div>
       </ng-container>
@@ -349,7 +350,7 @@
                 <span>{{league?.venue}}</span>
               </div>
               
-              <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
+              <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent text-black" 
               *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                 <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30">
                 Update Result
@@ -361,8 +362,8 @@
     </ng-container>
   </div>
 
-  <ng-container *ngIf="isPlayOffLoading">
-    <app-spinner></app-spinner> 
+  <ng-container *ngIf="isPlayOffLoading || fixturesLoading">
+    <app-spinner [dotLoader]="false"></app-spinner> 
   </ng-container>
 </div>
 

@@ -2,14 +2,14 @@
 <div class="">
     <div class="bg-white rounded-lg">
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">
+        <h1 class="text-3xl font-bold text-white">
           {{isProfile ? "Setup Your Team" : "Take Your Team to the League"}}
         </h1>
         <p class="mt-2 text-gray-600" *ngIf="!isProfile">Join the league and face top teams in cricket!</p>
       </div>
       <form (ngSubmit)="onSubmit()" [formGroup]="teamForm" class="space-y-6">
         <div>
-          <label for="teamName" class="block mb-2 text-sm font-medium text-gray-900">
+          <label for="teamName" class="block mb-2 text-sm font-medium text-white">
             Team Name
           </label>
           <input
@@ -19,7 +19,7 @@
             required
             [readonly]="!isProfile"
             [class.opacity-50]="!isProfile"
-            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="shadow-sm bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Enter team name"
           />
         </div>
@@ -63,7 +63,7 @@
 
         <div *ngIf="!isProfile">
           <div>
-            <label for="leagueCode" class="block mb-2 text-sm font-medium text-gray-900">
+            <label for="leagueCode" class="block mb-2 text-sm font-medium text-white">
               League Code
             </label>
             <input
@@ -72,7 +72,7 @@
               maxlength="6"
               formControlName="leagueCode"
               required
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter team name"
             />
           </div>

@@ -70,7 +70,7 @@ export class RankingsComponent {
   ngOnInit(): void {
     this.title.setTitle('Cricket Rankings | Top Players & Teams')
     this.dataService.getAllLeagueMatches().subscribe(matches => {
-      
+      console.log(matches);
       this.updatePlayerRankings(matches);
       this.getTeams();
 

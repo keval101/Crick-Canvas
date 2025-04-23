@@ -10,14 +10,14 @@
  <div class="max-w-7xl mt-8 mx-auto">
    <div class="grid gap-6" id="leagueList">
        <!-- League 1 -->
-       <div class="league-card relative bg-white rounded-lg shadow-sm p-6 transition-all duration-200 cursor-pointer" *ngFor="let league of leagues$ | async" [routerLink]="['/leagues', league.id]">
+       <div class="league-card relative rounded-lg shadow-sm p-6 transition-all duration-200 cursor-pointer" *ngFor="let league of leagues$ | async" [routerLink]="['/leagues', league.id]">
            <div class="flex items-center flex-wrap gap-5">
                <div class="w-12 h-12 bg-icon rounded-full items-center justify-center mr-4 md:flex hidden" >
-                    <img src="./assets/icons/ck-league.jpg" alt="" class="object-cover w-full">  
+                    <img src="./assets/icons/ck-league.png" alt="" class="object-cover w-full">  
                </div>
                <div class="flex-1">
-                   <h3 class="text-lg font-semibold text-gray-900">{{league.name}}</h3>
-                   <div class="flex items-center mt-2 text-sm text-gray-600">
+                   <h3 class="text-lg font-semibold text-white">{{league.name}}</h3>
+                   <div class="flex items-center mt-2 text-sm text-green-50">
                        <div class="flex items-center">
                            <i class="ri-calendar-line mr-1"></i>
                            <span>{{getDateFormat(league.startFrom) | date: 'MMM dd, yyyy'}}</span>
@@ -31,17 +31,17 @@
                <div class="flex flex-wrap gap-2 align-items-center">
                     <div class="win-pill flex items-center gap-3" *ngIf="league?.orangecap?.team">
                         <img src="./assets/icons/orangecap.png" alt="" width="24" height="24">
-                        <span class="font-semibold text-gray-900">{{league?.orangecap?.team}}</span>
+                        <span class="font-semibold text-gray-300">{{league?.orangecap?.team}}</span>
                     </div>
 
                     <div class="win-pill flex items-center gap-3" *ngIf="league?.purplecap?.team">
                         <img src="./assets/icons/purplecap.png" alt="" width="24" height="24">
-                        <span class="font-semibold text-gray-900">{{league?.purplecap?.team}}</span>
+                        <span class="font-semibold text-gray-300">{{league?.purplecap?.team}}</span>
                     </div>
 
                     <div class="win-pill flex items-center gap-3" *ngIf="league?.winner?.name">
                         <img src="./assets/icons/worldcup3.png" alt="" width="20" height="20">
-                        <span class="font-semibold text-gray-900">{{league?.winner?.name}}</span>
+                        <span class="font-semibold text-gray-300">{{league?.winner?.name}}</span>
                     </div>
                 </div>
            </div>
@@ -52,6 +52,10 @@
        </div>
    </div>
 </div>
+
+<ng-container *ngIf="isLeagueLoading">
+    <app-spinner [dotLoader]="false"></app-spinner> 
+  </ng-container>
 
   
  <p-dialog header="Create League" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">

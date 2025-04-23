@@ -19,6 +19,7 @@ export class LeaguesComponent {
   userId: string;
   destroy$ = new Subject();
   user: any;
+  isLeagueLoading = true;
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
@@ -39,10 +40,12 @@ export class LeaguesComponent {
   }
 
   getLeagues() {
+    this.isLeagueLoading = true;
     this.dataService.getLeagues().pipe(takeUntil(this.destroy$)).subscribe(leagues => {
       // by timestamp
       let sortedLeagues = leagues.sort((a, b) => b.id - a.id);
       this.leagues$.next(sortedLeagues)
+      this.isLeagueLoading = false;
     })
   }
 

@@ -6,7 +6,23 @@
 :root {
     --bg: #212121;
     --primary: #FF6B2B;
-    --title: #fff
+    --title: #fff;
+    --modal: #303030
+}
+
+button {
+    color: #fff;
+}
+
+.btn-tab {
+    @apply rounded-full px-6 py-2;
+    transition: all 0.3s ease-in-out;
+
+    &:hover,
+    &.active {
+        background-color: rgba(255, 107, 43, 0.15);
+        transition: all 0.3s ease-in-out;
+    }
 }
 
 .btn {
@@ -57,6 +73,56 @@ input {
     }
 }
 
+.p-dialog-header,
+.p-dialog-content {
+    background: var(--modal);
+}
+
+.p-dialog-title {
+    color: var(--title);
+}
+
 body {
     background-color: var(--bg);
 }
+
+.p-datepicker-header {
+    background-color: var(--bg) !important;
+    color: #fff !important;
+}
+
+.p-datepicker table td.p-datepicker-today > span,
+.p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+    background: var(--primary);
+    color: var(--title);
+}
+
+.p-datepicker {
+    background-color: var(--bg);
+    color: #fff;
+    border-color: #21212160;
+}
+
+.p-dropdown, .p-calendar,
+input {
+    background-color: #212121 !important;
+    color: #fff !important;
+    border-color: #21212160 !important;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 100px;
+  }

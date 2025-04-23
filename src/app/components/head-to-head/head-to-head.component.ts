@@ -17,7 +17,7 @@ export class HeadToHeadComponent {
   user: any;
   matches: any[] = [];
   view = 'list';
-  matchType = '';
+  matchType = 'all';
   allMatches: any[] = [];
   fixturesLoading = false;
   matchResultModal = false;

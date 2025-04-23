@@ -7,17 +7,17 @@
 
  
  <div class="flex items-center gap-8">
-    <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'all'" [class.font-medium]="matchType === 'all'" (click)="setMatchType('all')">
+    <button class="text-white hover:text-primary btn-tab transition-colors" [class.active]="matchType === 'all'" (click)="setMatchType('all')">
       All Matches
     </button>
-    <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'completed'" [class.font-medium]="matchType === 'completed'" (click)="setMatchType('completed')">
+    <button class="text-white hover:text-primary btn-tab transition-colors" [class.active]="matchType === 'completed'" (click)="setMatchType('completed')">
       Completed
     </button>
-    <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'upcoming'" [class.font-medium]="matchType === 'upcoming'" (click)="setMatchType('upcoming')">
+    <button class="text-white hover:text-primary btn-tab transition-colors" [class.active]="matchType === 'upcoming'" (click)="setMatchType('upcoming')">
       Upcoming
     </button>
 
-    <button class="text-gray-500 hover:text-primary transition-colors">
+    <button class="text-white hover:text-primary btn-tab transition-colors">
       {{matches?.length}} Matches
     </button>
   </div>
@@ -31,6 +31,21 @@
       <img src="./assets/icons/grid.png" alt="" width="40" width="40">
     </button>
   </div>
+
+
+  <ng-container *ngIf="fixturesLoading">
+    <div class="flex items-center justify-center mt-10 w-full">
+      <app-spinner [dotLoader]="false"></app-spinner>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!fixturesLoading && matches?.length === 0">
+    <div class="flex items-center justify-center mt-10 w-full">
+      <div class="text-gray-500 text-center">
+        No Fixtures Found
+      </div>
+    </div>
+  </ng-container>
 
 
 <div class="grid gap-6" [class.grid-cols-1]="view === 'list'" [class.grid-cols-2]="view === 'grid'" id="matchContainer">
@@ -106,7 +121,7 @@
               </div>
             </div>
             <div class="flex items-center justify-end">
-              <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
+              <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent text-black" 
               *ngIf="(fixture?.status != 'completed') &&  (fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                 <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30">
                 Update Result
@@ -118,20 +133,6 @@
           </div>
         </div>
 
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="!fixturesLoading && matches?.length === 0">
-      <div class="flex items-center justify-center mt-10 w-full">
-        <div class="text-gray-500 text-center">
-          No Fixtures Found
-        </div>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="fixturesLoading">
-      <div class="flex items-center justify-center mt-10 w-full">
-        <app-spinner></app-spinner>
       </div>
     </ng-container>
   </div>

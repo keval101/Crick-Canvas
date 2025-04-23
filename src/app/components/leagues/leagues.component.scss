@@ -4,6 +4,7 @@ body { font-family: 'Inter', sans-serif; }
 
 .league-card {
     border: 2px solid rgba($color: #000000, $alpha: .05);
+    background-color: #303030;
     &:hover { 
         // transform: translateY(-2px);
         border-color: #b5ccf8;
@@ -11,7 +12,7 @@ body { font-family: 'Inter', sans-serif; }
 }
 
 .bg-icon {
-    @apply bg-gradient-to-r from-blue-100 to-purple-100;
+    // @apply bg-gradient-to-r from-blue-100 to-purple-100;
 }
 
 .btn-delete {
@@ -28,6 +29,7 @@ body { font-family: 'Inter', sans-serif; }
 }
 
 .win-pill {
-    @apply bg-gray-50 py-1 px-6 rounded-full text-center;
+    background: var(--bg);
+    @apply py-1 px-6 text-white rounded-full text-center;
     font-size: 14px;
 }
