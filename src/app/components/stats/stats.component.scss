@@ -8,7 +8,7 @@
         cursor: pointer;
         transition: all 0.2s ease-in;
         &:hover {
-          @apply text-purple-700;
+          color: var(--primary);
           transition: all 0.2s ease-in;
         }
       }

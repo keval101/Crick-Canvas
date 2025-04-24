@@ -4,6 +4,7 @@
 @use "@material/snackbar";
 
 .match-card {
+  background-color: #171717;
   transition: all 0.3s ease;
 }
 .match-card:hover {
@@ -84,12 +85,12 @@
     transition: all 0.2s ease-in;
   
     &:hover {
-      @apply text-purple-700;
+      color: var(--primary);
       transition: all 0.2s ease-in;
     }
   }
   &:hover {
-    @apply text-purple-700;
+    color: var(--primary);
     transition: all 0.2s ease-in;
   }
 }
@@ -118,5 +119,4 @@
 }
 
 .fixture-card {
-  background-color: #171717;
 }

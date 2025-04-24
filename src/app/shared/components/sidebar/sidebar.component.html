@@ -112,7 +112,7 @@
 
   <!-- Footer Section -->
   <div class="p-4 sm:mt-auto mt-5">
-    <div class="flex items-center space-x-3 mb-4 cursor-pointer" [routerLink]="'/profile'">
+    <div class="flex items-center space-x-3 mb-4 cursor-pointer" [routerLink]="'/profile'" *ngIf="user?.name">
       <div
         class="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center overflow-hidden"
       >

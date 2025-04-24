@@ -197,7 +197,7 @@
                   <span>{{league?.venue}}</span>
                 </div>
                 
-                <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent text-white" 
+                <button class="outline-btn flex gap-2 items-center hover:!bg-transparent text-white" 
                 *ngIf="(fixture?.status != 'completed') && fixture?.team_two?.id && fixture?.team_one?.id && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                   <img src="./assets/icons/ball.png" alt="" width="30" width="30">
                   Update Result
@@ -212,9 +212,9 @@
 
 
   <div class="table-container overflow-x-auto shadow-lg rounded-lg" *ngIf="selectedTab === 'point-table'">
-    <table class="w-full bg-white">
-      <thead class="bg-white sticky top-0">
-        <tr class="text-sm text-gray-700 font-semibold border-b">
+    <table class="w-full bg-table">
+      <thead class="bg-table sticky top-0">
+        <tr class="text-sm text-white font-semibold border-b">
           <th class="px-6 py-4 text-left">Team</th>
           <th class="px-4 py-4 text-center">P</th>
           <th class="px-4 py-4 text-center">W</th>
@@ -232,8 +232,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer" *ngFor="let team of pointTable; let i = index"
-        [class.!bg-white]="i % 2 === 0">
+        <tr class="bg-table-row transition-colors duration-200 cursor-pointer" *ngFor="let team of pointTable; let i = index"
+        [class.bg-table-row-odd]="i % 2 === 0">
           <td class="px-6 py-4 whitespace-nowrap">
             <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
               <img
@@ -241,7 +241,7 @@
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="font-semibold text-gray-900 whitespace-nowrap">{{getTeamDetails(team)?.team?.name}}</span>
+              <span class="font-semibold text-white whitespace-nowrap">{{getTeamDetails(team)?.team?.name}}</span>
               <img src="/assets/icons/orangecap.png" alt="" width="30" height="30" *ngIf="team?.id === orangecap?.id">
               <img src="/assets/icons/purplecap.png" alt="" width="30" height="30" *ngIf="team?.id === purplecap?.id">
             </div>
@@ -350,7 +350,7 @@
                 <span>{{league?.venue}}</span>
               </div>
               
-              <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent text-white" 
+              <button class="outline-btn flex gap-2 items-center hover:!bg-transparent text-white" 
               *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                 <img src="./assets/icons/ball.png" alt="" width="30" width="30">
                 Update Result
