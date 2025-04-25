@@ -9,7 +9,7 @@
       </div>
       <form (ngSubmit)="onSubmit()" [formGroup]="teamForm" class="space-y-6">
         <div>
-          <label for="teamName" class="block mb-2 text-sm font-medium text-gray-900">
+          <label for="teamName" class="block mb-2 text-sm font-medium theme-text">
             Team Name
           </label>
           <input
@@ -19,7 +19,7 @@
             required
             [readonly]="!isProfile"
             [class.opacity-50]="!isProfile"
-            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Enter team name"
           />
         </div>
@@ -31,7 +31,7 @@
           <div class="flex items-center space-x-4">
             <div
               id="logoPreview"
-              class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50"
+              class="w-24 h-24 border-2 border-dashed rounded-lg flex items-center justify-center bg-gray-50"
             >
               <i class="ri-image-add-line text-3xl text-gray-400" *ngIf="!logoPreview"></i>
               <img src="{{logoPreview}}" alt="team logo" class="w-full h-full rounded-lg object-cover" *ngIf="logoPreview"> 
@@ -63,7 +63,7 @@
 
         <div *ngIf="!isProfile">
           <div>
-            <label for="leagueCode" class="block mb-2 text-sm font-medium text-gray-900">
+            <label for="leagueCode" class="block mb-2 text-sm font-medium theme-text">
               League Code
             </label>
             <input
@@ -72,7 +72,7 @@
               maxlength="6"
               formControlName="leagueCode"
               required
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter team name"
             />
           </div>

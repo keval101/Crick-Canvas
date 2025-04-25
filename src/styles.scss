@@ -101,6 +101,52 @@ body {
     background: var(--card-bg-light);
 }
 
+
+.p-dialog-header {
+    background: var(--bg);
+}
+
+.p-dialog-title {
+    color: var(--text);
+}
+
+.p-dialog-content {
+    background: var(--card-bg);
+}
+
+.p-dialog .p-dialog-content {
+    padding: 2rem 1.5rem 2rem 1.5rem
+}
+
+.p-dialog-header-close {
+    color: var(--text);
+}
+
+p-datepicker-header {
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+}
+
+.p-datepicker table td.p-datepicker-today > span,
+.p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.p-datepicker {
+    background-color: var(--bg);
+    color: var(--text);
+    border-color: #21212160;
+}
+
+.p-dropdown, .p-calendar,
+input {
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+    border-color: var(--border-light) !important;
+}
+
+
 /* width */
 ::-webkit-scrollbar {
     width: 6px;

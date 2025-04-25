@@ -1,44 +1,44 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-    <form [formGroup]="team_one" class="team-score bg-white rounded-lg shadow-lg p-6">
+    <form [formGroup]="team_one" class="team-score theme-card rounded-lg shadow-lg p-6">
       <div class="text-xl font-semibold mb-4 flex items-center gap-2">
         <img [src]="match?.team_one?.logo" alt="Team 1" class="w-16 h-16 rounded-full object-cover">
-        <span class="ml-2">{{match?.team_one?.name}}</span>
+        <span class="theme-text ml-2">{{match?.team_one?.name}}</span>
       </div>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
+          <label class="block text-sm font-medium theme-text mb-1"
             >Runs</label
           >
           <input
             type="number"
-            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="0"
             formControlName="runs"
           />
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
+            <label class="block text-sm font-medium theme-text mb-1"
               >Wickets</label
             >
             <input
               type="number"
               min="0"
               max="10"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="0"
               formControlName="wickets"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
+            <label class="block text-sm font-medium theme-text mb-1"
               >Balls</label
             >
             <input
               type="number"
               min="0"
               max="12"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="0"
               formControlName="balls"
             />
@@ -47,46 +47,46 @@
       </div>
     </form>
 
-    <form [formGroup]="team_two" class="team-score bg-white rounded-lg shadow-lg p-6">
+    <form [formGroup]="team_two" class="team-score theme-card rounded-lg shadow-lg p-6">
       <div class="text-xl font-semibold mb-4 flex items-center gap-2">
         <img [src]="match?.team_two?.logo" alt="Team 1" class="w-16 h-16 rounded-full object-cover">
-        <span class="ml-2">{{match?.team_two?.name}}</span>
+        <span class="theme-text ml-2">{{match?.team_two?.name}}</span>
       </div>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
+          <label class="block text-sm font-medium theme-text mb-1"
             >Runs</label
           >
           <input
             type="number"
-            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="0"
             formControlName="runs"
           />
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
+            <label class="block text-sm font-medium theme-text mb-1"
               >Wickets</label
             >
             <input
               type="number"
               min="0"
               max="10"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="0"
               formControlName="wickets"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
+            <label class="block text-sm font-medium theme-text mb-1"
               >Balls</label
             >
             <input
               type="number"
               min="0"
               max="12"
-              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="0"
               formControlName="balls"
             />
@@ -102,7 +102,7 @@
       <span *ngIf="!isLoading">Abandon Match</span>
     </button>
     <button class="btn w-full flex justify-center items-center" (click)="swapResults()"> 
-      <i class="ri-arrow-left-right-line mr-4"></i> Swap Results
+      <i class="ri-arrow-left-right-line mr-4"></i> Swap
     </button>
     <button class="btn w-full flex justify-center items-center" (click)="submitMatchResult()"> 
       <span *ngIf="isLoading"><app-spinner [white]="true"></app-spinner></span>

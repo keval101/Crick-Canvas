@@ -1,32 +1,32 @@
 <form [formGroup]="leagueForm" (ngSubmit)="createLeague()">
    <div class="mb-5">
-        <label for="venue" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-        <input type="text" id="venue" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="League Name" required formControlName="name" />
+        <label for="venue" class="block mb-2 text-sm font-medium theme-text">Name</label>
+        <input type="text" id="venue" class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="League Name" required formControlName="name" />
     </div>
 
     <div class="mb-5">
-        <label for="venue" class="block mb-2 text-sm font-medium text-gray-900">Venue</label>
-        <input type="text" id="venue" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Venue" required formControlName="venue" />
+        <label for="venue" class="block mb-2 text-sm font-medium theme-text">Venue</label>
+        <input type="text" id="venue" class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Venue" required formControlName="venue" />
     </div>
 
     <div class="mb-5">
-        <label for="matchesPerPair" class="block mb-2 text-sm font-medium text-gray-900">Matches Per Pair</label>
-        <input type="number" id="matchesPerPair" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Matches Per Pair" required formControlName="matchesPerPair" />
+        <label for="matchesPerPair" class="block mb-2 text-sm font-medium theme-text">Matches Per Pair</label>
+        <input type="number" id="matchesPerPair" class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Matches Per Pair" required formControlName="matchesPerPair" />
     </div>
 
     <div class="mb-5">
-        <label for="oversMatch" class="block mb-2 text-sm font-medium text-gray-900">Total Overs</label>
-        <input type="number" id="oversMatch" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="oversMatch" required formControlName="oversMatch" />
+        <label for="oversMatch" class="block mb-2 text-sm font-medium theme-text">Total Overs</label>
+        <input type="number" id="oversMatch" class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="oversMatch" required formControlName="oversMatch" />
     </div>
 
     <div class="mb-5">
-        <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Start Date</label>
+        <label for="date" class="block mb-2 text-sm font-medium theme-text">Start Date</label>
         <p-calendar [appendTo]="'body'" formControlName="startFrom" placeholder="Select Start Date"></p-calendar>
     </div>
 
     <!-- <div class="mb-5">
-        <label for="maximumOvers" class="block mb-2 text-sm font-medium text-gray-900">Overs</label>
-        <input type="number" id="maximumOvers" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Maximum Overs" required formControlName="maximumOvers" />
+        <label for="maximumOvers" class="block mb-2 text-sm font-medium theme-text">Overs</label>
+        <input type="number" id="maximumOvers" class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Maximum Overs" required formControlName="maximumOvers" />
     </div> -->
 
 

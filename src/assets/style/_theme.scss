@@ -8,6 +8,9 @@
     --text-light: rgba(240, 240, 240, 0.616);
     --table-row-odd: #2e3033;
     --table-row-even: #1f2023;
+    --modal-bg: #1f2023;
+    --modal-bg-light: #2e3033;
+    --border-light: #21212160
 }
 
 [data-theme='light'] {
@@ -20,4 +23,7 @@
     --text-light: rgba(26, 26, 26, 0.616);
     --table-row-odd: #ffffff;
     --table-row-even: #f0f0f0;
+    --modal-bg: #f0f0f0;
+    --modal-bg-light: #F9F9F9;
+    --border-light: rgb(127 127 127 / 20%); 
 }

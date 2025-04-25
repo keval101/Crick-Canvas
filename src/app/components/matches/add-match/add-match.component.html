@@ -1,32 +1,32 @@
 <form [formGroup]="matchForm" (ngSubmit)="createMatch()">
     <div class="mb-5">
-      <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+      <label for="name" class="block mb-2 text-sm font-medium theme-text">Name</label>
       <p-dropdown [options]="teams$ | async" formControlName="team1" optionLabel="name" placeholder="Select a Team 1" (onChange)="updateOpponents('team1')"></p-dropdown>
     </div>
 
     <div class="mb-5">
-        <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+        <label for="name" class="block mb-2 text-sm font-medium theme-text">Name</label>
         <p-dropdown [options]="opponents$ | async" formControlName="team2" optionLabel="name" placeholder="Select a Team 2" (onChange)="updateOpponents('team2')"></p-dropdown>
     </div>
   
     <div class="mb-5">
-        <label for="venue" class="block mb-2 text-sm font-medium text-gray-900">Venue</label>
-        <input type="text" id="venue" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Venue" required formControlName="venue" />
+        <label for="venue" class="block mb-2 text-sm font-medium theme-text">Venue</label>
+        <input type="text" id="venue" class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Venue" required formControlName="venue" />
     </div>
 
     <div class="mb-5">
-        <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
+        <label for="date" class="block mb-2 text-sm font-medium theme-text">Date</label>
         <p-calendar [appendTo]="'body'" formControlName="date"></p-calendar>
     </div>
 
     <div class="mb-5">
-        <label for="overs" class="block mb-2 text-sm font-medium text-gray-900">Overs</label>
-        <input type="text" id="overs" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Overs" required formControlName="overs" />
+        <label for="overs" class="block mb-2 text-sm font-medium theme-text">Overs</label>
+        <input type="text" id="overs" class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Overs" required formControlName="overs" />
     </div>
 
     <div class="mb-5">
-        <label for="oversPerBowler" class="block mb-2 text-sm font-medium text-gray-900">Overs Per Bowler</label>
-        <input type="text" id="oversPerBowler" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Overs Per Bowler" required formControlName="oversPerBowler" />
+        <label for="oversPerBowler" class="block mb-2 text-sm font-medium theme-text">Overs Per Bowler</label>
+        <input type="text" id="oversPerBowler" class="shadow-sm bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Overs Per Bowler" required formControlName="oversPerBowler" />
     </div>
 
 

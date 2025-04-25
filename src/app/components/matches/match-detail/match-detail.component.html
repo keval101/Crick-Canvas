@@ -440,7 +440,7 @@
                 </div>
             </div>
             <div class="mb-5" *ngIf="wicketType != 'Bowled'">
-                <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                <label for="name" class="block mb-2 text-sm font-medium theme-text">Name</label>
                 <p-dropdown [options]="match[bowlingTeam].players" optionLabel="name" [appendTo]="'body'" placeholder="Select Player" [(ngModel)]="selectedPlayer"></p-dropdown>
             </div>
             <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 theme-text rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="setBowling('OUT')">Save</button>
