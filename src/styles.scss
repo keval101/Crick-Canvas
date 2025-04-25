@@ -19,6 +19,11 @@
     &:disabled {
         @apply opacity-50
     }
+
+    @media screen and (max-width: 600px) {
+        font-size: 14px;
+        padding: 6px 14px;
+    }
 }
 
 input {
@@ -89,7 +94,7 @@ body {
 
     @media screen and (max-width: 600px) {
         font-size: 14px;
-        padding: 6px 14px;
+        padding: 4px 14px !important;
     }
 }
 

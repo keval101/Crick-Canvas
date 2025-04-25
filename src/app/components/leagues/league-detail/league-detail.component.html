@@ -133,24 +133,24 @@
 
             <ng-container *ngIf="fixture?.status === 'completed'">
               <div *ngIf="fixture?.team_one?.runs > fixture?.team_two?.runs"
-                class="status-pill w-full bg-gradient-to-r from-green-500 to-green-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+                class="status-pill w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
                 <i class="ri-trophy-line"></i>
                 <span>{{getTeamDetails(fixture?.team_one)?.team?.name}} Won The Match!</span>
               </div>
 
               <div *ngIf="fixture?.team_two?.runs > fixture?.team_one?.runs"
-                class="status-pill w-full bg-gradient-to-r from-green-500 to-green-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+                class="status-pill w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
                 <i class="ri-trophy-line"></i>
                 <span>{{getTeamDetails(fixture?.team_two)?.team?.name}} Won The Match!</span>
               </div>
               
               <div *ngIf="fixture?.team_two?.runs === fixture?.team_one?.runs && fixture?.result != 'abandoned'"
-                class=" w-full bg-gradient-to-r from-yellow-400 to-yellow-500 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+                class="status-pill w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
                 <span>It's a Draw!</span>
               </div>
 
               <div *ngIf="fixture?.result === 'abandoned'"
-                class=" w-full bg-gradient-to-r from-red-500 to-red-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+                class="status-pill w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
                 <span>Match Abandoned!</span>
               </div>
 
@@ -162,7 +162,8 @@
                 <i class="ri-trophy-line theme-text"></i>
                 <span class="font-medium match-number theme-text">{{league?.name}}: Match {{fixture?.match_number}}</span>
               </div>
-              <div class="flex sm:items-center items-start justify-center sm:justify-between mb-8 flex-wrap flex-col sm:flex-row gap-2 sm:gap-1"> 
+              <div class="flex sm:items-center items-start justify-center sm:justify-between mb-8 flex-wrap gap-2 sm:gap-1"
+              [class.!items-center]="fixture?.status != 'completed' || fixture?.result !== 'draw'">  
                 <div class="flex items-center gap-4 flex-1 match-team-info">
                   <img [src]="getTeamDetails(fixture?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                     class="w-12 h-12 rounded-full object-cover team-logo" alt="New Zealand">
@@ -170,20 +171,21 @@
                     <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name ?? 'TBD'}}</div>
                     <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'" 
                       [class.!text-red-500]="fixture?.team_two?.runs > fixture?.team_one?.runs" 
-                      [class.!text-green-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" class="text-2xl font-bold team-score theme-text">{{fixture?.team_one?.runs}}/{{fixture?.team_one?.wickets}}</div>
+                      [class.!text-green-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" class="text-2xl font-bold match-team-score theme-text">{{fixture?.team_one?.runs}}/{{fixture?.team_one?.wickets}}</div>
                     <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'"  class="text-sm text-gray-500">{{ballsToOvers(fixture?.team_one?.balls)}} overs</div>
                   </div>
                 </div>
                 <div class="px-6 sm:mx-0 mx-auto">
-                  <div class="text-gray-400 font-medium text-lg mb-2">VS</div>
+                  <!-- <div class="text-gray-400 font-medium text-lg mb-2">VS</div> -->
+                   <img src="https://scores.bcci.tv/matchcentre/mcv3/images/versus-v2.png?v=1" alt="" style="height: auto; width: 30px;">
                 </div>
                 <div class="flex items-center gap-4 flex-1 match-team-info justify-end sm:flex-row flex-row-reverse">
-                  <div class="sm:text-right text-left">
+                  <div class="text-right ml-auto">
                     <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_two)?.team?.name ?? 'TBD'}}</div>
                     <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'" 
                       [class.!text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 
                       [class.!text-green-500]="fixture?.team_two?.runs > fixture?.team_one?.runs"
-                     class="text-2xl font-bold team-score theme-text">{{fixture?.team_two?.runs}}/{{fixture?.team_two?.wickets}}</div>
+                     class="text-2xl font-bold match-team-score theme-text">{{fixture?.team_two?.runs}}/{{fixture?.team_two?.wickets}}</div>
                     <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'" class="text-sm text-gray-500">{{ballsToOvers(fixture?.team_two?.balls)}} overs</div>
                   </div>
                   <img [src]="getTeamDetails(fixture?.team_two)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
@@ -196,7 +198,7 @@
                   <span class="theme-text-light league-venue">{{league?.venue}}</span>
                 </div>
                 
-                <button class="outline-btn flex gap-2 items-center hover:!bg-transparent" 
+                <button class="outline-btn update-btn flex gap-2 items-center hover:!bg-transparent" 
                 *ngIf="(fixture?.status != 'completed') && fixture?.team_two?.id && fixture?.team_one?.id && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                   <!-- <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30"> -->
                    <iframe width="30px" height="30px" src="https://lottie.host/embed/a907a832-9cfe-42fa-a5ba-460563efc7c5/JBXn3KoqWo.lottie"></iframe>
@@ -295,24 +297,24 @@
 
           <ng-container *ngIf="fixture?.status === 'completed'">
             <div *ngIf="fixture?.team_one?.runs > fixture?.team_two?.runs"
-              class="status-pill w-full bg-gradient-to-r from-green-500 to-green-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="status-pill w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
               <span>{{getTeamDetails(fixture?.team_one)?.team?.name}} Won The Match!</span>
             </div>
 
             <div *ngIf="fixture?.team_two?.runs > fixture?.team_one?.runs"
-              class="status-pill w-full bg-gradient-to-r from-green-500 to-green-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="status-pill w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
               <span>{{getTeamDetails(fixture?.team_two)?.team?.name}} Won The Match!</span>
             </div>
             
             <div *ngIf="fixture?.team_two?.runs === fixture?.team_one?.runs && fixture?.result != 'abandoned'"
-              class=" w-full bg-gradient-to-r from-yellow-500 to-yellow-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="status-pill w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <span>It's a Draw!</span>
             </div>
 
             <div *ngIf="fixture?.result === 'abandoned'"
-              class=" w-full bg-gradient-to-r from-red-500 to-red-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="status-pill w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
               <span>Match Abandoned!</span>
             </div>
@@ -324,7 +326,8 @@
               <i class="ri-trophy-line text-primary"></i>
               <span class="font-medium theme-text">{{league?.name}}: Match {{fixture?.match_number}}</span>
             </div>
-            <div class="flex items-center justify-between mb-8">
+            <div class="flex sm:items-center items-start justify-center sm:justify-between mb-8 flex-wrap gap-2 sm:gap-1"
+            [class.!items-center]="fixture?.status != 'completed' || fixture?.result !== 'draw'">
               <div>
                 <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name}}</div>
                 <div class="flex items-center gap-4 flex-1">
@@ -339,10 +342,11 @@
                 </div>
               </div>
               <div class="px-6">
-                <div class="text-gray-400 font-medium text-lg mb-2">VS</div>
+                <!-- <div class="text-gray-400 font-medium text-lg mb-2">VS</div> -->
+                 <img src="https://scores.bcci.tv/matchcentre/mcv3/images/versus-v2.png?v=1" alt="" style="height: auto; width: 30px;">
               </div>
               <div class="flex items-center gap-4 flex-1 justify-end">
-                <div class="text-right">
+                <div class="text-right ml-auto">
                   <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_two)?.team?.name}}</div>
                   <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'"  
                     [class.!text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 
@@ -360,7 +364,7 @@
                 <span class="theme-text-light league-venue">{{league?.venue}}</span>
               </div>
               
-              <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
+              <button class="outline-btn update-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
               *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
                 <!-- <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30"> -->
                  <iframe width="30px" height="30px" src="https://lottie.host/embed/a907a832-9cfe-42fa-a5ba-460563efc7c5/JBXn3KoqWo.lottie"></iframe>

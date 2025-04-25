@@ -128,22 +128,22 @@
   &-team-info {
     @media screen and (max-width: 600px) {
       .team-name {
-        font-size: 15px;
+        font-size: 14px;
+        line-height: normal;
       }
     }
   }
 
   &-team-score {
     @media screen and (max-width: 600px) {
-      .team-name {
-        font-size: 16px;
-      }
+      font-size: 18px;
     }
   }
 }
 
 .team-logo {
   @media screen and (max-width: 600px) {
+    display: none;
     width: 40px;
     height: 40px;
   }
@@ -160,5 +160,16 @@
 .league-venue {
   @media screen and (max-width: 600px) {
     font-size: 12px;
+  }
+}
+
+.update-btn {
+  @media screen and (max-width: 600px) {
+    font-size: 14px;
+    padding: 6px 14px;
+
+    iframe {
+      height: 20px;
+    }
   }
 }
