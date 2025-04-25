@@ -1,73 +1,68 @@
-<div class="flex justify-center items-center h-screen">
-    <div
-      id="back-div"
-      class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4 login-container"
-    >
-      <div
-        class="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-2 m-2"
-      >
-        <h1 class="pt-8 pb-6 font-bold text-5xl text-center cursor-default">
-          Log in
-        </h1>
-        <form [formGroup]="loginForm" class="space-y-4" (ngSubmit)="login()">
-          <div>
-            <label for="email" class="mb-2 text-lg">Email</label>
-            <input
-              id="email"
-              class="border p-2 shadow-mlg placeholder:text-base ease-in-out duration-300 border-gray-300 rounded-lg w-full"
-              type="email"
-              placeholder="Email"
-              required
-              formControlName="email"
-            />
-          </div>
-          <div class="relative">
-            <label for="password" class="mb-2  text-lg">Password</label>
-            <input
-              id="password"
-              class="border p-2 shadow-mlg placeholder:text-base ease-in-out duration-300 border-gray-300 rounded-lg w-full"
-              type="password"
-              placeholder="Password"
-              required
-              formControlName="password"
-              [attr.type]="seePassword ? 'text': 'password'"
-            />
-            <img src="./assets/icons/eye-close.svg" class="eye-icon" alt="eye-close" *ngIf="!seePassword" (click)="seePassword = true">
-            <img src="./assets/icons/eye.svg" class="eye-icon" alt="eye" *ngIf="seePassword" (click)="seePassword = false">
-          </div>
-          <a
-            class="group text-blue-400 transition-all duration-100 ease-in-out"
-            href="#"
-          >
-            <span
-              class="bg-left-bottom bg-gradient-to-r text-sm from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
-            >
-              Forget your password?
-            </span>
-          </a>
-          <button
-            class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"
-            type="submit"
-          >
-            <span *ngIf="!isLoading">LOG IN</span>
-            <app-spinner *ngIf="isLoading" [white]="true"></app-spinner>
-          </button>
-        </form>
-        <div class="flex flex-col mt-4 items-center justify-center text-sm">
-          <h3>
-            Don't have an account?
-            <a
-              class="group text-blue-400 transition-all duration-100 ease-in-out"
-              [routerLink]="'/signup'"
-            >
-              <span
-                class="bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
-              >
-                Sign Up
-              </span>
-            </a>
-          </h3>
-        </div>
+<div
+  class="w-full h-screen flex items-center justify-center relative"
+  style="background-image: url('https://readdy.ai/api/search-image?query=A%20dramatic%20night%20scene%20of%20a%20cricket%20stadium%20under%20floodlights%20with%20a%20packed%20crowd.%20The%20image%20shows%20a%20wide%20angle%20view%20of%20the%20field%20with%20players%20in%20action.%20The%20left%20side%20has%20a%20smooth%20gradient%20to%20darker%20tones%20that%20will%20blend%20with%20text%20overlay.%20The%20right%20side%20shows%20more%20of%20the%20stadium%20with%20bright%20floodlights%20illuminating%20the%20scene.%20The%20overall%20mood%20is%20energetic%20and%20atmospheric%20with%20deep%20blues%20and%20greens.&width=1920&height=1080&seq=cricket1&orientation=landscape%27'); background-size: cover; background-position: center;"
+>
+  <div class="absolute inset-0 bg-black bg-opacity-40 z-0"></div>
+
+  <div class="glass-card w-full max-w-md mx-4 sm:mx-auto rounded-xl p-8 sm:p-10 z-10">
+    <div class="flex flex-col items-center mb-8">
+      <div class="w-16 h-16 flex items-center justify-center bg-primary rounded-full mb-4">
+        <img src="./assets/icons/cricket-canvas.png" alt="cricket" class="w-full h-full rounded-full">
       </div>
+      <h1 class="text-white text-2xl font-bold">Crick Canvas</h1>
+      <p class="text-white text-sm mt-2 opacity-80">
+        Your ultimate cricket score companion
+      </p>
     </div>
+
+    <form [formGroup]="loginForm" class="space-y-5">
+      <div class="relative">
+        <div class="input-icon w-5 h-5 flex items-center justify-center">
+          <i class="ri-mail-line text-black"></i>
+        </div>
+        <input
+          type="email"
+          placeholder="Email address"
+          class="custom-input w-full rounded-button text-sm"
+          name="email"
+          formControlName="email"
+          required
+        />
+      </div>
+
+      <div class="relative">
+        <div class="input-icon w-5 h-5 flex items-center justify-center">
+          <i class="ri-lock-line text-black"></i>
+        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          class="custom-input w-full rounded-button text-sm"
+          name="password"
+          placeholder="Password"
+          formControlName="password"
+          required
+          [attr.type]="seePassword ? 'text': 'password'"
+        />
+        <img src="./assets/icons/eye-close.svg" class="eye-icon" alt="eye-close" *ngIf="!seePassword" (click)="seePassword = true">
+        <img src="./assets/icons/eye.svg" class="eye-icon" alt="eye" *ngIf="seePassword" (click)="seePassword = false">
+      </div>
+
+      <button
+        type="submit"
+        (click)="login()"
+        [disabled]="isLoading || !loginForm.valid"
+        class="login-button w-full h-12 text-white font-semibold rounded-button"
+      >
+      <span *ngIf="!isLoading">Login</span>
+      <app-spinner *ngIf="isLoading" [white]="true"></app-spinner></button>
+    </form>
+
+    <div class="mt-8 text-center">
+      <p class="text-white text-sm">
+        Don't have an account?
+        <a [routerLink]="'/signup'" class="font-medium underline hover:text-primary transition-colors">Sign up</a>
+      </p>
     </div>
+  </div>
+</div>

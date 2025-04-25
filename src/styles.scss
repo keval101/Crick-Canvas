@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import './assets/style/theme';
 
 
 .btn {
@@ -22,6 +23,10 @@
 
 input {
     outline: none;
+}
+
+body {
+    background-color: var(--bg)
 }
 
 .outline-btn {
@@ -48,4 +53,56 @@ input {
     @media screen and (max-width: 600px) {
         @apply text-xl;
     }
+}
+
+
+// THEME
+.theme-text {
+    color: var(--text);
+}
+
+.theme-text-light {
+    color: var(--text-light);
+}
+
+.theme-table-row-odd {
+    background-color: var(--table-row-odd);
+}
+
+.theme-table-row-even {
+    background-color: var(--table-row-even);
+}
+
+.btn-tab {
+    @apply px-4 p-2 rounded-full transition duration-300 ease-in-out outline-none border-none bg-gradient-to-r; 
+    transition: all 0.1s ease-in;
+    &.active,
+    &:hover {
+        @apply px-4 bg-gradient-to-r from-blue-300 to-purple-300 shadow-sm p-2 text-black rounded-full transition duration-300 ease-in-out outline-none border-none;
+        transition: all 0.1s ease-in;
+    }
+}
+
+.theme-card {
+    background: var(--card-bg);
+}
+
+.theme-card-light {
+    background: var(--card-bg-light);
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-r from-blue-300 to-purple-300;
+    border-radius: 10px;
 }

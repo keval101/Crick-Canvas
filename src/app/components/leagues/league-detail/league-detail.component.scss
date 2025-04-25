@@ -4,6 +4,7 @@
 @use "@material/snackbar";
 
 .match-card {
+  background: var(--card-bg);
   transition: all 0.3s ease;
 }
 .match-card:hover {
@@ -38,10 +39,12 @@
 }
 
 .league-menu {
-  @apply flex items-center gap-8 bg-white w-fit mx-auto py-4 px-12 rounded-lg shadow-md relative;
+  @apply flex items-center gap-8 w-fit mx-auto py-4 px-12 rounded-lg shadow-md relative;
+  background: var(--sidebar);
   top: -28px;
   button {
-    @apply text-gray-500 hover:text-gray-700 py-2 px-4 rounded-full;
+    @apply py-2 px-4 rounded-full;
+    color: var(--text);
     &.active,
     &:hover {
       @apply bg-gradient-to-r from-blue-700 to-purple-700 text-white;

@@ -1,8 +1,6 @@
 .sidebar {
-    background-color: #1A1C20;
-    background-image: linear-gradient(to bottom, rgba(42, 76, 127, 0.2), rgba(26, 28, 32, 0.05));
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    background-color: var(--sidebar);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 .sidebar-item {
     transition: all 0.3s ease;
@@ -12,24 +10,12 @@
     transform: translateX(5px);
 }
 .sidebar-item.active {
-    background-color: rgba(255, 107, 43, 0.15);
-    border-left: 3px solid #FF6B2B;
+    background-color: rgba(29, 78, 216, 0.15);
+    border-left: 3px solid #1d4ed8 ;
 }
 .cricket-ball {
-    background: radial-gradient(circle at 30% 30%, #FF6B2B 0%, #d83e00 70%);
+    background: radial-gradient(circle at 30% 30%, #1d4ed8  0%, #1d4ed8 70%);
     box-shadow: inset -2px -2px 6px rgba(0, 0, 0, 0.3);
-}
-.cricket-stump-pattern {
-    background-image: repeating-linear-gradient(
-        -45deg,
-        rgba(255, 255, 255, 0.03) 0px,
-        rgba(255, 255, 255, 0.03) 1px,
-        transparent 1px,
-        transparent 6px
-    );
-}
-.avatar-container {
-    background: linear-gradient(135deg, #2A4C7F 0%, #4CAF50 100%);
 }
 .collapsed-sidebar {
     width: 80px;

@@ -12,8 +12,8 @@
       <img src="./assets/icons/logoo2.png" alt="" width="50" height="50">
       </div>
     </div>
-    <h1 class="text-white font-bold text-xl">Cricket Premier</h1>
-    <p class="text-white text-sm">Fantasy League</p>
+    <h1 class="theme-text font-bold text-xl">Crick Canvas</h1>
+    <p class="theme-text-light text-sm mt-1">Game On, Stats Up!</p>
   </div>
 
   <div
@@ -27,14 +27,14 @@
         <a
           [routerLink]="['/dashboard']"
           routerLinkActive="active"
-          class="sidebar-item flex items-center text-white px-4 py-3 rounded"
+          class="sidebar-item flex items-center theme-text px-4 py-3 rounded"
         >
           <div class="w-8 h-8 flex items-center justify-center mr-3">
             <i class="ri-dashboard-line ri-lg"></i>
           </div>
           <span>Dashboard</span>
           <span
-            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 theme-text text-xs rounded whitespace-nowrap"
             >Dashboard</span
           >
         </a>
@@ -43,14 +43,15 @@
         <a
         [routerLink]="['/matches']"
         routerLinkActive="active"
-          class="sidebar-item flex items-center text-white hover:text-white px-4 py-3 rounded"
+          class="sidebar-item flex items-center theme-text hover:theme-text px-4 py-3 rounded"
         >
           <div class="w-8 h-8 flex items-center justify-center mr-3">
-            <img src="./assets/icons/matches.png" alt="" width="30" height="30">
+            <!-- <img src="./assets/icons/matches.png" alt="" width="30" height="30"> -->
+            <i class="ri-google-play-fill ri-lg"></i>
           </div>
           <span>Matches</span>
           <span
-            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 theme-text text-xs rounded whitespace-nowrap"
             >Matches</span
           >
         </a>
@@ -59,14 +60,15 @@
         <a
         [routerLink]="['/leagues']"
         routerLinkActive="active"
-          class="sidebar-item flex items-center text-white hover:text-white px-4 py-3 rounded"
+          class="sidebar-item flex items-center theme-text hover:theme-text px-4 py-3 rounded"
         >
           <div class="w-8 h-8 flex items-center justify-center mr-3">
-            <img src="./assets/icons/leagues.png" alt="" width="24" height="24">
+            <!-- <img src="./assets/icons/leagues.png" alt="" width="24" height="24"> -->
+            <i class="ri-goblet-line ri-lg"></i>
           </div>
           <span>Leagues</span>
           <span
-            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 theme-text text-xs rounded whitespace-nowrap"
             >Leagues</span
           >
         </a>
@@ -75,14 +77,14 @@
         <a
         [routerLink]="['/stats', userId]"
         routerLinkActive="active"
-          class="sidebar-item flex items-center text-white hover:text-white px-4 py-3 rounded"
+          class="sidebar-item flex items-center theme-text hover:theme-text px-4 py-3 rounded"
         >
           <div class="w-8 h-8 flex items-center justify-center mr-3">
             <i class="ri-team-line ri-lg"></i>
           </div>
           <span>Stats</span>
           <span
-            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 theme-text text-xs rounded whitespace-nowrap"
             >Stats</span
           >
         </a>
@@ -91,19 +93,22 @@
         <a
         [routerLink]="['/rankings']"
         routerLinkActive="active"
-          class="sidebar-item flex items-center text-white hover:text-white px-4 py-3 rounded"
+          class="sidebar-item flex items-center theme-text hover:theme-text px-4 py-3 rounded"
         >
           <div class="w-8 h-8 flex items-center justify-center mr-3">
             <i class="ri-trophy-line ri-lg"></i>
           </div>
           <span>Rankings</span>
           <span
-            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap"
+            class="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-gray-800 theme-text text-xs rounded whitespace-nowrap"
             >Rankings</span
           >
         </a>
       </li>
     </ul>
+    <div class="flex justify-center items-center mt-4">
+      <app-theme-toggle></app-theme-toggle>
+    </div>
   </nav>
 
   <!-- <div
@@ -112,7 +117,7 @@
 
   <!-- Footer Section -->
   <div class="p-4 sm:mt-auto mt-5">
-    <div class="flex items-center space-x-3 mb-4 cursor-pointer" [routerLink]="'/profile'">
+    <div class="flex items-center space-x-3 mb-4 cursor-pointer" [routerLink]="'/profile'" *ngIf="user?.name">
       <div
         class="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center overflow-hidden"
       >
@@ -123,13 +128,13 @@
         />
       </div>
       <div>
-        <h3 class="text-white text-sm font-medium">{{user?.name}}</h3>
-        <p *ngIf="user?.team" class="text-white text-xs">{{user?.team?.name}}</p>
+        <h3 class="theme-text text-sm font-medium">{{user?.name}}</h3>
+        <p *ngIf="user?.team" class="theme-text text-xs">{{user?.team?.name}}</p>
       </div>
     </div>
 
     <button (click)="signOut()"
-      class="!rounded-button w-full flex items-center justify-center space-x-2 bg-gray-800 hover:bg-gray-700 text-white py-2 px-4 transition-all duration-300"
+      class="btn flex items-center justify-center w-full gap-2"
     >
       <div class="w-5 h-5 flex items-center justify-center">
         <i class="ri-logout-box-line"></i>

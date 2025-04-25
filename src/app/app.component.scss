@@ -4,7 +4,7 @@
     &-content {
         width: calc(100% - 290px);
         margin-left: auto;
-        background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 6px);
+        // background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 6px);
         @media screen and (max-width: 768px) {
             width: 100%;
         }
@@ -13,10 +13,6 @@
             padding: 10px 10px 75px 10px;
         }
     }
-}
-
-.hide-sidebar {
-    @apply w-full p-4;
 }
 
 ::ng-deep app-sidebar {

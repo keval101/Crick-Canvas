@@ -4,7 +4,7 @@
             <div class="w-max xl:hidden">
                 <div class=" relative inline-block text-left dropdown">
                     <span class="rounded-md shadow-sm"
-                    ><button class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg flex text-sm px-5 py-2.5 text-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 gap-2 items-center" 
+                    ><button class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg flex text-sm px-5 py-2.5 text-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:theme-text dark:hover:bg-gray-700 gap-2 items-center" 
                     type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                         <span>Share via</span>
                         <svg class="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -123,7 +123,7 @@
             </ng-container>
             
             <div class="score mt-5" *ngIf="match?.striker?.id || match?.nonStriker?.id || match?.bowler?.id">
-                <h1 class="section-heading">Scores</h1>
+                <h1 class="section-heading theme-text">Scores</h1>
             
                 <div class="score-table" *ngIf="match.striker?.id || match.nonStriker?.id">
                     <div class="score-table-row !bg-transparent !border-none">
@@ -202,7 +202,7 @@
                     </button>
                 </div>
                 <div class="score" *ngIf="team1Players.length > 0">
-                    <h1 class="section-heading mt-5">Batters</h1>
+                    <h1 class="section-heading theme-text mt-5">Batters</h1>
                 
                     <div class="score-table">
                         <div class="score-table-row !bg-transparent !border-none">
@@ -224,7 +224,7 @@
                             </div>
                         </ng-container>
                     </div>
-                    <h1 class="section-heading mt-10">Bowlers</h1>
+                    <h1 class="section-heading theme-text mt-10">Bowlers</h1>
                     <div class="score-table">
                         <div class="score-table-row !bg-transparent !border-none">
                             <p>Name</p>
@@ -350,7 +350,7 @@
                     </label>
                 </li>
             </ul>
-        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="saveTheToss()">Save</button>
+        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 theme-text rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="saveTheToss()">Save</button>
     </form>
     </p-dialog>
 
@@ -385,7 +385,7 @@
                     </div>
                 </ng-container>
             </div>
-        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" [disabled]="!strikerForm?.value?.striker?.id && !strikerForm?.value?.nonStriker?.id" (click)="saveStriker()">Save</button>
+        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 theme-text rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" [disabled]="!strikerForm?.value?.striker?.id && !strikerForm?.value?.nonStriker?.id" (click)="saveStriker()">Save</button>
         </form>
     </p-dialog>
 
@@ -405,7 +405,7 @@
                     </label>
                 </div>
             </div>
-        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"[disabled]="!bowlerForm?.value?.bowler?.id" (click)="saveBowler()">Save</button>
+        <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 theme-text rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"[disabled]="!bowlerForm?.value?.bowler?.id" (click)="saveBowler()">Save</button>
         </form>
     </p-dialog>
 
@@ -414,7 +414,7 @@
         <div class="mx-auto">
             <img class="mx-auto" src="./assets/icons/6runs.png" alt="" width="250" height="250" *ngIf="selectedRuns === 6">
             <img class="mx-auto" src="./assets/icons/4runs.png" alt="" width="250" height="250" *ngIf="selectedRuns === 4"> 
-            <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="setBowling(selectedRuns)">Save</button>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 theme-text rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="setBowling(selectedRuns)">Save</button>
         </div>
     </p-dialog>
 
@@ -443,7 +443,7 @@
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
                 <p-dropdown [options]="match[bowlingTeam].players" optionLabel="name" [appendTo]="'body'" placeholder="Select Player" [(ngModel)]="selectedPlayer"></p-dropdown>
             </div>
-            <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 text-white rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="setBowling('OUT')">Save</button>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-500 shadow-sm mt-6 p-2 theme-text rounded-lg w-full hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out" (click)="setBowling('OUT')">Save</button>
         </div>
     </p-dialog>
 

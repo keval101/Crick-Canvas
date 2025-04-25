@@ -1,5 +1,5 @@
 <div class="flex justify-between items-center">
-    <h1 class="section-heading">Matches</h1>
+    <h1 class="section-heading theme-text">Matches</h1>
     <div class="flex gap-2">
         <button type="button" class="btn" (click)="createMatch()">Create Match</button>
     </div>
@@ -7,17 +7,17 @@
 
  
  <div class="flex items-center gap-8">
-    <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'all'" [class.font-medium]="matchType === 'all'" (click)="setMatchType('all')">
+    <button class="theme-text btn-tab" [class.active]="matchType === 'all'" (click)="setMatchType('all')">
       All Matches
     </button>
-    <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'completed'" [class.font-medium]="matchType === 'completed'" (click)="setMatchType('completed')">
+    <button class="theme-text btn-tab" [class.active]="matchType === 'completed'" (click)="setMatchType('completed')">
       Completed
     </button>
-    <button class="text-gray-500 hover:text-primary transition-colors" [class.text-gray-900]="matchType === 'upcoming'" [class.font-medium]="matchType === 'upcoming'" (click)="setMatchType('upcoming')">
+    <button class="theme-text btn-tab" [class.active]="matchType === 'upcoming'" (click)="setMatchType('upcoming')">
       Upcoming
     </button>
 
-    <button class="text-gray-500 hover:text-primary transition-colors">
+    <button class="theme-text btn-tab">
       {{matches?.length}} Matches
     </button>
   </div>
@@ -32,6 +32,17 @@
     </button>
   </div>
 
+  <ng-container *ngIf="!fixturesLoading && matches?.length === 0">
+    <div class="flex items-center justify-center mt-10 w-full">
+      <div class="theme-text text-center">
+        No Fixtures Found
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="fixturesLoading">
+    <app-spinner [dotLoader]="false"></app-spinner>
+  </ng-container>
 
 <div class="grid gap-6" [class.grid-cols-1]="view === 'list'" [class.grid-cols-2]="view === 'grid'" id="matchContainer">
 
@@ -53,19 +64,19 @@
 
           <ng-container *ngIf="fixture?.status === 'completed'">
             <div *ngIf="fixture?.team_one?.runs > fixture?.team_two?.runs"
-              class="rounded-t-2xl w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="rounded-t-2xl w-full bg-gradient-to-r from-green-500 to-green-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
               <span>{{getTeamDetails(fixture?.team_one)?.name}} Won The Match!</span>
             </div>
 
             <div *ngIf="fixture?.team_two?.runs > fixture?.team_one?.runs"
-              class="rounded-t-2xl w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="rounded-t-2xl w-full bg-gradient-to-r from-green-500 to-green-600 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <i class="ri-trophy-line"></i>
               <span>{{getTeamDetails(fixture?.team_two)?.name}} Won The Match!</span>
             </div>
             
             <div *ngIf="fixture?.team_two?.runs === fixture?.team_one?.runs"
-              class="rounded-t-2xl w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
+              class="rounded-t-2xl w-full bg-gradient-to-r from-yellow-400 to-yellow-500 theme-text py-1 px-6 text-center font-medium flex items-center justify-center gap-2">
               <span>It's a Draw!</span>
             </div>
 
@@ -118,14 +129,6 @@
           </div>
         </div>
 
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="!fixturesLoading && matches?.length === 0">
-      <div class="flex items-center justify-center mt-10 w-full">
-        <div class="text-gray-500 text-center">
-          No Fixtures Found
-        </div>
       </div>
     </ng-container>
   </div>

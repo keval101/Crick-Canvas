@@ -56,7 +56,8 @@
     }
 
     &__number {
-      @apply flex px-12 items-center justify-center flex-col text-white relative;
+      color: var(--text);
+      @apply flex px-12 items-center justify-center flex-col relative;
       p {
         @apply mb-0 font-semibold;
         line-height: normal;
@@ -84,7 +85,8 @@
 
     &__team {
       p {
-        @apply mb-0 pl-12 font-semibold text-white;
+        @apply mb-0 pl-12 font-semibold;
+        color: var(--text);
         line-height: normal;
         font-size: 1.2rem;
       }
@@ -98,7 +100,8 @@
       @apply text-center;
       // width: 130px;
       p {
-        @apply mb-0 font-semibold text-white;
+        @apply mb-0 font-semibold;
+        color: var(--text);
         line-height: 0.8;
         font-size: 1.8rem;
       }
@@ -113,7 +116,8 @@
 
   .menus {
     button {
-      @apply text-gray-500 hover:text-gray-700 py-2 px-8 rounded-full;
+      @apply py-2 px-8 rounded-full;
+      color: var(--text);
       &.active,
       &:hover {
         @apply bg-gradient-to-r from-blue-700 to-purple-700 text-white;
@@ -152,22 +156,23 @@
   }
 
   .win {
-    @apply bg-green-700 text-white flex justify-center items-center;
+    @apply bg-green-700 flex justify-center text-white items-center border-green-600;
     width: 20px;
     height: 20px;
     border-radius: 100%;
     font-size: 10px;
-    border: 0.5px solid #fff;
+    border: 1px solid rgb(22 163 74);
     margin-left: -6px;
+
   }
 
   .lost {
-    @apply bg-red-700 text-white flex justify-center items-center;
+    @apply bg-red-700 flex justify-center text-white items-center border-red-600;
     width: 20px;
     height: 20px;
     border-radius: 100%;
     font-size: 10px;
-    border: 0.5px solid #fff;
+    border: 1px solid rgb(220 38 38);
     margin-left: -6px;
   }
 

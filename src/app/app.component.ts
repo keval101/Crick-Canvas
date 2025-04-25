@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -23,10 +24,12 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit() {
+    this.themeService.initializeTheme();
     if(!this.authService.getCurrentUser()) {
       this.hideSidebar = true;
     }

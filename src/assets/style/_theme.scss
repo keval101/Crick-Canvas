@@ -1,0 +1,23 @@
+[data-theme='dark'] {
+    --bg: #2e3033;
+    --sidebar:#1f2023;
+    --sidebar-border: #1f2023;
+    --card-bg: #1f2023;
+    --card-bg-light: rgba(31, 32, 35, 0.616);
+    --text: #f0f0f0;
+    --text-light: rgba(240, 240, 240, 0.616);
+    --table-row-odd: #2e3033;
+    --table-row-even: #1f2023;
+}
+
+[data-theme='light'] {
+    --bg: #f0f0f0;
+    --sidebar: #F9F9F9;
+    --sidebar-border: #F9F9F9;
+    --card-bg: #ffffff;
+    --card-bg-light: rgba(255, 255, 255, 0.616);
+    --text: #1a1a1a;
+    --text-light: rgba(26, 26, 26, 0.616);
+    --table-row-odd: #ffffff;
+    --table-row-even: #f0f0f0;
+}

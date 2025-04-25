@@ -1,4 +1,4 @@
-<h1 class="text-4xl font-bold text-gray-800 mb-12 text-left">Rankings</h1>
+<h1 class="text-4xl font-bold theme-text mb-12 text-left">Rankings</h1>
 <div class="max-w-7xl mx-auto" *ngIf="!isLoading">
     <div class="flex gap-4 menus justify-center mb-8">
       <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Team'" (click)="ranking = 'Team'"> Team </button>
@@ -10,24 +10,24 @@
   <div class="flex justify-end items-center mb-4 gap-5" *ngIf="!isLoading && ranking === 'Team'">
     <div class="flex items-center gap-2 text-sm">
       <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-      Won: 2 Points
+      <span class="theme-text">Won: 2 Points</span>
     </div>
 
     <div class="flex items-center gap-2 text-sm">
       <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
-      Draw: 1 Points
+      <span class="theme-text">Draw: 1 Points</span>
     </div>
 
     <div class="flex items-center gap-2 text-sm">
       <span class="w-2 h-2 bg-red-500 rounded-full"></span>
-      Lose: -1 Points
+      <span class="theme-text">Lose: -1 Points</span>
     </div>
   </div>
 
   <div class="table-container overflow-x-auto shadow-lg rounded-lg" *ngIf="!isLoading && ranking === 'Team'">
-    <table class="w-full bg-white">
-      <thead class="bg-white sticky top-0">
-        <tr class="text-sm text-gray-700 font-semibold border-b">
+    <table class="w-full">
+      <thead class="theme-table-row-even sticky top-0">
+        <tr class="text-sm theme-text font-semibold border-b">
           <th class="px-6 py-4 text-left">
             <div class="flex items-center gap-2">
               Team 
@@ -79,8 +79,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.teams; let i = index"
-        [class.!bg-white]="i % 2 === 0">
+        <tr class="theme-table-row-even transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.teams; let i = index"
+        [class.theme-table-row-odd]="i % 2 === 0">
           <td class="px-6 py-4">
             <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
               <img
@@ -88,7 +88,7 @@
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="flex gap-2 font-semibold text-gray-900 whitespace-nowrap rank-team items-center">{{getTeamDetails(team)?.team?.name}}
+              <span class="flex gap-2 font-semibold theme-text whitespace-nowrap rank-team items-center">{{getTeamDetails(team)?.team?.name}}
                 <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
                   <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
                   <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
@@ -100,13 +100,13 @@
               </span>
             </div>
           </td>
-          <td class="px-4 py-4 text-center">{{team.rank}}</td>
-          <td class="px-4 py-4 text-center">{{team?.points}}</td>
-          <td class="px-4 py-4 text-center">{{team?.matches}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.points}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.matches}}</td>
           <td class="px-4 py-4 text-center text-green-600 font-medium">{{team?.wins}}</td>
           <td class="px-4 py-4 text-center text-yellow-600 font-medium">{{team?.draws}}</td> 
           <td class="px-4 py-4 text-center text-red-600 font-medium">{{team?.losses}}</td>
-          <td class="px-4 py-4 text-center">{{((team?.wins / team?.matches) * 100).toFixed(0)}}%</td>
+          <td class="px-4 theme-text py-4 text-center">{{((team?.wins / team?.matches) * 100).toFixed(0)}}%</td>
           <td class="px-4 py-4 text-center">
             <div class="flex">
               <p class="mb-0" *ngFor="let form of team?.recentForm" [class.lost]="form === 0" [class.win]="form === 1">{{form === 1 ? 'W' : 'L'}}</p>
@@ -119,9 +119,9 @@
   </div>
 
   <div class="table-container overflow-x-auto shadow-lg rounded-lg" *ngIf="!isLoading && ranking === 'Batting'">
-    <table class="w-full bg-white">
-      <thead class="bg-white sticky top-0">
-        <tr class="text-sm text-gray-700 font-semibold border-b">
+    <table class="w-full">
+      <thead class="theme-table-row-even sticky top-0">
+        <tr class="text-sm theme-text font-semibold border-b">
           <th class="px-6 py-4 text-left">Team</th>
           <th class="px-4 py-4 text-center">
               <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('rank', sorting === 'rank' ? 'desc' : sorting === '-rank' ? 'asc' : 'desc' )">
@@ -169,8 +169,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.batsmen; let i = index"
-        [class.!bg-white]="i % 2 === 0">
+        <tr class="theme-table-row-odd transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.batsmen; let i = index"
+        [class.theme-table-row-even]="i % 2 === 0">
           <td class="px-6 py-4">
             <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.teamId]">
               <img
@@ -178,7 +178,7 @@
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="flex gap-2 font-semibold text-gray-900 whitespace-nowrap rank-team items-center">{{getTeamDetails(team?.teamId)?.team?.name}}
+              <span class="flex gap-2 font-semibold theme-text whitespace-nowrap rank-team items-center">{{getTeamDetails(team?.teamId)?.team?.name}}
                 <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
                   <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
                   <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
@@ -190,14 +190,14 @@
               </span>
             </div>
           </td>
-          <td class="px-4 py-4 text-center">{{team.rank}}</td>
-          <td class="px-4 py-4 text-center">{{team.points}}</td>
-          <td class="px-4 py-4 text-center">{{team?.matches}}</td>
-          <td class="px-4 py-4 text-center font-medium">{{team?.runs}}</td>
-          <td class="px-4 py-4 text-center font-medium">{{team?.strikeRate.toFixed(2)}}</td> 
-          <td class="px-4 py-4 text-center font-medium">{{ballsToOvers(team.ballsFaced)}}</td>
-          <td class="px-4 py-4 text-center">{{team.average.toFixed(2)}}</td>
-          <td class="px-4 py-4 text-center">
+          <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team.points}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.matches}}</td>
+          <td class="px-4 theme-text py-4 text-center font-medium">{{team?.runs}}</td>
+          <td class="px-4 theme-text py-4 text-center font-medium">{{team?.strikeRate.toFixed(2)}}</td> 
+          <td class="px-4 theme-text py-4 text-center font-medium">{{ballsToOvers(team.ballsFaced)}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team.average.toFixed(2)}}</td>
+          <td class="px-4 theme-text py-4 text-center">
             <div class="flex">
               <p class="mb-0" *ngFor="let form of team?.recentForm" [class.lost]="form === 0" [class.win]="form === 1">{{form === 1 ? 'W' : 'L'}}</p>
             </div>
@@ -209,9 +209,9 @@
   </div>
 
   <div class="table-container overflow-x-auto shadow-lg rounded-lg" *ngIf="!isLoading && ranking === 'Bowling'">
-    <table class="w-full bg-white">
-      <thead class="bg-white sticky top-0">
-        <tr class="text-sm text-gray-700 font-semibold border-b">
+    <table class="w-full">
+      <thead class="theme-table-row-even sticky top-0">
+        <tr class="text-sm theme-text font-semibold border-b">
           <th class="px-6 py-4 text-left">Team</th>
           <th class="px-4 py-4 text-center">
               <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('rank', sorting === 'rank' ? 'desc' : sorting === '-rank' ? 'asc' : 'desc' )">
@@ -253,8 +253,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.bowlers; let i = index"
-        [class.!bg-white]="i % 2 === 0">
+        <tr class="theme-table-row-odd transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.bowlers; let i = index"
+        [class.theme-table-row-even]="i % 2 === 0">
           <td class="px-6 py-4">
             <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.teamId]">
               <img
@@ -262,7 +262,7 @@
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="flex gap-2 font-semibold text-gray-900 whitespace-nowrap rank-team items-center">{{getTeamDetails(team?.teamId)?.team?.name}}
+              <span class="flex gap-2 font-semibold theme-text whitespace-nowrap rank-team items-center">{{getTeamDetails(team?.teamId)?.team?.name}}
                 <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
                   <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
                   <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
@@ -274,13 +274,13 @@
               </span>
             </div>
           </td>
-          <td class="px-4 py-4 text-center">{{team.rank}}</td>
-          <td class="px-4 py-4 text-center">{{team.points}}</td>
-          <td class="px-4 py-4 text-center">{{team?.matches}}</td>
-          <td class="px-4 py-4 text-center font-medium">{{ballsToOvers(team.ballsBowled)}}</td> 
-          <td class="px-4 py-4 text-center font-medium">{{team.wickets}}</td>
-          <td class="px-4 py-4 text-center">{{team.economy.toFixed(2)}}</td>
-          <td class="px-4 py-4 text-center">
+          <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team.points}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.matches}}</td>
+          <td class="px-4 theme-text py-4 text-center font-medium">{{ballsToOvers(team.ballsBowled)}}</td> 
+          <td class="px-4 theme-text py-4 text-center font-medium">{{team.wickets}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team.economy.toFixed(2)}}</td>
+          <td class="px-4 theme-text py-4 text-center">
             <div class="flex">
               <p class="mb-0" *ngFor="let form of team?.recentForm" [class.lost]="form === 0" [class.win]="form === 1">{{form === 1 ? 'W' : 'L'}}</p>
             </div>
@@ -294,5 +294,5 @@
   <p class="text-right text-sm text-red-400 mt-3" *ngIf="!isLoading">*Note: ranking consider based on league matches only</p>
   
 <div *ngIf="isLoading">
-  <app-spinner></app-spinner>
+  <app-spinner [dotLoader]="false"></app-spinner>
 </div>

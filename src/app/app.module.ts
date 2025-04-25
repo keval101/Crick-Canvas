@@ -47,6 +47,7 @@ import { LeagueWinnerComponent } from './components/leagues/league-winner/league
 import { RankingsComponent } from './components/rankings/rankings.component';
 import { HeadToHeadComponent } from './components/head-to-head/head-to-head.component';
 import { AddHeadToHeadComponent } from './components/head-to-head/add-head-to-head/add-head-to-head.component';
+import { ThemeToggleComponent } from './shared/components/theme-toggle/theme-toggle.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmmEU-rEfzLSY0mYcXe-QsF4iFVRs0osE",
@@ -86,7 +87,8 @@ const firebaseConfig = {
     LeagueWinnerComponent,
     RankingsComponent,
     HeadToHeadComponent,
-    AddHeadToHeadComponent
+    AddHeadToHeadComponent,
+    ThemeToggleComponent
   ],
   imports: [
     BrowserModule,
