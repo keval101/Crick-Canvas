@@ -279,7 +279,7 @@
   <div class="grid grid-cols-1 gap-6" id="matchContainer"*ngIf="selectedTab === 'playoffs' && !isPlayOffLoading">
     <ng-container *ngFor="let fixture of playOffs">
       <div
-        class="match-card mb-4 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden">
+        class="match-card mb-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden">
         <div class="relative">
           <div class="absolute top-4 right-4 flex items-center gap-2">
             <div class="flex items-center gap-2 bg-gray-50 px-3 py-1 rounded-full" *ngIf="fixture?.status === 'upcoming'">
@@ -348,7 +348,7 @@
                     [class.text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 
                     [class.text-green-500]="fixture?.team_two?.runs > fixture?.team_one?.runs"
                    class="text-2xl font-bold theme-text">{{fixture?.team_two?.runs}}/{{fixture?.team_two?.wickets}}</div>
-                  <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'" class="text-sm text-gray-500">{{ballsToOvers(fixture?.team_two?.balls)}} overs</div>
+                  <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'" class="text-sm theme-text-light">{{ballsToOvers(fixture?.team_two?.balls)}} overs</div>
                 </div>
                 <img [src]="getTeamDetails(fixture?.team_two)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                   class="w-12 h-12 rounded-full object-cover" alt="Pakistan">

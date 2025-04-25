@@ -48,7 +48,7 @@
 
     <ng-container *ngFor="let fixture of matches">
       <div
-        class="match-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer">
+        class="match-card rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer">
         <div class="relative">
           <div class="absolute top-4 right-4 flex items-center gap-2">
             <div class="flex items-center gap-2 bg-gray-50 px-3 py-1 rounded-full" *ngIf="fixture?.status === 'upcoming'">
@@ -85,19 +85,19 @@
 
           <div class="p-6">
             <div class="flex items-center gap-2 mb-4">
-              <i class="ri-trophy-line text-primary"></i>
-              <span class="font-medium text-gray-900">Match {{fixture?.match_number}}</span>
+              <i class="ri-trophy-line theme-text"></i>
+              <span class="font-medium theme-text">Match {{fixture?.match_number}}</span>
             </div>
             <div class="flex items-center justify-between mb-8">
               <div class="flex items-center gap-4 flex-1">
                 <img [src]="getTeamDetails(fixture?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                   class="w-12 h-12 rounded-full object-cover" alt="New Zealand">
                 <div>
-                  <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_one)?.team?.name}}</div>
+                  <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name}}</div>
                   <div *ngIf="fixture?.status !== 'upcoming'" 
                     [class.text-red-500]="fixture?.team_two?.runs > fixture?.team_one?.runs" 
-                    [class.text-green-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" class="text-2xl font-bold text-gray-900">{{fixture?.team_one?.runs}}/{{fixture?.team_one?.wickets}}</div>
-                  <div *ngIf="fixture?.status !== 'upcoming'"  class="text-sm text-gray-500">{{ballsToOvers(fixture?.team_one?.balls)}} overs</div>
+                    [class.text-green-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" class="text-2xl font-bold theme-text">{{fixture?.team_one?.runs}}/{{fixture?.team_one?.wickets}}</div>
+                  <div *ngIf="fixture?.status !== 'upcoming'"  class="text-sm theme-text-light">{{ballsToOvers(fixture?.team_one?.balls)}} overs</div>
                 </div>
               </div>
               <div class="px-6">
@@ -105,12 +105,12 @@
               </div>
               <div class="flex items-center gap-4 flex-1 justify-end">
                 <div class="text-right">
-                  <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg text-gray-900">{{getTeamDetails(fixture?.team_two)?.team?.name}}</div>
+                  <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_two)?.team?.name}}</div>
                   <div *ngIf="fixture?.status !== 'upcoming'" 
                     [class.text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 
                     [class.text-green-500]="fixture?.team_two?.runs > fixture?.team_one?.runs"
-                   class="text-2xl font-bold text-gray-900">{{fixture?.team_two?.runs}}/{{fixture?.team_two?.wickets}}</div>
-                  <div *ngIf="fixture?.status !== 'upcoming'" class="text-sm text-gray-500">{{ballsToOvers(fixture?.team_two?.balls)}} overs</div>
+                   class="text-2xl font-bold theme-text">{{fixture?.team_two?.runs}}/{{fixture?.team_two?.wickets}}</div>
+                  <div *ngIf="fixture?.status !== 'upcoming'" class="text-sm theme-text-light">{{ballsToOvers(fixture?.team_two?.balls)}} overs</div>
                 </div>
                 <img [src]="getTeamDetails(fixture?.team_two)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                   class="w-12 h-12 rounded-full object-cover" alt="Pakistan">
@@ -119,8 +119,9 @@
             <div class="flex items-center justify-end">
               <button class="outline-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent" 
               *ngIf="(fixture?.status != 'completed') &&  (fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" (click)="openMatchResultModal(fixture)">
-                <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30">
-                Update Result
+                <!-- <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30"> -->
+                <iframe width="30px" height="30px" src="https://lottie.host/embed/a907a832-9cfe-42fa-a5ba-460563efc7c5/JBXn3KoqWo.lottie"></iframe>
+                <span class="theme-text">Update Result</span>
               </button>
             </div>
             <button class="outline-btn ml-auto btn-delete flex gap-2 items-center mb-4" (click)="deleteMatch(fixture, $event)" *ngIf="user?.uid === fixture.team_one.id || user?.admin"> 
