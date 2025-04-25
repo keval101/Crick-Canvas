@@ -16,3 +16,56 @@
     background: var(--card-bg);
     transition: all 0.3s ease;
 }
+
+
+.match-container {
+    @media screen and (max-width: 600px) {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+
+.match {
+    &-number {
+      @media screen and (max-width: 600px) {
+        font-size: 12px;
+      }
+    }
+  
+    &-team-info {
+      @media screen and (max-width: 600px) {
+        .team-name {
+          font-size: 15px;
+        }
+      }
+    }
+  
+    &-team-score {
+      @media screen and (max-width: 600px) {
+        .team-name {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  
+  .team-logo {
+    @media screen and (max-width: 600px) {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
+  .status-pill {
+    @media screen and (max-width: 600px) {
+      @apply flex justify-center items-center;
+      line-height: normal;
+      font-size: 12px;
+    }
+  }
+  
+  .league-venue {
+    @media screen and (max-width: 600px) {
+      font-size: 12px;
+    }
+  }

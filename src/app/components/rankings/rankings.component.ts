@@ -150,9 +150,9 @@ export class RankingsComponent {
       const recentMatchesA = this.sortAndLimitMatches(a.recentMatches)
       const recentFormB = recentMatchesB.map(match => {
         if(match.team_one.id === b.id) {
-          return match.team_one.runs > match.team_two.runs ? 1 : 0
+          return match.team_one.runs === match.team_two.runs ? -1 : match.team_one.runs > match.team_two.runs ? 1 : 0
         } else {
-          return match.team_two.runs > match.team_one.runs ? 1 : 0
+          return match.team_two.runs === match.team_one.runs ? -1 : match.team_two.runs > match.team_one.runs ? 1 : 0
         }
       })
       const recentFormA = recentMatchesA.map(match => {

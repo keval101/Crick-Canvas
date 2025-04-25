@@ -4,6 +4,10 @@
 }
 .sidebar-item {
     transition: all 0.3s ease;
+
+    @media screen and (max-width: 600px) {
+        padding: 4px 1rem;
+    }
 }
 .sidebar-item:hover {
     background-color: rgba(255, 255, 255, 0.05);
