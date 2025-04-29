@@ -26,6 +26,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { AddMatchComponent } from './components/matches/add-match/add-match.component';
 import { DatePipe } from '@angular/common';
@@ -107,7 +108,8 @@ const firebaseConfig = {
     DialogModule,
     DropdownModule,
     CalendarModule,
-    ToastModule
+    ToastModule,
+    TooltipModule
     
   ],
   providers: [

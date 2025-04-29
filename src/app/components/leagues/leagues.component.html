@@ -31,11 +31,11 @@
                <div class="flex-1">
                    <h3 class="text-lg font-semibold theme-text">{{league.name}}</h3>
                    <div class="flex items-center mt-2 text-sm theme-text-light">
-                       <div class="flex items-center">
+                       <div class="flex items-center whitespace-nowrap">
                            <i class="ri-calendar-line mr-1"></i>
                            <span>{{getDateFormat(league.startFrom) | date: 'MMM dd, yyyy'}}</span>
                        </div>
-                       <div class="flex items-center ml-6">
+                       <div class="flex items-center whitespace-nowrap ml-6">
                            <i class="ri-team-line mr-1"></i>
                            <span>{{league?.teams?.length ?? 0}} teams</span>
                        </div>

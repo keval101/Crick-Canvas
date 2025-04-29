@@ -263,18 +263,18 @@
         <tr class="text-sm theme-text font-semibold border-b">
           <th class="px-6 py-4 text-left"></th>
           <th class="px-6 py-4 text-left">Team</th>
-          <th class="px-4 py-4 text-center">P</th>
-          <th class="px-4 py-4 text-center">W</th>
-          <th class="px-4 py-4 text-center">L</th>
-          <th class="px-4 py-4 text-center">D</th>
-          <th class="px-4 py-4 text-center">RF</th>
-          <th class="px-4 py-4 text-center">OF</th>
-          <th class="px-4 py-4 text-center">RA</th>
-          <th class="px-4 py-4 text-center">OB</th>
-          <td class="px-4 py-4 text-center">Wkts T.</td>
-          <td class="px-4 py-4 text-center">Wkts F.</td>
-          <th class="px-4 py-4 text-center">Pts</th>
-          <th class="px-4 py-4 text-center">NRR</th>
+          <th class="px-4 py-4 text-center" pTooltip="Matches" tooltipPosition="top">M</th>
+          <th class="px-4 py-4 text-center" pTooltip="Points" tooltipPosition="top">Pts</th>
+          <th class="px-4 py-4 text-center" pTooltip="Won" tooltipPosition="top">W</th>
+          <th class="px-4 py-4 text-center" pTooltip="Lost" tooltipPosition="top">L</th>
+          <th class="px-4 py-4 text-center" pTooltip="Draw" tooltipPosition="top">D</th>
+          <th class="px-4 py-4 text-center" pTooltip="Runs For" tooltipPosition="top">RF</th>
+          <th class="px-4 py-4 text-center" pTooltip="Overs Faced" tooltipPosition="top">OF</th>
+          <th class="px-4 py-4 text-center" pTooltip="Runs Against" tooltipPosition="top">RA</th>
+          <th class="px-4 py-4 text-center" pTooltip="Overs Bowled" tooltipPosition="top">OB</th>
+          <td class="px-4 py-4 text-center" pTooltip="Wickets Taken" tooltipPosition="top">Wkts T.</td>
+          <td class="px-4 py-4 text-center" pTooltip="Wickets Fallen" tooltipPosition="top">Wkts F.</td>
+          <th class="px-4 py-4 text-center" pTooltip="Net Run Rate" tooltipPosition="top">NRR</th>
           <th class="px-4 py-4 text-center">Win%</th>
         </tr>
       </thead>
@@ -284,7 +284,7 @@
             [class.theme-table-row-even]="i % 2 === 0">
             <td class="px-4 py-4 whitespace-nowrap">
               <button class="matches-btn" (click)="toggleExpand(i)" *ngIf="team?.matches?.length > 0">
-                <i class="ri-arrow-right-s-line theme-text transition-transform duration-300"
+                <i class="ri-arrow-right-s-line text-white transition-transform duration-300"
                   [class.rotate-90]="expandedRow === i"></i>
               </button>
             </td>
@@ -300,6 +300,7 @@
               </a>
             </td>
             <td class="px-4 theme-text py-4 text-center">{{team?.played}}</td>
+            <td class="px-4 theme-text py-4 text-center font-semibold">{{team?.pts}}</td>
             <td class="px-4 py-4 text-center text-green-600 font-medium">{{team?.win}}</td>
             <td class="px-4 py-4 text-center text-red-600 font-medium">{{team?.loss}}</td>
             <td class="px-4 theme-text py-4 text-center">{{team?.draw}}</td>
@@ -309,7 +310,6 @@
             <td class="px-4 theme-text py-4 text-center">{{team?.oversBowled}}</td>
             <td class="px-4 theme-text py-4 text-center">{{team?.wicketsTaken}}</td>
             <td class="px-4 theme-text py-4 text-center">{{team?.wicketsFallen}}</td>
-            <td class="px-4 theme-text py-4 text-center font-semibold">{{team?.pts}}</td>
             <td class="px-4 theme-text py-4 text-center" [class.!text-green-600]="+(team?.nrr) > 0"
               [class.!text-red-600]="0 > +(team?.nrr)">{{team?.nrr}}</td>
             <td class="px-4 theme-text py-4 text-center">{{team?.winPercentage}}</td>
@@ -322,13 +322,28 @@
               <div [@expandCollapse]="expandedRow === i ? 'expanded' : 'collapsed'"
                    class="overflow-hidden px-4 py-2">
                    <ng-container *ngFor="let match of team?.matches; let i = index">
-                    <div class="mb-2 grid grid-cols-3 match-history">
+                    <div class="mb-2 flex items-center match-history">
                       <div class="flex items-center">
                         <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', match?.team_one?.id === team?.id ? match?.team_two?.id : match?.team_one?.id]">
                           <img [src]="getTeamDetails(match?.team_one?.id === team?.id ? match?.team_two : match?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                             alt="match?.team_one?.id === team?.id ? match?.team_two?.name : match?.team_one?.name" class="w-6 h-6 rounded-full object-cover" />
                           <span class="font-semibold theme-text whitespace-nowrap">{{getTeamDetails(match?.team_one?.id === team?.id ? match?.team_two : match?.team_one)?.team?.name}}</span>
-                          <span class="font-semibold theme-text-light whitespace-nowrap">
+                          <span class="font-semibold theme-text-light whitespace-nowrap
+                          {{match?.team_one?.id != team?.id 
+                            ? (match?.team_one?.runs > match?.team_two?.runs 
+                                ? 'Won' 
+                                : match?.team_one?.runs === match?.team_two?.runs 
+                                  ? 'Drawn' 
+                                  : 'Lost'
+                              ) 
+                            : (match?.team_two?.runs > match?.team_one?.runs 
+                                ? 'Won' 
+                                : match?.team_two?.runs === match?.team_one?.runs 
+                                  ? 'Drawn' 
+                                  : 'Lost'
+                              ) 
+                        }}
+                        ">
                             ({{
                               match?.team_one?.id === team?.id ? match?.team_two?.runs : match?.team_one?.runs
                             }}/{{
@@ -337,12 +352,43 @@
                         </a>
                       </div>
 
-                      <div>
-                        <p class="theme-text text-sm">Match No. {{match?.match_number}}</p>
-                        <p class="theme-text-light text-sm">{{getDate(match?.date) | date: 'dd MMM, yyyy'}}</p>
-                      </div>
+                      <img src="https://i.postimg.cc/8cWKvdbg/vs.png" alt="" width="60" height="60">
 
                       <div class="flex items-center">
+                        <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', match?.team_one?.id === team?.id ? match?.team_one?.id : match?.team_two?.id]">
+                          <img [src]="getTeamDetails(match?.team_one?.id === team?.id ? match?.team_one : match?.team_two)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
+                            alt="match?.team_one?.id === team?.id ? match?.team_one?.name : match?.team_two?.name" class="w-6 h-6 rounded-full object-cover" />
+                          <span class="font-semibold theme-text whitespace-nowrap">{{getTeamDetails(match?.team_one?.id === team?.id ? match?.team_one : match?.team_two)?.team?.name}}</span>
+                          <span class="font-semibold theme-text-light whitespace-nowrap
+                          {{match?.team_one?.id === team?.id 
+                            ? (match?.team_one?.runs > match?.team_two?.runs 
+                                ? 'Won' 
+                                : match?.team_one?.runs === match?.team_two?.runs 
+                                  ? 'Drawn' 
+                                  : 'Lost'
+                              ) 
+                            : (match?.team_two?.runs > match?.team_one?.runs 
+                                ? 'Won' 
+                                : match?.team_two?.runs === match?.team_one?.runs 
+                                  ? 'Drawn' 
+                                  : 'Lost'
+                              ) 
+                        }}
+                        ">
+                            ({{
+                              match?.team_one?.id === team?.id ? match?.team_one?.runs : match?.team_two?.runs
+                            }}/{{
+                              match?.team_one?.id === team?.id ? match?.team_one?.wickets : match?.team_two?.wickets
+                            }})</span>
+                        </a>
+                      </div>
+
+                      <!-- <div>
+                        <p class="theme-text text-sm">Match No. {{match?.match_number}}</p>
+                        <p class="theme-text-light text-sm">{{getDate(match?.date) | date: 'dd MMM, yyyy'}}</p>
+                      </div> -->
+
+                      <!-- <div class="flex items-center">
                         <p class="theme-text {{match?.team_one?.id === team?.id 
                           ? (match?.team_one?.runs > match?.team_two?.runs 
                               ? 'Won' 
@@ -375,7 +421,7 @@
                           }}/{{
                             match?.team_one?.id === team?.id ? match?.team_one?.wickets : match?.team_two?.wickets
                           }})</p>
-                      </div>
+                      </div> -->
 
                       
                     </div>
