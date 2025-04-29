@@ -134,8 +134,8 @@
                         <img [src]="playerId === match?.team_one.id ? match.team_two.logo : match?.team_one.logo"
                             class="min-w-12 max-w-12 h-12 rounded-full object-cover" alt="RCB" /> 
                         <div>
-                          <div class="text-sm theme-text-light">vs <span class="team-name" [routerLink]="['/stats', playerId === match?.team_one.id ? match.team_two.id : match?.team_one.id]">{{playerId === match?.team_one.id ? match.team_two.name : match?.team_one.name}}</span> &nbsp; 
-                          <span>{{playerId === match?.team_one.id ? match?.team_two?.runs : match?.team_one?.runs}}/{{playerId === match?.team_one.id ? match?.team_two?.wickets : match?.team_one?.wickets}}</span><span class="text-xs"> ({{ballsToOvers(playerId === match?.team_one.id ? match?.team_two?.balls : match?.team_one?.balls)}} overs)</span></div>
+                          <a class="text-sm theme-text-light">vs <span class="team-name" [routerLink]="['/stats', playerId === match?.team_one.id ? match.team_two.id : match?.team_one.id]">{{playerId === match?.team_one.id ? match.team_two.name : match?.team_one.name}}</span> &nbsp; 
+                          <span>{{playerId === match?.team_one.id ? match?.team_two?.runs : match?.team_one?.runs}}/{{playerId === match?.team_one.id ? match?.team_two?.wickets : match?.team_one?.wickets}}</span><span class="text-xs"> ({{ballsToOvers(playerId === match?.team_one.id ? match?.team_two?.balls : match?.team_one?.balls)}} overs)</span></a>
                           <div class="font-semibold"
                           [class.text-green-600]="(playerId === match?.team_one.id && match?.team_one.runs > match?.team_two.runs) || (playerId === match?.team_two.id && match?.team_two.runs > match?.team_one.runs)"
                           [class.text-red-600]="(playerId === match?.team_one.id && match?.team_one.runs < match?.team_two.runs) || (playerId === match?.team_two.id && match?.team_two.runs < match?.team_one.runs)"
@@ -192,7 +192,7 @@
                     </div>
                     <div>
                         <div class="font-semibold theme-text">Orange Cap</div>
-                        <div [routerLink]="['/leagues', league.id]" class="league-pill cursor-pointer text-white bg-orange-400 inline-block m-1 text-sm " *ngFor="let league of orangecap">{{league?.name}} - <span class="font-semibold text-orange-600 text-xl">{{league?.runs}}</span></div>
+                        <a [routerLink]="['/leagues', league.id]" class="league-pill cursor-pointer text-white bg-orange-400 inline-block m-1 text-sm " *ngFor="let league of orangecap">{{league?.name}} - <span class="font-semibold text-orange-600 text-xl">{{league?.runs}}</span></a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4 p-4 theme-card rounded-lg" *ngIf="purplecap?.length">
@@ -201,7 +201,7 @@
                     </div>
                     <div>
                         <div class="font-semibold theme-text">Purple Cap</div>
-                        <div [routerLink]="['/leagues', league.id]" class="league-pill text-white cursor-pointer bg-purple-400 inline-block m-1 text-sm" *ngFor="let league of purplecap">{{league?.name}} - <span class="font-semibold text-purple-600 text-xl">{{league?.wickets}}</span></div>
+                        <a [routerLink]="['/leagues', league.id]" class="league-pill text-white cursor-pointer bg-purple-400 inline-block m-1 text-sm" *ngFor="let league of purplecap">{{league?.name}} - <span class="font-semibold text-purple-600 text-xl">{{league?.wickets}}</span></a>
                     </div>
                 </div>
             </div>
@@ -221,11 +221,11 @@
         <div class="grid sm:grid-cols-2 grid-cols-1 gap-6" *ngIf="stats?.headToHead?.length">
             <div class="stat-card p-6 rounded-lg" *ngFor="let team of stats?.headToHead">
                 <div class="flex items-center justify-between mb-4">
-                  <div class="flex team-name items-center gap-4" [routerLink]="['/stats', team?.id]">
+                  <a class="flex team-name items-center gap-4" [routerLink]="['/stats', team?.id]">
                     <img [src]="team?.logo"
                     class="w-12 h-12 rounded-full object-cover" alt="RCB" />
                     <span class="theme-text">{{team?.team}}</span>
-                  </div>
+                  </a>
                   <div class="flex gap-3 items-center">
                     <div class="text-right">
                       <div class="text-2xl font-bold theme-text">{{team?.totalMatchesPlayed}}</div>

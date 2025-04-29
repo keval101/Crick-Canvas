@@ -168,7 +168,7 @@
                   <img [src]="getTeamDetails(fixture?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                     class="w-12 h-12 rounded-full object-cover team-logo" alt="New Zealand">
                   <div>
-                    <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name ?? 'TBD'}}</div>
+                    <a [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name ?? 'TBD'}}</a>
                     <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'" 
                       [class.!text-red-500]="fixture?.team_two?.runs > fixture?.team_one?.runs" 
                       [class.!text-green-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" class="text-2xl font-bold match-team-score theme-text">{{fixture?.team_one?.runs}}/{{fixture?.team_one?.wickets}}</div>
@@ -181,7 +181,7 @@
                 </div>
                 <div class="flex items-center gap-4 flex-1 match-team-info justify-end sm:flex-row flex-row-reverse">
                   <div class="text-right ml-auto">
-                    <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_two)?.team?.name ?? 'TBD'}}</div>
+                    <a [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_two)?.team?.name ?? 'TBD'}}</a>
                     <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'" 
                       [class.!text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 
                       [class.!text-green-500]="fixture?.team_two?.runs > fixture?.team_one?.runs"
@@ -245,16 +245,16 @@
         <tr class="theme-table-row-odd transition-colors duration-200 cursor-pointer" *ngFor="let team of pointTable; let i = index"
         [class.theme-table-row-even]="i % 2 === 0">
           <td class="px-6 py-4 whitespace-nowrap">
-            <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
+            <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
               <img
                 [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
               <span class="font-semibold theme-text whitespace-nowrap">{{getTeamDetails(team)?.team?.name}}</span>
-              <img src="/assets/icons/orangecap.png" alt="" width="30" height="30" *ngIf="team?.id === orangecap?.id">
-              <img src="/assets/icons/purplecap.png" alt="" width="30" height="30" *ngIf="team?.id === purplecap?.id">
-            </div>
+              <img src="/assets/icons/orangecap.png" style="min-width: 30px;" alt="" width="30" height="30" *ngIf="team?.id === orangecap?.id">
+              <img src="/assets/icons/purplecap.png" style="min-width: 30px;" alt="" width="30" height="30" *ngIf="team?.id === purplecap?.id">
+            </a>
           </td>
           <td class="px-4 theme-text py-4 text-center">{{team?.played}}</td>
           <td class="px-4 py-4 text-center text-green-600 font-medium">{{team?.win}}</td>
@@ -329,7 +329,7 @@
             <div class="flex sm:items-center items-start justify-center sm:justify-between mb-8 flex-wrap gap-2 sm:gap-1"
             [class.!items-center]="fixture?.status != 'completed' || fixture?.result !== 'draw'">
               <div>
-                <div [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name}}</div>
+                <a [routerLink]="['/stats', fixture?.team_one?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name}}</a>
                 <div class="flex items-center gap-4 flex-1">
                   <img [src]="getTeamDetails(fixture?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                     class="w-12 h-12 rounded-full object-cover team-logo" alt="New Zealand">
@@ -347,7 +347,7 @@
               </div>
               <div class="flex items-center gap-4 flex-1 justify-end">
                 <div class="text-right ml-auto">
-                  <div [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_two)?.team?.name}}</div>
+                  <a [routerLink]="['/stats', fixture?.team_two?.id]" class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_two)?.team?.name}}</a>
                   <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'"  
                     [class.!text-red-500]="fixture?.team_one?.runs > fixture?.team_two?.runs" 
                     [class.!text-green-500]="fixture?.team_two?.runs > fixture?.team_one?.runs"

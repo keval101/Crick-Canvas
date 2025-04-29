@@ -70,3 +70,22 @@
       font-size: 12px;
     }
   }
+
+  .team-name {
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+  
+    span {
+      cursor: pointer;
+      transition: all 0.2s ease-in;
+    
+      &:hover {
+        color: var(--primary-light);
+        transition: all 0.2s ease-in;
+      }
+    }
+    &:hover {
+      color: var(--primary-light);
+      transition: all 0.2s ease-in;
+    }
+  }

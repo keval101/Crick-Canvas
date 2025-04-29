@@ -348,7 +348,9 @@ export class DataService {
   }
 
   getAllLeagueMatches() {
-    return this.firestore.collection('league-matches').valueChanges();
+    return this.firestore.collection('league-matches', ref =>
+      ref.where('status', '==', 'completed')
+    ).valueChanges();
   }
 
   async getUserMatches(userId: string) {

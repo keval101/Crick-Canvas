@@ -85,12 +85,12 @@
     transition: all 0.2s ease-in;
   
     &:hover {
-      @apply text-purple-700;
+      color: var(--primary-light);
       transition: all 0.2s ease-in;
     }
   }
   &:hover {
-    @apply text-purple-700;
+    color: var(--primary-light);
     transition: all 0.2s ease-in;
   }
 }

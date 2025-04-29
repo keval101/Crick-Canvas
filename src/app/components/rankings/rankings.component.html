@@ -82,7 +82,7 @@
         <tr class="theme-table-row-even transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.teams; let i = index"
         [class.theme-table-row-odd]="i % 2 === 0">
           <td class="px-6 py-4">
-            <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
+            <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
               <img
                 [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                 alt="Royal Challengers"
@@ -98,7 +98,7 @@
                   >{{getAbsValue(team.prev_rank - team.curr_rank)}}</span>
                 </div>
               </span>
-            </div>
+            </a>
           </td>
           <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
           <td class="px-4 theme-text py-4 text-center">{{team?.points}}</td>
@@ -172,7 +172,7 @@
         <tr class="theme-table-row-odd transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.batsmen; let i = index"
         [class.theme-table-row-even]="i % 2 === 0">
           <td class="px-6 py-4">
-            <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.teamId]">
+            <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.teamId]">
               <img
                 [src]="getTeamDetails(team?.teamId)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                 alt="Royal Challengers"
@@ -188,7 +188,7 @@
                     >{{getAbsValue(team.prev_rank - team.curr_rank)}}</span>
                 </div>
               </span>
-            </div>
+            </a>
           </td>
           <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
           <td class="px-4 theme-text py-4 text-center">{{team.points}}</td>
@@ -256,7 +256,7 @@
         <tr class="theme-table-row-odd transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.bowlers; let i = index"
         [class.theme-table-row-even]="i % 2 === 0">
           <td class="px-6 py-4">
-            <div class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.teamId]">
+            <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.teamId]">
               <img
                 [src]="getTeamDetails(team?.teamId)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                 alt="Royal Challengers"
@@ -272,7 +272,7 @@
                   >{{getAbsValue(team.prev_rank - team.curr_rank)}}</span>
                 </div>
               </span>
-            </div>
+            </a>
           </td>
           <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
           <td class="px-4 theme-text py-4 text-center">{{team.points}}</td>
