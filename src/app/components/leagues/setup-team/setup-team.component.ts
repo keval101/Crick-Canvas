@@ -104,6 +104,9 @@ export class SetupTeamComponent {
         this.messageService.add({ severity: 'success', summary: 'Team', detail: 'Saved Successfully!' });
         this.isLoading = false;
         this.closeSetupTeamModal.emit();
+      }, error => {
+        this.isLoading = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
       });
     } else if(this.logoPreview) {
       const payload = { ...this.user, team: { name: this.teamForm.value.teamName, logo: this.logoPreview } }

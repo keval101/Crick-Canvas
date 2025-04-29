@@ -23,14 +23,25 @@ export class LeagueWinnerComponent {
     const loser = this.match.team_one.runs > this.match.team_two.runs ? this.match.team_two : this.match.team_one;
     this.winningTeam = winner;
     this.finalScore = `Final Score: ${winner.name} ${winner.runs}/${winner.wickets} vs ${loser.name} ${loser.runs}/${loser.wickets}`;
-  }
+    console.log(this.winningTeam, this.finalScore)
 
-  ngOnChanges(changes: any) {
     if(!this.league.winner) { 
+      console.log(this.league.winner, this.winningTeam)
       this.league['winner'] = this.winningTeam
+      console.log(this.league);
+      delete this.winningTeam.logo;
       this.dataService.updateLeague(this.league, this.league.id)
     }
-  } 
+  }
+
+  // ngOnChanges(changes: any) {
+  //   console.log(this.league.winner, this.winningTeam)
+  //   if(!this.league.winner) { 
+  //     console.log(this.league.winner, this.winningTeam)
+  //     this.league['winner'] = this.winningTeam
+  //     this.dataService.updateLeague(this.league, this.league.id)
+  //   }
+  // } 
 
   
   startConfetti() {

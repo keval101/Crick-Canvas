@@ -14,15 +14,27 @@ export class ImageUploadService {
   convertBlobToBase64(blob: Blob): Observable<any> {
     return new Observable(observer => {
       const reader = new FileReader();
+  
       reader.onloadend = () => {
         const base64String = reader.result as string;
+  
+        // Calculate approximate byte size of base64 string
+        const base64SizeInBytes = Math.ceil((base64String.length * 3) / 4);
+  
+        if (base64SizeInBytes > 1048576) {
+          observer.error(new Error('Image exceeds the 1MB size limit. Please upload a smaller image.'));
+          return;
+        }
+  
         observer.next(base64String);
         observer.complete();
       };
+  
       reader.onerror = (error) => {
         observer.error(error);
       };
-      reader.readAsDataURL(blob);  // Convert the Blob to Base64 string
+  
+      reader.readAsDataURL(blob); // Convert Blob to base64
     });
   }
 
