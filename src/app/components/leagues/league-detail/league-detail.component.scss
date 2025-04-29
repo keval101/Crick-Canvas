@@ -206,6 +206,15 @@
   margin-left: -6px;
 }
 
+
+.Default {
+  @apply bg-gray-700 flex px-2 py-1 justify-center text-white items-center border-gray-600 rounded-lg;
+  height: 28px;
+  font-size: 12px;
+  border: 1px solid rgb(112, 112, 112);
+  margin-left: -6px;
+}
+
 .match-history {
   @apply gap-4;
   // justify-content: space-between;

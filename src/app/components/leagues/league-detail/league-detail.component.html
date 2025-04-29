@@ -323,107 +323,53 @@
                    class="overflow-hidden px-4 py-2">
                    <ng-container *ngFor="let match of team?.matches; let i = index">
                     <div class="mb-2 flex items-center match-history">
+                    
+                    
+                      <!-- Current Team -->
                       <div class="flex items-center">
-                        <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', match?.team_one?.id === team?.id ? match?.team_two?.id : match?.team_one?.id]">
-                          <img [src]="getTeamDetails(match?.team_one?.id === team?.id ? match?.team_two : match?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
-                            alt="match?.team_one?.id === team?.id ? match?.team_two?.name : match?.team_one?.name" class="w-6 h-6 rounded-full object-cover" />
-                          <span class="font-semibold theme-text whitespace-nowrap">{{getTeamDetails(match?.team_one?.id === team?.id ? match?.team_two : match?.team_one)?.team?.name}}</span>
-                          <span class="font-semibold theme-text-light whitespace-nowrap
-                          {{match?.team_one?.id != team?.id 
-                            ? (match?.team_one?.runs > match?.team_two?.runs 
-                                ? 'Won' 
-                                : match?.team_one?.runs === match?.team_two?.runs 
-                                  ? 'Drawn' 
-                                  : 'Lost'
-                              ) 
-                            : (match?.team_two?.runs > match?.team_one?.runs 
-                                ? 'Won' 
-                                : match?.team_two?.runs === match?.team_one?.runs 
-                                  ? 'Drawn' 
-                                  : 'Lost'
-                              ) 
-                        }}
-                        ">
-                            ({{
-                              match?.team_one?.id === team?.id ? match?.team_two?.runs : match?.team_one?.runs
-                            }}/{{
-                              match?.team_one?.id === team?.id ? match?.team_two?.wickets : match?.team_one?.wickets
-                            }})</span>
-                        </a>
-                      </div>
-
-                      <img src="https://i.postimg.cc/8cWKvdbg/vs.png" alt="" width="60" height="60">
-
-                      <div class="flex items-center">
-                        <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', match?.team_one?.id === team?.id ? match?.team_one?.id : match?.team_two?.id]">
+                        <a class="flex items-center gap-3 team-name"
+                           [routerLink]="['/stats', match?.team_one?.id === team?.id ? match?.team_one?.id : match?.team_two?.id]">
                           <img [src]="getTeamDetails(match?.team_one?.id === team?.id ? match?.team_one : match?.team_two)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
-                            alt="match?.team_one?.id === team?.id ? match?.team_one?.name : match?.team_two?.name" class="w-6 h-6 rounded-full object-cover" />
-                          <span class="font-semibold theme-text whitespace-nowrap">{{getTeamDetails(match?.team_one?.id === team?.id ? match?.team_one : match?.team_two)?.team?.name}}</span>
-                          <span class="font-semibold theme-text-light whitespace-nowrap
-                          {{match?.team_one?.id === team?.id 
-                            ? (match?.team_one?.runs > match?.team_two?.runs 
-                                ? 'Won' 
-                                : match?.team_one?.runs === match?.team_two?.runs 
-                                  ? 'Drawn' 
-                                  : 'Lost'
-                              ) 
-                            : (match?.team_two?.runs > match?.team_one?.runs 
-                                ? 'Won' 
-                                : match?.team_two?.runs === match?.team_one?.runs 
-                                  ? 'Drawn' 
-                                  : 'Lost'
-                              ) 
-                        }}
-                        ">
-                            ({{
-                              match?.team_one?.id === team?.id ? match?.team_one?.runs : match?.team_two?.runs
-                            }}/{{
-                              match?.team_one?.id === team?.id ? match?.team_one?.wickets : match?.team_two?.wickets
-                            }})</span>
+                               alt="Your Team Logo"
+                               class="w-6 h-6 rounded-full object-cover" />
+                          <span class="font-semibold theme-text whitespace-nowrap">
+                            {{ getTeamDetails(match?.team_one?.id === team?.id ? match?.team_one : match?.team_two)?.team?.name }}
+                          </span>
+                    
+                          <!-- Score with class applied based on team.id only -->
+                          <span class="font-semibold theme-text-light whitespace-nowrap"
+                                [ngClass]="{
+                                  'Won': (match?.team_one?.id === team?.id && match?.team_one?.runs > match?.team_two?.runs) ||
+                                         (match?.team_two?.id === team?.id && match?.team_two?.runs > match?.team_one?.runs),
+                                  'Drawn': match?.team_one?.runs === match?.team_two?.runs,
+                                  'Lost': (match?.team_one?.id === team?.id && match?.team_one?.runs < match?.team_two?.runs) ||
+                                          (match?.team_two?.id === team?.id && match?.team_two?.runs < match?.team_one?.runs)
+                                }">
+                            ({{ match?.team_one?.id === team?.id ? match?.team_one?.runs : match?.team_two?.runs }}/
+                             {{ match?.team_one?.id === team?.id ? match?.team_one?.wickets : match?.team_two?.wickets }})
+                          </span>
                         </a>
                       </div>
 
-                      <!-- <div>
-                        <p class="theme-text text-sm">Match No. {{match?.match_number}}</p>
-                        <p class="theme-text-light text-sm">{{getDate(match?.date) | date: 'dd MMM, yyyy'}}</p>
-                      </div> -->
+                      <img src="https://i.postimg.cc/8cWKvdbg/vs.png" alt="vs" width="60" height="60" />
 
-                      <!-- <div class="flex items-center">
-                        <p class="theme-text {{match?.team_one?.id === team?.id 
-                          ? (match?.team_one?.runs > match?.team_two?.runs 
-                              ? 'Won' 
-                              : match?.team_one?.runs === match?.team_two?.runs 
-                                ? 'Drawn' 
-                                : 'Lost'
-                            ) 
-                          : (match?.team_two?.runs > match?.team_one?.runs 
-                              ? 'Won' 
-                              : match?.team_two?.runs === match?.team_one?.runs 
-                                ? 'Drawn' 
-                                : 'Lost'
-                            ) 
-                      }}">
-                          {{match?.team_one?.id === team?.id
-                          ? (match?.team_one?.runs > match?.team_two?.runs
-                          ? 'W'
-                          : match?.team_one?.runs === match?.team_two?.runs
-                          ? 'D'
-                          : 'L'
-                          )
-                          : (match?.team_two?.runs > match?.team_one?.runs
-                          ? 'W'
-                          : match?.team_two?.runs === match?.team_one?.runs
-                          ? 'D'
-                          : 'L'
-                          )
-                          }} ({{
-                            match?.team_one?.id === team?.id ? match?.team_one?.runs : match?.team_two?.runs
-                          }}/{{
-                            match?.team_one?.id === team?.id ? match?.team_one?.wickets : match?.team_two?.wickets
-                          }})</p>
-                      </div> -->
-
-                      
+                      <!-- Opponent Team -->
+                      <div class="flex items-center">
+                        <a class="flex items-center gap-3 team-name"
+                           [routerLink]="['/stats', match?.team_one?.id === team?.id ? match?.team_two?.id : match?.team_one?.id]">
+                          <img [src]="getTeamDetails(match?.team_one?.id === team?.id ? match?.team_two : match?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
+                               alt="Opponent Logo"
+                               class="w-6 h-6 rounded-full object-cover" />
+                          <span class="font-semibold theme-text whitespace-nowrap">
+                            {{ getTeamDetails(match?.team_one?.id === team?.id ? match?.team_two : match?.team_one)?.team?.name }}
+                          </span>
+                          <span class="font-semibold theme-text-light whitespace-nowrap Default">
+                            ({{ match?.team_one?.id === team?.id ? match?.team_two?.runs : match?.team_one?.runs }}/
+                             {{ match?.team_one?.id === team?.id ? match?.team_two?.wickets : match?.team_one?.wickets }})
+                          </span>
+                        </a>
+                      </div>
+                    
                     </div>
                   </ng-container>
               </div>
