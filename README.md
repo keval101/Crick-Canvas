@@ -1,11 +1,13 @@
-# CrickTracker
-Live: https://boxcricket.vercel.app
-![01](https://github.com/user-attachments/assets/cd6cf653-5c7b-4df0-9916-8a46830c780d)
-![02](https://github.com/user-attachments/assets/2845d251-9913-457d-ba53-369a88cbfd7e)
-![03](https://github.com/user-attachments/assets/0485ce5f-7db9-49c4-9b56-715388c7fd04)
-![04](https://github.com/user-attachments/assets/9690422c-6825-4c47-8c59-1ec637d242a2)
-![05](https://github.com/user-attachments/assets/e93c2eae-86dd-4fdc-95ac-54e1129474e4)
-![06](https://github.com/user-attachments/assets/f4f6def0-8824-4be3-a74a-940f5d46a5bf)
-![07](https://github.com/user-attachments/assets/1a75e93b-59be-439f-80ad-9b4c28660ef6)
-![08](https://github.com/user-attachments/assets/dd25b358-8742-4be7-9b38-58700fba1548)
-![09](https://github.com/user-attachments/assets/7c5e595c-8a8d-4152-a8e1-836142614f4d)
+# Crick Canvas
+Live: https://crick-canvas.vercel.app
+
+I’ve built a web application called Crick Canvas using Angular, HTML, CSS, JavaScript, Tailwind CSS, and PrimeNG, with Firebase as the backend for data storage. This app allows users to track their cricket matches and leagues in a detailed manner. One of the key features is the ranking system, where users can see their rank based on their performance in different leagues. In addition, the app includes a statistics section that helps users monitor their overall performance—such as total runs, total wickets, and even head-to-head (H2H) records against other teams.
+
+And just to be clear—I totally made this app for fun 😉. We’ve been playing Dream Cricket25 in our friend circle, and my friends suddenly turned into cricket analysts who wanted to track every match like it’s the IPL finals. So naturally, I had no choice but to create this web app and become the unofficial BCCI of our group.
+
+![01](https://github.com/user-attachments/assets/b81fa0b8-af66-4c78-93b0-7037a29e66df)
+![02](https://github.com/user-attachments/assets/06a89cb3-d3eb-4f28-b293-a85ed441af7e)
+![03](https://github.com/user-attachments/assets/bc897682-090c-4277-8632-f979a814296c)
+![04](https://github.com/user-attachments/assets/6661901e-a8b2-4dec-be96-9d8e68c31d9c)
+![05](https://github.com/user-attachments/assets/c583a1ca-4bf6-4054-94fe-45d5b77f30ad)
+![06](https://github.com/user-attachments/assets/1647eedc-9dc6-432d-a13d-12423eda7e59)
