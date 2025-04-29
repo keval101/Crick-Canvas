@@ -268,8 +268,8 @@
           <td class="px-4 theme-text py-4 text-center">{{team?.wicketsFallen}}</td>
           <td class="px-4 theme-text py-4 text-center font-semibold">{{team?.pts}}</td>
           <td class="px-4 theme-text py-4 text-center"
-          [class.text-green-600]="+(team?.nrr) > 0"
-          [class.text-red-600]="0 > +(team?.nrr)"
+          [class.!text-green-600]="+(team?.nrr) > 0"
+          [class.!text-red-600]="0 > +(team?.nrr)"
           >{{team?.nrr}}</td>
           <td class="px-4 theme-text py-4 text-center">{{team?.winPercentage}}</td>
         </tr>
