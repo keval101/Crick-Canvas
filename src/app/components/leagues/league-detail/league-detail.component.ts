@@ -7,11 +7,33 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import * as _ from 'lodash';
 import { Title } from '@angular/platform-browser';
-
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate
+} from '@angular/animations';
 @Component({
   selector: 'app-league-detail',
   templateUrl: './league-detail.component.html',
   styleUrls: ['./league-detail.component.scss'],
+  animations: [
+    trigger('expandCollapse', [
+      state('collapsed', style({
+        height: '0px',
+        padding: '0',
+        overflow: 'hidden',
+      })),
+      state('expanded', style({
+        height: '*',
+        overflow: 'hidden',
+      })),
+      transition('collapsed <=> expanded', [
+        animate('300ms ease-in-out')
+      ])
+    ])
+  ]
 })
 export class LeagueDetailComponent {
   destroy$ = new Subject();
@@ -36,6 +58,7 @@ export class LeagueDetailComponent {
   view = 'list';
   totalMatches = 0
   completedMatches = 0
+  expandedRow: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -343,11 +366,13 @@ async generatePointsTable() {
           oversFacedBalls: 0,
           runsAgainst: 0,
           oversBowledBalls: 0,
+          matches: []
         };
       }
 
       if (match?.team_one?.balls > 0 || match?.team_two?.balls > 0) {
         table[team.id].played++;
+        table[team.id].matches.push(match);
       }
       table[team.id].runsFor += team.runs;
       table[team.id].oversFacedBalls += team.balls;
@@ -394,7 +419,8 @@ async generatePointsTable() {
         oversBowled: `${Math.floor(team.oversBowledBalls / 6)}.${team.oversBowledBalls % 6}`,
         pts: +pts,
         nrr: isNaN(+nrr) ? 0 : nrr,
-        winPercentage: `${winPercent}%`
+        winPercentage: `${winPercent}%`,
+        matches: team.matches,
       };
     })
   );
@@ -411,6 +437,7 @@ async generatePointsTable() {
   })[0];
   
   this.pointTable = await this.sortPointsTable(pointTable);
+  console.log(this.pointTable)
 
   if(this.totalMatches === this.completedMatches) {
     this.league['orangecap'] = this.orangecap
@@ -793,6 +820,15 @@ calculateEconomy(runsConceded: number, ballsBowled: number): number {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
+  }
+
+  toggleExpand(index: number) {
+    this.expandedRow = this.expandedRow === index ? null : index;
+  }
+
+  getDate(timestamp) {
+    const date = new Date(timestamp);
+    return date;
   }
 
 }
