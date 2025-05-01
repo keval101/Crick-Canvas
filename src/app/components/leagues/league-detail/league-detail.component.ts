@@ -435,9 +435,14 @@ async generatePointsTable() {
     return b.wicketsTaken - a.wicketsTaken
   }
   })[0];
+
+  pointTable.map((team, index) => {
+    if(team.matches.length) {
+      team['matches'] = team.matches.sort((a, b) => b.date - a.date);
+    }
+  })
   
   this.pointTable = await this.sortPointsTable(pointTable);
-  console.log(this.pointTable)
 
   if(this.totalMatches === this.completedMatches) {
     this.league['orangecap'] = this.orangecap

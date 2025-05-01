@@ -341,7 +341,7 @@
                                 [ngClass]="{
                                   'Won': (match?.team_one?.id === team?.id && match?.team_one?.runs > match?.team_two?.runs) ||
                                          (match?.team_two?.id === team?.id && match?.team_two?.runs > match?.team_one?.runs),
-                                  'Drawn': match?.team_one?.runs === match?.team_two?.runs,
+                                  'Draw': match?.team_one?.runs === match?.team_two?.runs,
                                   'Lost': (match?.team_one?.id === team?.id && match?.team_one?.runs < match?.team_two?.runs) ||
                                           (match?.team_two?.id === team?.id && match?.team_two?.runs < match?.team_one?.runs)
                                 }">
