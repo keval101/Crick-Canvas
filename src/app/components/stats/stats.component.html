@@ -134,7 +134,7 @@
                         <img [src]="playerId === match?.team_one.id ? match.team_two.logo : match?.team_one.logo"
                             class="min-w-12 max-w-12 h-12 rounded-full object-cover" alt="RCB" /> 
                         <div>
-                          <a class="text-sm theme-text-light">vs <span class="team-name" [routerLink]="['/stats', playerId === match?.team_one.id ? match.team_two.id : match?.team_one.id]">{{playerId === match?.team_one.id ? match.team_two.name : match?.team_one.name}}</span> &nbsp; 
+                          <a class="text-sm theme-text-light">vs <a class="team-name" [routerLink]="['/stats', playerId === match?.team_one.id ? match.team_two.id : match?.team_one.id]">{{playerId === match?.team_one.id ? match.team_two.name : match?.team_one.name}}</a> &nbsp; 
                           <span>{{playerId === match?.team_one.id ? match?.team_two?.runs : match?.team_one?.runs}}/{{playerId === match?.team_one.id ? match?.team_two?.wickets : match?.team_one?.wickets}}</span><span class="text-xs"> ({{ballsToOvers(playerId === match?.team_one.id ? match?.team_two?.balls : match?.team_one?.balls)}} overs)</span></a>
                           <div class="font-semibold"
                           [class.!text-green-600]="(playerId === match?.team_one.id && match?.team_one.runs > match?.team_two.runs) || (playerId === match?.team_two.id && match?.team_two.runs > match?.team_one.runs)"

@@ -294,7 +294,7 @@
 
   <div class="table-container overflow-x-auto" *ngIf="!isLoading && ranking === 'Players'">
     <div class="theme-card flex items-center gap-4 p-4 rounded-lg shadow-lg mb-4" *ngFor="let player of players">
-      <p class="theme-text">{{player.name}}</p>
+      <p class="theme-text player-name">{{player.name}}</p>
       <ng-container *ngIf="player?.leagues">
         <div pTooltip="{{item.key}}" tooltipPosition="top" *ngFor="let item of getLeagueArray(player?.leagues?.[0])"><img width="24" height="24" src="./assets/icons/worldcup3.png"></div>
       </ng-container>

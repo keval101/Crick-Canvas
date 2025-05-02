@@ -23,7 +23,7 @@
  <div class="max-w-7xl mt-8 mx-auto">
    <div class="grid gap-6" id="leagueList">
        <!-- League 1 -->
-       <div class="league-card relative rounded-lg shadow-sm p-6 transition-all duration-200 cursor-pointer" *ngFor="let league of leagues$ | async" [routerLink]="['/leagues', league.id]">
+       <a class="league-card relative rounded-lg shadow-sm p-6 transition-all duration-200 cursor-pointer" *ngFor="let league of leagues$ | async" [routerLink]="['/leagues', league.id]">
            <div class="flex items-center flex-wrap gap-5">
                <div class="w-12 h-12 rounded-full items-center justify-center mr-4 md:flex hidden" >
                     <img src="./assets/icons/ck-league.png" alt="" class="object-cover w-full">  
@@ -62,7 +62,7 @@
            <button class="outline-btn btn-delete flex gap-2 items-center mb-4 ml-auto" (click)="deleteLeague(league, $event)" *ngIf="userId === league.userId || user?.admin">
             <img src="./assets/icons/delete.png" alt="" width="20" width="20">
             </button>
-       </div>
+        </a>
    </div>
 </div>
 
