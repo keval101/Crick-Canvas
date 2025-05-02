@@ -110,6 +110,14 @@ body {
     border-color: var(--border-light)
 }
 
+.hover-text {
+    transition: all 0.1s ease-in;
+    &:hover {
+        color: var(--primary-light) !important;
+        transition: all 0.1s ease-in;
+    }
+}
+
 
 .p-dialog-header {
     background: var(--bg);

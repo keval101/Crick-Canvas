@@ -19,8 +19,8 @@ export class StatsComponent {
   finalTitles: any[] = [];
   runnerUpTitles: any[] = [];
   participatedLeagues: any[] = [];
-  orangecap: any[] = [];
-  purplecap: any[] = [];
+  orangecap: any[] = ['Prime Hunters League S1'];
+  purplecap: any[] = ['Prime Hunters League S1'];
   destroy$ = new Subject();
   constructor(
     private authService: AuthService,
@@ -77,6 +77,7 @@ export class StatsComponent {
     let losses = 0;
     let recentMatches: any[] = [];
     const headToHead: { [opponentId: string]: any } = {};
+    const leaguePerformance: { [leagueName: string]: any } = {};
     const finalMatches = matches.filter(match => match?.id?.includes('final') && match.status === 'completed');
 
     const runnerUpTitles = []
@@ -108,9 +109,37 @@ export class StatsComponent {
       if(match.status != 'completed' || match.team_one.balls === 0 || match.result == 'abandoned') {
         return;
       }
+      
       let isPlayerInMatch = false;
       const playerTeam = match.team_one.id === playerId ? match.team_one : (match.team_two.id === playerId ? match.team_two : null);
       const opponentTeam = match.team_one.id === playerId ? match.team_two : (match.team_two.id === playerId ? match.team_one : null);
+
+      if (playerTeam && match.status === 'completed' && match.league_name) {
+        const league = match.league_name || 'Unknown League';
+      
+        if (!leaguePerformance[league]) {
+          leaguePerformance[league] = {
+            leagueName: league,
+            leagueId: match.league_id,
+            totalMatches: 0,
+            wins: 0,
+            losses: 0,
+            totalRuns: 0,
+            totalWickets: 0
+          };
+        }
+      
+        leaguePerformance[league].totalMatches++;
+      
+        if (playerTeam.runs > opponentTeam.runs) {
+          leaguePerformance[league].wins++;
+        } else if (playerTeam.runs < opponentTeam.runs) {
+          leaguePerformance[league].losses++;
+        }
+      
+        leaguePerformance[league].totalRuns += playerTeam.runs;
+        leaguePerformance[league].totalWickets += opponentTeam.wickets;
+      }
   
       if (playerTeam) {
         isPlayerInMatch = true;
@@ -194,6 +223,10 @@ export class StatsComponent {
 
     headToHeadArray = headToHeadArray.sort((a, b) => (b.totalRuns || 0) - (a.totalRuns || 0));
     recentMatches = this.sortAndLimitMatches(recentMatches)
+    console.log(this.finalTitles)
+
+    const leaguePerformanceArray = Object.values(leaguePerformance);
+
     return {
       matchStats: {
         totalMatches,
@@ -211,7 +244,8 @@ export class StatsComponent {
         bestFigures: `${bestFigures.wickets}/${bestFigures.runs}`
       },
       recentMatches,
-      headToHead: headToHeadArray
+      headToHead: headToHeadArray,
+      leaguePerformance: leaguePerformanceArray
     };
   }
 
@@ -270,5 +304,25 @@ addNumberSuffix(num) {
   }
   return num + "th";
 }
+
+
+  hasOrangeCap(leagueName: string) {
+    return this.orangecap?.map(cap => cap.name).includes(leagueName);
+  }
+
+
+  hasPurpleCap(leagueName: string) {
+    return this.purplecap?.map(cap => cap.name).includes(leagueName);
+  }
+
+  getLeagueRibbonType(leagueName: string): 'winner' | 'runnerup' | 'none' {
+    if (this.finalTitles.includes(leagueName)) {
+      return 'winner';
+    } else if (this.runnerUpTitles.includes(leagueName)) {
+      return 'runnerup';
+    } else {
+      return 'none';
+    }
+  }
   
 }

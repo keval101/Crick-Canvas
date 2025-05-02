@@ -24,7 +24,7 @@
             class="flex whitespace-nowrap items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full pill cursor-pointer"
             (click)="copyToClipBoard()" *ngIf="league?.userId === user?.uid">
             <input type="text" value="{{league?.leagueCode}}" class="mt-1 hidden" id="copylink" style="width: 90%">
-            <span class="text-white">Leguge Code: {{league?.leagueCode}}</span>
+            <span class="text-white">League Code: {{league?.leagueCode}}</span>
             <i class="ri-file-copy-line"></i>
           </div>
 

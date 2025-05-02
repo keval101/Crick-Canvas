@@ -59,6 +59,11 @@ export class RankingsComponent {
     batsmen: [],
     bowlers: [],
   };
+  orangecap: any[] = []
+  purplecap: any[] = []
+  winners: any[] = []
+  runnerUps: any[] = []
+  players: any[] = []
 
   sorting = '-rank';
 
@@ -69,12 +74,148 @@ export class RankingsComponent {
 
   ngOnInit(): void {
     this.title.setTitle('Cricket Rankings | Top Players & Teams')
+    this.dataService.getLeagues().subscribe((leagues) => {
+      console.log(leagues)
+      this.winners = [];
+      this.runnerUps = [];
+      this.orangecap = [];
+      this.purplecap = [];
+      leagues.map(league => {
+        if(league?.winner) {
+          delete league.winner.logo
+          this.winners.push({...league.winner, league: league.name})
+        }
+        // if(league?.runnerUp) {
+        //   delete league.runnerUp.logo
+        //   this.runnerUps.push(league.runnerUp)
+        // }
+
+        if(league?.orangecap) {
+          delete league.orangecap.logo
+          this.orangecap.push({...league.orangecap, league: league.name})
+        }
+
+        if(league?.purplecap) {
+          delete league.purplecap.logo
+          this.purplecap.push({...league.purplecap, league: league.name})
+        }
+      })
+
+      this.winners = this.calculateWins(this.winners, 'wonTitle')
+      this.orangecap = this.calculateWins(this.orangecap, 'orangecap')
+      this.purplecap = this.calculateWins(this.purplecap, 'purplecap')
+      this.players = this.mergeAwards(this.winners, this.orangecap, this.purplecap)
+      // this.winners = this.calculateWins(this.winners)
+
+      console.log(this.winners, this.runnerUps, this.orangecap, this.players)
+    })
     this.dataService.getAllLeagueMatches().subscribe(matches => {
       
       this.updatePlayerRankings(matches);
       this.getTeams();
 
     })
+  }
+
+  getArray(count: number): number[] {
+    if(count > 0) {
+      return Array(count).fill(0);
+    } else {
+      return [];
+    }
+  }
+
+  mergeAwards(wonTitles, orangeCaps, purpleCaps) {
+    const resultMap = new Map();
+  
+    const mergeArray = (arr, key) => {
+      arr.forEach(item => {
+        const { id, name } = item;
+        if (!resultMap.has(id)) {
+          resultMap.set(id, { id, name });
+        }
+  
+        const target = resultMap.get(id);
+        target[key] = item[key];
+  
+        // Handle leagues for each type
+        const league = item.leagues;
+        if (key === 'wonTitle' && league) {
+          if (!Array.isArray(target.leagues)) {
+            target.leagues = [];
+          }
+          target.leagues.push(...(Array.isArray(league) ? league : [league]));
+        }
+  
+        if (key === 'orangecap' && league) {
+          if (!Array.isArray(target.orange_leagues)) {
+            target.orange_leagues = [];
+          }
+          target.orange_leagues.push(...(Array.isArray(league) ? league : [league]));
+        }
+  
+        if (key === 'purplecap' && league) {
+          if (!Array.isArray(target.purple_leagues)) {
+            target.purple_leagues = [];
+          }
+          target.purple_leagues.push(...(Array.isArray(league) ? league : [league]));
+        }
+      });
+    };
+  
+    mergeArray(wonTitles, 'wonTitle');
+    mergeArray(orangeCaps, 'orangecap');
+    mergeArray(purpleCaps, 'purplecap');
+  
+    let array = Array.from(resultMap.values());
+  
+    array = array.sort((a, b) => {
+      return (b.wonTitle || 0) - (a.wonTitle || 0) ||
+             (b.orangecap || 0) - (a.orangecap || 0) ||
+             (b.purplecap || 0) - (a.purplecap || 0);
+    });
+  
+    return array;
+  }
+
+  getName(item: any) {
+    console.log(item)
+    const key = Object.keys(item)[0];
+    return key
+  }
+
+  getLeagueArray(leagues) {
+    return Object.entries(leagues).map(([key, value]) => ({ key, value }));
+  }
+  
+  
+  
+
+  calculateWins(winners, type: string) {
+    const winMap = new Map();
+  
+    winners.forEach(winner => {
+      const { id, name, team, league } = winner;
+      const displayName = name ?? team;
+  
+      if (!winMap.has(id)) {
+        winMap.set(id, {
+          id,
+          name: displayName,
+          [type]: 1,
+          leagues: league ? { [league]: 1 } : {} // Initialize league count
+        });
+      } else {
+        const existing = winMap.get(id);
+        existing[type] += 1;
+  
+        if (league) {
+          existing.leagues[league] = (existing.leagues[league] || 0) + 1;
+        }
+      }
+    });
+  
+    return Array.from(winMap.values());
   }
 
   calculateTeamRankings(matches: any[]): TeamRanking[] {

@@ -212,6 +212,66 @@
         </div>
       </div>
     </div>
+
+    <div class="mb-8">
+      <h2 class="text-xl font-bold theme-text mb-6">
+        League Performance
+      </h2>
+
+      <div class="shadow-sm mb-8 grid sm:grid-cols-3 grid-cols-1 gap-6">
+        <div class="stat-card p-6 rounded-lg relative" *ngFor="let league of stats?.leaguePerformance">
+
+          <div [ngSwitch]="getLeagueRibbonType(league?.leagueName)">
+            <div *ngSwitchCase="'winner'" class="ribbon winner">
+              Winner
+            </div>
+            <div *ngSwitchCase="'runnerup'" class="ribbon runnerup">
+              Runner Up
+            </div>
+            <ng-container *ngSwitchCase="'none'">
+              <div class="ribbon orange" *ngIf="hasOrangeCap(league?.leagueName) && !hasPurpleCap(league?.leagueName)">
+                Orange Cap
+              </div>
+              <div class="ribbon purple" *ngIf="hasPurpleCap(league?.leagueName) && !hasOrangeCap(league?.leagueName)">
+                Purple Cap
+              </div>
+              <div class="ribbon bothcaps" *ngIf="hasPurpleCap(league?.leagueName) && hasOrangeCap(league?.leagueName)">
+                Both Caps
+              </div>
+            </ng-container>
+          </div>
+
+          <a class="font-bold mb-4 inline-block hover-text theme-text" pTooltip="{{league?.leagueName}}" tooltipPosition="top" [routerLink]="['/leagues', league?.leagueId]">{{league?.leagueName}}</a>
+          <div class="flex gap-3 justify-between items-center">
+            <div class="text-right">
+              <div class="text-2xl font-bold theme-text">{{league?.totalMatches}}</div>
+              <div class="text-sm theme-text-light">Matches</div>
+            </div>
+
+            <div class="text-right">
+              <div class="text-2xl font-bold theme-text">{{league?.wins}}</div>
+              <div class="text-sm theme-text-light">Won</div>
+            </div>
+
+            <div class="text-right">
+              <div class="text-2xl font-bold theme-text">{{league?.losses}}</div>
+              <div class="text-sm theme-text-light">losses</div>
+            </div>
+
+            <div class="text-right">
+                <div class="text-2xl font-bold theme-text">{{league?.totalRuns}}</div>
+                <div class="text-sm theme-text-light">Runs</div>
+            </div>
+
+            <div class="text-right">
+                <div class="text-2xl font-bold theme-text">{{league?.totalWickets}}</div>
+                <div class="text-sm theme-text-light">Wickets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <h2 class="text-xl font-bold theme-text mb-6">
         Head to Head Analysis
     </h2>
