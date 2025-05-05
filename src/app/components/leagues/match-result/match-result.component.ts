@@ -84,11 +84,11 @@ export class MatchResultComponent {
       win: (this.team_one_performance?.win ?? 0) + (teamOneWinner === 'W' ? 1 : 0),
       loss: (this.team_one_performance?.loss ?? 0) + (teamOneWinner === 'L' ? 1 : 0),
       draw: (this.team_one_performance?.draw ?? 0) + (teamOneWinner === 'D' ? 1 : 0),
-      runsFor: (this.team_one_performance?.draw ?? 0) + (teamOne?.runs ?? 0),
+      runsFor: (this.team_one_performance?.runsFor ?? 0) + (teamOne?.runs ?? 0),
       wicketsTaken: (this.team_one_performance?.wicketsTaken ?? 0) + (teamTwo?.wickets ?? 0),
       wicketsFallen: (this.team_one_performance?.wicketsFallen ?? 0) + (teamOne?.wickets ?? 0),
       oversFaced: (Number(this.team_one_performance.oversBowled ?? 0)) + (+this.ballsToOvers(teamOne.balls)),  
-      runsAgainst: (this.team_one_performance?.draw ?? 0) + (teamTwo?.runs ?? 0),
+      runsAgainst: (this.team_one_performance?.runsAgainst ?? 0) + (teamTwo?.runs ?? 0),
       oversBowled: (Number(this.team_one_performance.oversBowled ?? 0)) + (+this.ballsToOvers(teamTwo.balls)),  
     }
 
@@ -99,11 +99,11 @@ export class MatchResultComponent {
       win: (this.team_two_performance?.win ?? 0) + (teamTwoWinner === 'W' ? 1 : 0),
       loss: (this.team_two_performance?.loss ?? 0) + (teamTwoWinner === 'L' ? 1 : 0),
       draw: (this.team_two_performance?.draw ?? 0) + (teamTwoWinner === 'D' ? 1 : 0),
-      runsFor: (this.team_two_performance?.draw ?? 0) + (teamTwo?.runs ?? 0),
+      runsFor: (this.team_two_performance?.runsFor ?? 0) + (teamTwo?.runs ?? 0),
       wicketsTaken: (this.team_two_performance?.wicketsTaken ?? 0) + (teamOne?.wickets ?? 0),
       wicketsFallen: (this.team_two_performance?.wicketsFallen ?? 0) + (teamTwo?.wickets ?? 0),
       oversFaced: (Number(this.team_two_performance.oversBowled ?? 0)) + (+this.ballsToOvers(teamTwo.balls)),  
-      runsAgainst: (this.team_two_performance?.draw ?? 0) + (teamOne?.runs ?? 0),
+      runsAgainst: (this.team_two_performance?.runsAgainst ?? 0) + (teamOne?.runs ?? 0),
       oversBowled: (Number(this.team_two_performance.oversBowled ?? 0)) + (+this.ballsToOvers(teamOne.balls)),  
     }
 
