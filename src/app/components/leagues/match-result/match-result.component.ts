@@ -112,6 +112,8 @@ export class MatchResultComponent {
     if(this.isH2H) {
       await this.dataService.updateH2HResult(payload, this.match.id)
     } else {
+      await this.dataService.updatePlayerPerformance(this.match.league_id, this.team_one_performance.id, team_one_performance)
+      await this.dataService.updatePlayerPerformance(this.match.league_id, this.team_two_performance.id, team_two_performance)
       await this.dataService.updateMatchResult(payload, this.match.id)
     }
     this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Match Result Updated!' });
