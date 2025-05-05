@@ -303,8 +303,9 @@ export class DataService {
     return this.firestore.collection('users').doc(userId).set(payload, {merge: true});
   }
 
-  joinLeague(payload: any, leagueId: string) {
-    return this.firestore.collection('leagues').doc(leagueId).set(payload, {merge: true});
+  async joinLeague(payload: any, leagueId: string) {
+    await this.firestore.collection('leagues').doc(leagueId).set(payload, {merge: true});
+    return this.firestore.collection('leagues').doc(leagueId).collection('performance').doc(payload.uid).set({})
   }
 
   saveMatches(matches: any[]): Promise<void> {
@@ -450,4 +451,61 @@ export class DataService {
       );
   }
 
+  async storePlayerPerformance(leagueId: string, teamId: string, performance: any) {
+    try {
+      console.log(`📤 Writing to Firestore: leagues/${leagueId}/performance/${teamId}`);
+      await this.firestore
+        .collection('leagues')
+        .doc(leagueId)
+        .collection('performance')
+        .doc(teamId)
+        .set(performance);
+  
+      return { success: true };
+    } catch (error) {
+      console.error(`❌ Firestore write failed for team ${teamId}:`, error);
+      throw error; // rethrow so the caller can catch
+    }
+  }
+
+  async getPlayerPerformance(leagueId: string, teamId: string) {
+    try {
+      const docRef = this.firestore
+        .collection('leagues')
+        .doc(leagueId)
+        .collection('performance')
+        .doc(teamId);
+  
+      const docSnapshot = await firstValueFrom(docRef.get());
+  
+      if (docSnapshot.exists) {
+        const data = docSnapshot.data();
+        const id = docSnapshot.id;
+        return { ...data, id };
+      } else {
+        throw new Error('Performance data not found');
+      }
+    } catch (error) {
+      console.error('Error fetching performance data:', error);
+      throw error; // Handle the error accordingly
+    }
+  }
+
+  async updatePlayerPerformance(leagueId: string, teamId: string, performance: any) {
+    try {
+      console.log(`📤 Writing to Firestore: leagues/${leagueId}/performance/${teamId}`);
+      await this.firestore
+        .collection('leagues')
+        .doc(leagueId)
+        .collection('performance')
+        .doc(teamId)
+        .set(performance);
+  
+      return { success: true };
+    } catch (error) {
+      console.error(`❌ Firestore write failed for team ${teamId}:`, error);
+      throw error; // rethrow so the caller can catch
+    }
+  }
+  
 }

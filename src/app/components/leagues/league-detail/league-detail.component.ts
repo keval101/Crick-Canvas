@@ -177,6 +177,8 @@ export class LeagueDetailComponent {
   getLeagueMatches() {
     this.dataService.getLeagueMatches(this.leagueId).pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe((matches) => {
       this.fixtures = matches.filter(match => match?.type != 'playoff');
+      // this.fixtures = matches.filter(match => match?.status === 'completed');
+      // this.fixtures = matches;
       this.fixtures = this.fixtures.sort((a, b) => a.match_number - b.match_number);
       this.playOffs = matches.filter(match => match?.type === 'playoff');
       this.playOffs = this.playOffs.length ? this.playOffs.sort((a, b) => a.rank - b.rank) : [];
@@ -443,6 +445,47 @@ async generatePointsTable() {
   })
   
   this.pointTable = await this.sortPointsTable(pointTable);
+  const pointsTable = _.cloneDeep(this.pointTable);
+  // await Promise.all(
+  //   pointsTable.map(async (team) => {
+  //     delete team.team_logo;
+  //     delete team.nrr;
+  //     delete team.pts;
+  //     delete team.winPercentage;
+  //     // delete team.matches;
+  
+  //     team.matches = team.matches.sort((a, b) => b.date - a.date);
+  //     team.matches.length = team.matches.length > 5 ? 5 : team.matches.length;
+  //     team.matches = team.matches.map((match) => {
+    
+  //       // find win, lost or draw
+  //       if(match.team_one.id === team.id) {
+  //         if(match.team_one.runs > match.team_two.runs) {
+  //           return 'W'
+  //         } else if(match.team_one.runs < match.team_two.runs) {
+  //           return 'L'
+  //         } else {
+  //           return 'D'
+  //         }
+  //       } else {
+  //         if(match.team_two.runs > match.team_one.runs) {
+  //           return 'W'
+  //         } else if(match.team_two.runs < match.team_one.runs) {
+  //           return 'L'
+  //         } else {
+  //           return 'D'
+  //         }
+  //       }
+  //     })
+  //     delete team.team_logo;
+  //     delete team.nrr;
+  //     delete team.pts;
+  //     delete team.winPercentage;
+    
+  //     await this.dataService.storePlayerPerformance(this.league.id, team.id, team);
+  //     console.log('team', team)
+  //   })
+  // );
 
   if(this.totalMatches === this.completedMatches) {
     this.league['orangecap'] = this.orangecap
