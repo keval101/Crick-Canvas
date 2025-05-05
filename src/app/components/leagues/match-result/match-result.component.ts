@@ -109,16 +109,16 @@ export class MatchResultComponent {
 
     console.log(team_one_performance, team_two_performance)
 
-    // if(this.isH2H) {
-    //   await this.dataService.updateH2HResult(payload, this.match.id)
-    // } else {
-    //   await this.dataService.updateMatchResult(payload, this.match.id)
-    // }
-    // this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Match Result Updated!' });
-    // this.isLoading = false;
-    // this.team_one.reset();
-    // this.team_two.reset();
-    // this.closeMatchResultModal.emit(this.match); 
+    if(this.isH2H) {
+      await this.dataService.updateH2HResult(payload, this.match.id)
+    } else {
+      await this.dataService.updateMatchResult(payload, this.match.id)
+    }
+    this.messageService.add({ severity: 'success', summary: 'Match', detail: 'Match Result Updated!' });
+    this.isLoading = false;
+    this.team_one.reset();
+    this.team_two.reset();
+    this.closeMatchResultModal.emit(this.match); 
   }
 
   async matchAbandon() {
