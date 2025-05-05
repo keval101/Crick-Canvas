@@ -103,14 +103,14 @@
           </td>
           <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
           <td class="px-4 theme-text py-4 text-center">{{team?.points}}</td>
-          <td class="px-4 theme-text py-4 text-center">{{team?.matches}}</td>
-          <td class="px-4 py-4 text-center text-green-600 font-medium">{{team?.wins}}</td>
-          <td class="px-4 py-4 text-center text-yellow-600 font-medium">{{team?.draws}}</td> 
-          <td class="px-4 py-4 text-center text-red-600 font-medium">{{team?.losses}}</td>
-          <td class="px-4 theme-text py-4 text-center">{{((team?.wins / team?.matches) * 100).toFixed(0)}}%</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.played}}</td>
+          <td class="px-4 py-4 text-center text-green-600 font-medium">{{team?.win}}</td>
+          <td class="px-4 py-4 text-center text-yellow-600 font-medium">{{team?.draw}}</td> 
+          <td class="px-4 py-4 text-center text-red-600 font-medium">{{team?.loss}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{((team?.win / team?.played) * 100).toFixed(0)}}%</td>
           <td class="px-4 py-4 text-center">
             <div class="flex">
-              <p class="mb-0" *ngFor="let form of team?.recentForm" [class.lost]="form === 0"  [class.draw]="form === -1" [class.win]="form === 1">{{form === -1 ? 'D' : form === 1 ? 'W' : 'L'}}</p>
+              <p class="mb-0" *ngFor="let form of team?.matches" [class.lost]="form === 'L'"  [class.draw]="form === 'D'" [class.win]="form === 'W'">{{form}}</p>
             </div>
           </td>
         </tr>

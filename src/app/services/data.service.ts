@@ -239,6 +239,10 @@ export class DataService {
       );
   }
 
+  getAllPerformances() {
+    return this.firestore.collectionGroup('performance').valueChanges();
+  }
+
   // Method to get details of a single league by its ID
   async getLeagueDetails(leagueId: string) {
     try {

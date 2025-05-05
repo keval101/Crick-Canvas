@@ -74,8 +74,17 @@ export class RankingsComponent {
 
   ngOnInit(): void {
     this.title.setTitle('Cricket Rankings | Top Players & Teams')
+    this.getTeams();
+
+
+    this.dataService.getAllPerformances().pipe(
+      debounceTime(1000)).subscribe((data) => {
+        console.log('data:', data)
+        this.mergePerformanceData(data)
+      })
     this.dataService.getLeagues().subscribe((leagues) => {
-      console.log(leagues)
+      // console.log(leagues)
+      this.isLoading = false;
       this.winners = [];
       this.runnerUps = [];
       this.orangecap = [];
@@ -105,16 +114,13 @@ export class RankingsComponent {
       this.orangecap = this.calculateWins(this.orangecap, 'orangecap')
       this.purplecap = this.calculateWins(this.purplecap, 'purplecap')
       this.players = this.mergeAwards(this.winners, this.orangecap, this.purplecap)
-      // this.winners = this.calculateWins(this.winners)
-
-      console.log(this.winners, this.runnerUps, this.orangecap, this.players)
     })
-    this.dataService.getAllLeagueMatches().subscribe(matches => {
+    // this.dataService.getAllLeagueMatches().subscribe(matches => {
       
-      this.updatePlayerRankings(matches);
-      this.getTeams();
+    //   this.updatePlayerRankings(matches);
+    //   this.getTeams();
 
-    })
+    // })
   }
 
   getArray(count: number): number[] {
@@ -125,6 +131,46 @@ export class RankingsComponent {
     }
   }
 
+  mergePerformanceData(data: any[]) {
+    const mergedMap = new Map();
+  
+    data.forEach(item => {
+      const key = item.id; // or use item.team if you want to group by team name
+  
+      if (!mergedMap.has(key)) {
+        // Clone the object to avoid mutation
+        mergedMap.set(key, { ...item, matches: Array.isArray(item.matches) ? [...item.matches] : [] });
+      } else {
+        const existing = mergedMap.get(key);
+  
+        // Merge logic
+        existing.played += item.played;
+        existing.wicketsFallen += item.wicketsFallen;
+        existing.wicketsTaken += item.wicketsTaken;
+        existing.win += item.win;
+        existing.loss += item.loss;
+        existing.draw += item.draw;
+        existing.runsFor += item.runsFor;
+        existing.runsAgainst += item.runsAgainst;
+  
+        // Merge matches
+        existing.matches = [
+          ...existing.matches, 
+          ...(Array.isArray(item.matches) ? item.matches : [])
+        ];
+  
+        // Add overs (custom handling below)
+        existing.oversBowled = +existing.oversBowled + +item.oversBowled;
+        existing.oversFaced = +existing.oversFaced + +item.oversFaced;
+      }
+    });
+  
+    const mergedRecords = Array.from(mergedMap.values());
+    this.mockData.teams = this.calculateTeamRankingsV2(mergedRecords)
+    console.log('mergedRecords:', mergedRecords, this.mockData.teams)
+    return mergedRecords;
+  }
+  
   mergeAwards(wonTitles, orangeCaps, purpleCaps) {
     const resultMap = new Map();
   
@@ -216,6 +262,23 @@ export class RankingsComponent {
     });
   
     return Array.from(winMap.values());
+  }
+  
+  calculateTeamRankingsV2(matches: any[]) {
+    const teamRankings = matches.sort((a, b) => {
+      a['points'] = a.win * 2 + a.draw - a.loss;
+      b['points'] = b.win * 2 + b.draw - b.loss;
+      a.matches.length = a.matches.length > 5 ? 5 : a.matches.length;
+      b.matches.length = b.matches.length > 5 ? 5 : b.matches.length;
+
+      return b.points - a.points;
+    })
+
+    teamRankings.map((x, i) => {
+      x['rank'] = i + 1;
+    })
+
+    return teamRankings;
   }
 
   calculateTeamRankings(matches: any[]): TeamRanking[] {
@@ -607,6 +670,7 @@ export class RankingsComponent {
 
   getTeamDetails(team: any) {
     const teamData = this.teams.find((x) => x.uid === (team?.id ?? team));
+    console.log('team:', teamData)
     return teamData;
   }
 
