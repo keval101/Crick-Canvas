@@ -74,17 +74,13 @@ export class RankingsComponent {
 
   ngOnInit(): void {
     this.title.setTitle('Cricket Rankings | Top Players & Teams')
-    this.getTeams();
 
 
     this.dataService.getAllPerformances().pipe(
       debounceTime(1000)).subscribe((data) => {
-        console.log('data:', data)
         this.mergePerformanceData(data)
       })
     this.dataService.getLeagues().subscribe((leagues) => {
-      // console.log(leagues)
-      this.isLoading = false;
       this.winners = [];
       this.runnerUps = [];
       this.orangecap = [];
@@ -159,10 +155,12 @@ export class RankingsComponent {
           ...(Array.isArray(item.matches) ? item.matches : [])
         ];
 
-        // existing.runs = [
-        //   ...existing.runs,
-        //   ...(Array.isArray(item.runs) ? item.runs : [])
-        // ]
+        if(existing.scores && item.scores) {
+          // Merge scores
+          existing.scores.unshift(item.scores);
+        } else if(!existing.scores && item.scores) {
+          existing.scores = [item.scores];
+        }
   
         // Add overs (custom handling below)
         existing.oversBowled = this.addOvers(existing.oversBowled, item.oversBowled); 
@@ -173,7 +171,8 @@ export class RankingsComponent {
     const mergedRecords = Array.from(mergedMap.values());
     this.mockData.teams = this.calculateTeamRankingsV2(mergedRecords)
     this.mockData.batsmen = this.calculateBatsmanRankings(mergedRecords)
-    console.log('mergedRecords:', mergedRecords, this.mockData.batsmen)
+    this.mockData.bowlers = this.calculateBowlerRankings(mergedRecords)
+    this.getTeams();
     return mergedRecords;
   }
   
@@ -231,7 +230,6 @@ export class RankingsComponent {
   }
 
   getName(item: any) {
-    console.log(item)
     const key = Object.keys(item)[0];
     return key
   }
@@ -270,10 +268,14 @@ export class RankingsComponent {
     return Array.from(winMap.values());
   }
   
-  calculateTeamRankingsV2(matches: any[]) {
-    const teamRankings = matches.sort((a, b) => {
+  calculateTeamRankingsV2(teams: any[]) {
+    teams = teams.filter(x => x?.scores?.length);
+
+    const teamRankings = teams.sort((a, b) => {
       a['points'] = a.win * 2 + a.draw - a.loss;
       b['points'] = b.win * 2 + b.draw - b.loss;
+      a['recentForm'] = a.scores[0].map(x => x.result)
+      b['recentForm'] = b.scores[0].map(x => x.result)
       a.matches.length = a.matches.length > 5 ? 5 : a.matches.length;
       b.matches.length = b.matches.length > 5 ? 5 : b.matches.length;
 
@@ -309,8 +311,8 @@ export class RankingsComponent {
   }
 
   getStrikeRate(teamData: any): number {
-    const runs = teamData.runsFor;
-    const oversFaced = teamData.oversFaced;
+    const runs = teamData.scores[0].reduce((a, b) => a + b.runs, 0);
+    const oversFaced = teamData.scores[0].reduce((a, b) => a + b.ballsFaced, 0);
   
     // Convert overs (like 250.1) to balls
     const fullOvers = Math.floor(oversFaced); // 250
@@ -323,7 +325,6 @@ export class RankingsComponent {
   }
 
   formatOvers(overs: any): string {
-    console.log('overs:', overs, isNaN(overs));
 
     if (typeof overs === 'number' && !isNaN(overs)) {
       return overs.toFixed(2);
@@ -342,22 +343,26 @@ export class RankingsComponent {
   }
 
   calculateBatsmanRankings(teams: any[]) {
+    teams = teams.filter(x => x?.scores?.length);
     let batsmanRanking = teams.map((x, i) => {
-      x['strikeRate'] = this.getStrikeRate(x);
-      x['oversFaced'] = this.formatOvers(x.oversFaced);
-      x['matches'] = x.matches.length > 5 ? x.matches.reverse().slice(0, 5) : x.matches;
-      const ballsFaced = this.convertOversToBalls(x.oversFaced);
-      x['battingAverage'] = x.runsFor / (ballsFaced / 6);
-      console.log(ballsFaced);
+      if(x.scores?.length) {
+        const totalBallsFaced = x.scores[0].reduce((a, b) => a + b.ballsFaced, 0);
+        const totalRuns = x.scores[0].reduce((a, b) => a + b.runs, 0);
+        x['strikeRate'] = this.getStrikeRate(x);
+        x['oversFaced'] = this.formatOvers(x.oversFaced);
+        x['matches'] = x.matches.length > 5 ? x.matches.reverse().slice(0, 5) : x.matches;
+        x['recentForm'] = x.scores[0].map(y => y.result)
+        x['battingAverage'] = totalRuns / (totalBallsFaced / 6);
+  
+        const average = totalBallsFaced > 0 ? totalRuns / (totalBallsFaced / 6) : 0;
+        const strikeRate = totalBallsFaced > 0 ? (totalRuns / totalBallsFaced) * 100 : 0;
+        const winning = x.scores[0].map(x => x.result == 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
+  
+        x['battingPoints'] = (average * 0.30) + (strikeRate * 0.30) + (totalRuns * 0.20) - (x.wicketsFallen * 0.20) + winning; 
 
-      const average = ballsFaced > 0 ? x.runsFor / (ballsFaced / 6) : 0;
-      const strikeRate = ballsFaced > 0 ? (x.runsFor / ballsFaced) * 100 : 0;
-      const winning = x.matches.map(x => x == 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
-      console.log({average, strikeRate, winning, runs: x.runsFor, wickets: x.wicketsFallen})
+        return x;
+      } 
 
-      x['battingPoints'] = (average * 0.30) + (strikeRate * 0.30) + (x.runsFor * 0.20) - (x.wicketsFallen * 0.20) + winning; 
-
-      return x;
     })
 
     batsmanRanking = batsmanRanking.sort((a, b) => b.battingPoints - a.battingPoints);
@@ -370,31 +375,33 @@ export class RankingsComponent {
   }
 
   calculateBowlerRankings(teams: any[]) {
-    let bowlerRanking = teams.map((x, i) => {
-      x['strikeRate'] = this.getStrikeRate(x);
-      x['oversFaced'] = this.formatOvers(x.oversFaced);
-      x['matches'] = x.matches.length > 5 ? x.matches.reverse().slice(0, 5) : x.matches;
-      const ballsFaced = this.convertOversToBalls(x.oversFaced);
-      x['battingAverage'] = x.runsFor / (ballsFaced / 6);
-      console.log(ballsFaced);
+    teams = teams.filter(x => x?.scores?.length);
+    let bowlersRanking = teams.map((x, i) => {
+      if(x.scores?.length) {
+        const totalBallsBowled = x.scores[0].reduce((a, b) => a + b.ballsBowled, 0);
+        const totalWickets = x.scores[0].reduce((a, b) => a + b.wicketsTaken, 0);
+        const totalRunsConceded = x.scores[0].reduce((a, b) => a + b.runsConceded, 0);
+        const balls = this.convertOversToBalls(x.oversBowled);
 
-      const average = ballsFaced > 0 ? x.runsFor / (ballsFaced / 6) : 0;
-      const strikeRate = ballsFaced > 0 ? (x.runsFor / ballsFaced) * 100 : 0;
-      const winning = x.matches.map(x => x == 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
-      console.log({average, strikeRate, winning, runs: x.runsFor, wickets: x.wicketsFallen})
+        const average = totalBallsBowled > 0 ? totalWickets / (totalBallsBowled / 6) : 0;
+        const strikeRate = totalBallsBowled > 0 ? (totalWickets / totalBallsBowled) * 100 : 0;
+        x['economy'] = this.calculateEconomy(x.runsAgainst, balls);
+        const winning = x.scores[0].map(x => x.result == 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
 
-      x['battingPoints'] = (average * 0.30) + (strikeRate * 0.30) + (x.runsFor * 0.20) - (x.wicketsFallen * 0.20) + winning; 
+        x['bowlingPoints'] = (average * 0.40) + (strikeRate * 0.40) + (totalWickets * 0.20) + winning; 
 
-      return x;
+        return x;
+      } 
+
     })
 
-    bowlerRanking = bowlerRanking.sort((a, b) => b.battingPoints - a.battingPoints);
+    bowlersRanking = bowlersRanking.sort((a, b) => b.bowlingPoints - a.bowlingPoints);
 
-    bowlerRanking.map((x, i) => {
+    bowlersRanking.map((x, i) => {
       x['rank'] = i + 1;
     })
 
-    return bowlerRanking;
+    return bowlersRanking;
   }
 
   calculateTeamRankings(matches: any[]): TeamRanking[] {
@@ -490,197 +497,6 @@ export class RankingsComponent {
     return data.map((x, i) => ({ ...x, rank: i + 1 }));
   }
 
-  // New method to update player rankings (placeholder for individual player data)
-  updatePlayerRankings(matches: any[]): void {
-    const batsmen: Record<string, BatsmanRanking> = {};
-    const bowlers: Record<string, BowlerRanking> = {};
-
-    matches.forEach(match => {
-      const { team_one, team_two } = match;
-
-      if (team_one?.id === '' || team_two?.id === '' || match.status != 'completed' || team_one.balls === 0) {
-        return;
-      }
-
-      const teamOneBatsmanName = `${team_one.name}`;
-      const teamTwoBatsmanName = `${team_two.name}`;
-      const teamOneBowlerName = `${team_one.name}`;
-      const teamTwoBowlerName = `${team_two.name}`;
-      const teamOneBatsmanId = `${team_one.id}`;
-      const teamTwoBatsmanId = `${team_two.id}`;
-      const teamOneBowlerId = `${team_one.id}`;
-      const teamTwoBowlerId = `${team_two.id}`;
-
-      if (!batsmen[teamOneBatsmanId]) {
-        batsmen[teamOneBatsmanId] = { name: teamOneBatsmanName, teamId: team_one.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
-      }
-      if (!batsmen[teamTwoBatsmanId]) {
-        batsmen[teamTwoBatsmanId] = { name: teamTwoBatsmanName, teamId: team_two.id, runs: 0, ballsFaced: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
-      }
-      if (!bowlers[teamOneBowlerId]) {
-        bowlers[teamOneBowlerId] = { name: teamOneBowlerName, teamId: team_one.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
-      }
-      if (!bowlers[teamTwoBowlerId]) {
-        bowlers[teamTwoBowlerId] = { name: teamTwoBowlerName, teamId: team_two.id, wickets: 0, ballsBowled: 0, runsConceded: 0, matches: 0, recentMatches: [], curr_rank: 0, prev_rank: 0 };
-      }
-
-      batsmen[teamOneBatsmanId].runs += team_one.runs;
-      batsmen[teamOneBatsmanId].ballsFaced += team_one.balls;
-      batsmen[teamTwoBatsmanId].runs += team_two.runs;
-      batsmen[teamTwoBatsmanId].ballsFaced += team_two.balls;
-
-      batsmen[teamOneBatsmanId].recentMatches.push(match)
-      batsmen[teamTwoBatsmanId].recentMatches.push(match)
-
-      batsmen[teamOneBatsmanId].matches++;
-      batsmen[teamTwoBatsmanId].matches++;
-
-      bowlers[teamOneBowlerId].matches++;
-      bowlers[teamTwoBowlerId].matches++;
-
-      bowlers[teamOneBowlerId].recentMatches.push(match)
-      bowlers[teamTwoBowlerId].recentMatches.push(match)
-
-      bowlers[teamOneBowlerId].wickets += team_two.wickets;
-      bowlers[teamOneBowlerId].ballsBowled += team_two.balls;
-      bowlers[teamOneBowlerId].runsConceded += team_two.runs;
-
-      bowlers[teamTwoBowlerId].wickets += team_one.wickets;
-      bowlers[teamTwoBowlerId].ballsBowled += team_one.balls;
-      bowlers[teamTwoBowlerId].runsConceded += team_one.runs;
-    });
-
-    // this.mockData.batsmen = this.sortAndLimitMatches(this.mockData.batsmen)
-    // this.mockData.bowlers = this.sortAndLimitMatches(this.mockData.bowlers)
-
-    // Calculate averages and strike rates/economy
-    this.mockData.batsmen = Object.values(batsmen).map((b, i) => {
-      b.recentMatches = this.sortAndLimitMatches(b.recentMatches)
-      const runs = b.recentMatches.map(match => {
-        if(match.team_one.id === b.teamId) {
-          return match.team_one.runs
-        } else {
-          return match.team_two.runs
-        }
-      }).reduce((a, b) => a + b, 0);
-      
-      const recentForm = b.recentMatches.map(match => {
-        if(match.team_one.id === b.teamId) {
-          return match.team_one.runs > match.team_two.runs ? 1 : 0
-        } else {
-          return match.team_two.runs > match.team_one.runs ? 1 : 0
-        }
-      })
-
-
-      const ballsFaced = b.recentMatches.map(match => {
-        if(match.team_one.id === b.teamId) {
-          return match.team_one.balls
-        } else {
-          return match.team_two.balls
-        }
-      }).reduce((a, b) => a + b, 0);
-
-      const wickets = b.recentMatches.map(match => {
-        if(match.team_one.id === b.teamId) {
-          return match.team_one.wickets
-        } else {
-          return match.team_two.wickets
-        }
-      }).reduce((a, b) => a + b, 0);
-
-      const average = ballsFaced > 0 ? runs / (ballsFaced / 6) : 0;
-      const strikeRate = ballsFaced > 0 ? (runs / ballsFaced) * 100 : 0;
-      const winning = recentForm.map(x => x == 1 ? 1 : -2).reduce((a, b) => a + b, 0);
-
-      const points = (average * 0.30) + (strikeRate * 0.30) + (runs * 0.20) - (wickets * 0.20) + winning;  
-
-      return {
-        ...b,
-        recentForm,
-        average: b.ballsFaced > 0 ? b.runs / (b.ballsFaced / 6) : 0, // Simplified average
-        strikeRate: b.ballsFaced > 0 ? (b.runs / b.ballsFaced) * 100 : 0,
-        points: Math.round(points)
-      }
-    }).sort((a, b) => {
-      if(a.points === b.points) {
-        return b.runs - a.runs
-      } else {
-        return b.points - a.points
-      }
-    });
-
-    this.mockData.bowlers = Object.values(bowlers).map((b, i) => {
-      b.recentMatches = this.sortAndLimitMatches(b.recentMatches)
-
-      const wickets = b.recentMatches.map(match => {
-        if(match.team_one.id != b.teamId) {
-          return match.team_one.wickets
-        } else {
-          return match.team_two.wickets
-        }
-      }).reduce((a, b) => a + b, 0);
-
-      const ballsBowled = b.recentMatches.map(match => {
-        if(match.team_one.id != b.teamId) {
-          return match.team_one.balls
-        } else {
-          return match.team_two.balls
-        }
-      }).reduce((a, b) => a + b, 0);
-
-      const runsConceded = b.recentMatches.map(match => {
-        if(match.team_one.id != b.teamId) {
-          return match.team_one.runs
-        } else {
-          return match.team_two.runs
-        }
-      }).reduce((a, b) => a + b, 0);
-
-      const recentForm = b.recentMatches.map(match => {
-        if(match.team_one.id === b.teamId) {
-          return match.team_one.runs > match.team_two.runs ? 1 : 0
-        } else {
-          return match.team_two.runs > match.team_one.runs ? 1 : 0
-        }
-      })
-
-      const average = ballsBowled > 0 ? wickets / (ballsBowled / 6) : 0;
-      const strikeRate = ballsBowled > 0 ? (wickets / ballsBowled) * 100 : 0;
-      const economy = this.calculateEconomy(runsConceded, ballsBowled);
-      const winning = recentForm.map(x => x == 1 ? 1 : -2).reduce((a, b) => a + b, 0);
-      
-      
-      // const points = (average * 0.10) + (strikeRate * 0.35) + (wickets * 0.45) - ((runsConceded / 50) * 0.05);
-      const points = (average * 0.40) + (strikeRate * 0.40) + (wickets * 0.20) + winning; 
-
-      return {
-        ...b,
-        recentForm,
-        // economy: b.ballsBowled > 0 ? (b.wickets * 6 / b.ballsBowled) : 0, // Simplified economy
-        economy: this.calculateEconomy(b.runsConceded, b.ballsBowled),
-        points: Math.round(points)
-      }
-    }).sort((a, b) => {
-      if(a.points === b.points) {
-        return b.wickets - a.wickets
-      } else {
-        return b.points - a.points
-      }
-    });
-
-    this.mockData.batsmen.map((x, i) => {
-      x['rank'] = i + 1;
-    })
-
-    this.mockData.bowlers.map((x, i) => {
-      x['rank'] = i + 1;
-    })
-
-    const teamRankings = this.calculateTeamRankings(matches);
-    this.mockData.teams = teamRankings;
-  }
-
   calculateEconomy(runsConceded: number, ballsBowled: number): number {
     if (ballsBowled === 0) {
       return 0; // Avoid division by zero
@@ -692,6 +508,7 @@ export class RankingsComponent {
   async getTeams() {
     this.dataService.getAllUsers().then((teams) => {
       this.teams = teams;
+      this.isLoading = false;
 
       if(this.mockData.batsmen.length) {
         this.mockData.batsmen.map(async (x, i) => {
@@ -774,9 +591,6 @@ export class RankingsComponent {
           }
         })
       }
-
-      this.isLoading = false;
-
     });
   }
 
