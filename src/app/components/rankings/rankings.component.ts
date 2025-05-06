@@ -158,16 +158,22 @@ export class RankingsComponent {
           ...existing.matches, 
           ...(Array.isArray(item.matches) ? item.matches : [])
         ];
+
+        // existing.runs = [
+        //   ...existing.runs,
+        //   ...(Array.isArray(item.runs) ? item.runs : [])
+        // ]
   
         // Add overs (custom handling below)
-        existing.oversBowled = +existing.oversBowled + +item.oversBowled;
-        existing.oversFaced = +existing.oversFaced + +item.oversFaced;
+        existing.oversBowled = this.addOvers(existing.oversBowled, item.oversBowled); 
+        existing.oversFaced = this.addOvers(existing.oversFaced, item.oversFaced);
       }
     });
   
     const mergedRecords = Array.from(mergedMap.values());
     this.mockData.teams = this.calculateTeamRankingsV2(mergedRecords)
-    console.log('mergedRecords:', mergedRecords, this.mockData.teams)
+    this.mockData.batsmen = this.calculateBatsmanRankings(mergedRecords)
+    console.log('mergedRecords:', mergedRecords, this.mockData.batsmen)
     return mergedRecords;
   }
   
@@ -279,6 +285,116 @@ export class RankingsComponent {
     })
 
     return teamRankings;
+  }
+
+  addOvers(previousOvers: number, currentOvers: number): string {
+    // Helper: convert overs (e.g., 248.1) to total balls
+    const oversToBalls = (overs: number): number => {
+      const fullOvers = Math.floor(overs);
+      const balls = Math.round((overs - fullOvers) * 10); // e.g. 0.4 => 4 balls
+      return (fullOvers * 6) + balls;
+    };
+  
+    // Helper: convert total balls back to overs format (e.g., 250.4)
+    const ballsToOvers = (balls: number): string => {
+      const fullOvers = Math.floor(balls / 6);
+      const remainingBalls = balls % 6;
+      return `${fullOvers}.${remainingBalls}`;
+    };
+  
+    const totalBalls =
+      oversToBalls(previousOvers) + oversToBalls(currentOvers);
+  
+    return ballsToOvers(totalBalls);
+  }
+
+  getStrikeRate(teamData: any): number {
+    const runs = teamData.runsFor;
+    const oversFaced = teamData.oversFaced;
+  
+    // Convert overs (like 250.1) to balls
+    const fullOvers = Math.floor(oversFaced); // 250
+    const partialBalls = Math.round((oversFaced - fullOvers) * 10); // 1
+    const ballsFaced = (fullOvers * 6) + partialBalls; // 1501
+  
+    const strikeRate = ballsFaced > 0 ? (runs / ballsFaced) * 100 : 0;
+  
+    return +strikeRate.toFixed(2); // rounded to 2 decimal places
+  }
+
+  formatOvers(overs: any): string {
+    console.log('overs:', overs, isNaN(overs));
+
+    if (typeof overs === 'number' && !isNaN(overs)) {
+      return overs.toFixed(2);
+    }
+  
+    return overs; // assume string or invalid input
+  }
+
+  convertOversToBalls(overs: number | string): number {
+    const value = typeof overs === 'string' ? parseFloat(overs) : overs;
+  
+    const fullOvers = Math.floor(value);
+    const balls = Math.round((value - fullOvers) * 10); // e.g., 0.4 => 4 balls
+  
+    return (fullOvers * 6) + balls;
+  }
+
+  calculateBatsmanRankings(teams: any[]) {
+    let batsmanRanking = teams.map((x, i) => {
+      x['strikeRate'] = this.getStrikeRate(x);
+      x['oversFaced'] = this.formatOvers(x.oversFaced);
+      x['matches'] = x.matches.length > 5 ? x.matches.reverse().slice(0, 5) : x.matches;
+      const ballsFaced = this.convertOversToBalls(x.oversFaced);
+      x['battingAverage'] = x.runsFor / (ballsFaced / 6);
+      console.log(ballsFaced);
+
+      const average = ballsFaced > 0 ? x.runsFor / (ballsFaced / 6) : 0;
+      const strikeRate = ballsFaced > 0 ? (x.runsFor / ballsFaced) * 100 : 0;
+      const winning = x.matches.map(x => x == 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
+      console.log({average, strikeRate, winning, runs: x.runsFor, wickets: x.wicketsFallen})
+
+      x['battingPoints'] = (average * 0.30) + (strikeRate * 0.30) + (x.runsFor * 0.20) - (x.wicketsFallen * 0.20) + winning; 
+
+      return x;
+    })
+
+    batsmanRanking = batsmanRanking.sort((a, b) => b.battingPoints - a.battingPoints);
+
+    batsmanRanking.map((x, i) => {
+      x['rank'] = i + 1;
+    })
+
+    return batsmanRanking;
+  }
+
+  calculateBowlerRankings(teams: any[]) {
+    let bowlerRanking = teams.map((x, i) => {
+      x['strikeRate'] = this.getStrikeRate(x);
+      x['oversFaced'] = this.formatOvers(x.oversFaced);
+      x['matches'] = x.matches.length > 5 ? x.matches.reverse().slice(0, 5) : x.matches;
+      const ballsFaced = this.convertOversToBalls(x.oversFaced);
+      x['battingAverage'] = x.runsFor / (ballsFaced / 6);
+      console.log(ballsFaced);
+
+      const average = ballsFaced > 0 ? x.runsFor / (ballsFaced / 6) : 0;
+      const strikeRate = ballsFaced > 0 ? (x.runsFor / ballsFaced) * 100 : 0;
+      const winning = x.matches.map(x => x == 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
+      console.log({average, strikeRate, winning, runs: x.runsFor, wickets: x.wicketsFallen})
+
+      x['battingPoints'] = (average * 0.30) + (strikeRate * 0.30) + (x.runsFor * 0.20) - (x.wicketsFallen * 0.20) + winning; 
+
+      return x;
+    })
+
+    bowlerRanking = bowlerRanking.sort((a, b) => b.battingPoints - a.battingPoints);
+
+    bowlerRanking.map((x, i) => {
+      x['rank'] = i + 1;
+    })
+
+    return bowlerRanking;
   }
 
   calculateTeamRankings(matches: any[]): TeamRanking[] {
@@ -670,7 +786,6 @@ export class RankingsComponent {
 
   getTeamDetails(team: any) {
     const teamData = this.teams.find((x) => x.uid === (team?.id ?? team));
-    console.log('team:', teamData)
     return teamData;
   }
 

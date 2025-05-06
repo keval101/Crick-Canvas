@@ -879,4 +879,8 @@ calculateEconomy(runsConceded: number, ballsBowled: number): number {
     return date;
   }
 
+  trackById(index: number, item: any): number {
+    return item.id ?? item.team;
+  }
+
 }

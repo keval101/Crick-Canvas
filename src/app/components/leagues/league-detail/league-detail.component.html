@@ -127,7 +127,7 @@
     <div class="grid matches-container gap-6" [class.grid-cols-1]="view === 'list'"
       [class.grid-cols-2]="view === 'grid'" id="matchContainer">
 
-      <ng-container *ngFor="let fixture of fixtures">
+      <ng-container *ngFor="let fixture of fixtures; trackBy: trackById">
         <div
           class="match-card rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden">
           <div class="relative">
@@ -232,8 +232,8 @@
                   <span class="theme-text-light league-venue">{{league?.venue}}</span>
                 </div>
 
+                <!-- *ngIf="(fixture?.status != 'completed') && fixture?.team_two?.id && fixture?.team_one?.id && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" -->
                 <button class="outline-btn update-btn flex gap-2 items-center hover:!bg-transparent"
-                  *ngIf="(fixture?.status != 'completed') && fixture?.team_two?.id && fixture?.team_one?.id && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)"
                   (click)="openMatchResultModal(fixture)">
                   <!-- <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30"> -->
                   <iframe width="30px" height="30px"
@@ -279,7 +279,7 @@
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let team of pointTable; let i = index">
+        <ng-container *ngFor="let team of pointTable; let i = index; trackBy: trackById">
           <tr class="theme-table-row-odd transition-colors duration-200 cursor-pointer"
             [class.theme-table-row-even]="i % 2 === 0">
             <td class="px-4 py-4 whitespace-nowrap">
@@ -321,7 +321,7 @@
             <td colspan="14" class="px-6 py-0 m-0">
               <div [@expandCollapse]="expandedRow === i ? 'expanded' : 'collapsed'"
                    class="overflow-hidden px-4 py-2">
-                   <ng-container *ngFor="let match of team?.matches; let i = index">
+                   <ng-container *ngFor="let match of team?.matches; let i = index; trackBy: trackById">
                     <div class="mb-2 flex items-center match-history">
                     
                     
@@ -346,7 +346,7 @@
                                           (match?.team_two?.id === team?.id && match?.team_two?.runs < match?.team_one?.runs)
                                 }">
                             ({{ match?.team_one?.id === team?.id ? match?.team_one?.runs : match?.team_two?.runs }}/
-                             {{ match?.team_one?.id === team?.id ? match?.team_one?.wickets : match?.team_two?.wickets }})
+                             {{ match?.team_one?.id === team?.id ? match?.team_one?.wickets : match?.team_two?.wickets }}) &nbsp; <span class="overs-text"> {{match?.team_one?.id === team?.id ? ballsToOvers(match?.team_one?.balls) : ballsToOvers(match?.team_two?.balls)}} overs</span>
                           </span>
                         </a>
                       </div>
@@ -365,7 +365,8 @@
                           </span>
                           <span class="font-semibold theme-text-light whitespace-nowrap Default">
                             ({{ match?.team_one?.id === team?.id ? match?.team_two?.runs : match?.team_one?.runs }}/
-                             {{ match?.team_one?.id === team?.id ? match?.team_two?.wickets : match?.team_one?.wickets }})
+                             {{ match?.team_one?.id === team?.id ? match?.team_two?.wickets : match?.team_one?.wickets }})&nbsp;
+                             <span class="overs-text"> {{match?.team_one?.id === team?.id ? ballsToOvers(match?.team_two?.balls) : ballsToOvers(match?.team_one?.balls)}} overs</span>
                           </span>
                         </a>
                       </div>
@@ -383,7 +384,7 @@
   </div>
 
   <div class="grid grid-cols-1 gap-6" id="matchContainer" *ngIf="selectedTab === 'playoffs' && !isPlayOffLoading">
-    <ng-container *ngFor="let fixture of playOffs">
+    <ng-container *ngFor="let fixture of playOffs; trackBy: trackById">
       <div
         class="match-card mb-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden">
         <div class="relative">
@@ -481,8 +482,8 @@
                 <span class="theme-text-light league-venue">{{league?.venue}}</span>
               </div>
 
+              <!-- *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" -->
               <button class="outline-btn update-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent"
-                *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)"
                 (click)="openMatchResultModal(fixture)">
                 <!-- <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30"> -->
                 <iframe width="30px" height="30px"
@@ -497,7 +498,7 @@
   </div>
 </div>
 
-<p-dialog header="Match Result" [(visible)]="matchResultModal" [modal]="true" [draggable]="false" [resizable]="false">
+<p-dialog header="Result: Match {{selectedMatch?.match_number}}" [(visible)]="matchResultModal" [modal]="true" [draggable]="false" [resizable]="false">
   <app-match-result [match]="selectedMatch" (closeMatchResultModal)="closeMatchResultModal($event)"></app-match-result>
 </p-dialog>
 

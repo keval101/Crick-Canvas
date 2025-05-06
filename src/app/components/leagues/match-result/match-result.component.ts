@@ -43,7 +43,8 @@ export class MatchResultComponent {
     if(this.match?.team_one?.id && this.match?.team_two?.id) {
       this.team_one_performance = await this.dataService.getPlayerPerformance(this.match.league_id, this.match.team_one.id)
       this.team_two_performance = await this.dataService.getPlayerPerformance(this.match.league_id, this.match.team_two.id)
-    
+      this.team_one.patchValue(this.match.team_one)
+      this.team_two.patchValue(this.match.team_two)
       console.log(this.team_one_performance, this.team_two_performance)
     }
   }
@@ -87,10 +88,23 @@ export class MatchResultComponent {
       runsFor: (this.team_one_performance?.runsFor ?? 0) + (teamOne?.runs ?? 0),
       wicketsTaken: (this.team_one_performance?.wicketsTaken ?? 0) + (teamTwo?.wickets ?? 0),
       wicketsFallen: (this.team_one_performance?.wicketsFallen ?? 0) + (teamOne?.wickets ?? 0),
-      oversFaced: (Number(this.team_one_performance.oversBowled ?? 0)) + (+this.ballsToOvers(teamOne.balls)),  
+      oversFaced: this.addOvers(this.team_one_performance.oversFaced, +this.ballsToOvers(teamOne.balls)),  
       runsAgainst: (this.team_one_performance?.runsAgainst ?? 0) + (teamTwo?.runs ?? 0),
-      oversBowled: (Number(this.team_one_performance.oversBowled ?? 0)) + (+this.ballsToOvers(teamTwo.balls)),  
+      oversBowled: this.addOvers(this.team_one_performance.oversBowled, +this.ballsToOvers(teamTwo.balls)),
+      scores: this.team_one_performance?.scores?.length ? this.team_one_performance?.scores : [],
     }
+
+    const teamOneScore = {
+      ballsBowled: teamTwo.balls,
+      ballsFaced: teamOne.balls,
+      runs: teamOne.runs,
+      runsConceded: teamTwo.runs,
+      wicketsFallen: teamOne.wickets,
+      wicketsTaken: teamTwo.wickets,
+      result: teamOneWinner
+    }
+
+    team_one_performance.scores.unshift(teamOneScore)
 
     const team_two_performance = {
       id: this.team_two_performance.id,
@@ -102,16 +116,31 @@ export class MatchResultComponent {
       runsFor: (this.team_two_performance?.runsFor ?? 0) + (teamTwo?.runs ?? 0),
       wicketsTaken: (this.team_two_performance?.wicketsTaken ?? 0) + (teamOne?.wickets ?? 0),
       wicketsFallen: (this.team_two_performance?.wicketsFallen ?? 0) + (teamTwo?.wickets ?? 0),
-      oversFaced: (Number(this.team_two_performance.oversBowled ?? 0)) + (+this.ballsToOvers(teamTwo.balls)),  
+      oversFaced: this.addOvers(this.team_two_performance.oversFaced, +this.ballsToOvers(teamTwo.balls)),  
       runsAgainst: (this.team_two_performance?.runsAgainst ?? 0) + (teamOne?.runs ?? 0),
-      oversBowled: (Number(this.team_two_performance.oversBowled ?? 0)) + (+this.ballsToOvers(teamOne.balls)),  
+      oversBowled: this.addOvers(this.team_two_performance.oversBowled, +this.ballsToOvers(teamOne.balls)),  
+      scores: this.team_two_performance?.scores?.length ? this.team_two_performance?.scores : [],
     }
+
+    const teamTwoScore = {
+      ballsBowled: teamOne.balls,
+      ballsFaced: teamTwo.balls,
+      runs: teamTwo.runs,
+      runsConceded: teamOne.runs,
+      wicketsFallen: teamTwo.wickets,
+      wicketsTaken: teamOne.wickets,
+      result: teamTwoWinner
+    }
+
+    team_two_performance.scores.unshift(teamTwoScore)
 
     console.log(team_one_performance, team_two_performance)
 
     if(this.isH2H) {
       await this.dataService.updateH2HResult(payload, this.match.id)
     } else {
+      team_one_performance.scores = team_one_performance.scores?.length > 5 ? team_one_performance.scores.slice(0, 5) : team_one_performance.scores
+      team_two_performance.scores = team_two_performance.scores?.length > 5 ? team_two_performance.scores.slice(0, 5) : team_two_performance.scores
       await this.dataService.updatePlayerPerformance(this.match.league_id, this.team_one_performance.id, team_one_performance)
       await this.dataService.updatePlayerPerformance(this.match.league_id, this.team_two_performance.id, team_two_performance)
       await this.dataService.updateMatchResult(payload, this.match.id)
@@ -186,4 +215,30 @@ export class MatchResultComponent {
         return `${overs}.${remainingBalls}`;
     }
 }
+
+addOvers(previousOvers: number, currentOvers: number): string {
+  // Helper: convert overs (e.g., 248.1) to total balls
+  const oversToBalls = (overs: number): number => {
+    if(overs) {
+      const fullOvers = Math.floor(overs);
+      const balls = Math.round((overs - fullOvers) * 10); // e.g. 0.4 => 4 balls
+      return (fullOvers * 6) + balls;
+    } else {
+      return 0;
+    }
+  };
+
+  // Helper: convert total balls back to overs format (e.g., 250.4)
+  const ballsToOvers = (balls: number): string => {
+    const fullOvers = Math.floor(balls / 6);
+    const remainingBalls = balls % 6;
+    return `${fullOvers ?? 0}.${remainingBalls ?? 0}`;
+  };
+
+  const totalBalls =
+    oversToBalls(previousOvers) + oversToBalls(currentOvers);
+
+  return ballsToOvers(totalBalls);
+}
+
 }

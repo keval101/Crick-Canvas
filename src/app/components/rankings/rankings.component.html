@@ -173,13 +173,13 @@
         <tr class="theme-table-row-odd transition-colors duration-200 cursor-pointer" *ngFor="let team of mockData.batsmen; let i = index"
         [class.theme-table-row-even]="i % 2 === 0">
           <td class="px-6 py-4">
-            <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.teamId]">
+            <a class="flex items-center gap-3 team-name" [routerLink]="['/stats', team?.id]">
               <img
-                [src]="getTeamDetails(team?.teamId)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
+                [src]="getTeamDetails(team)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
                 alt="Royal Challengers"
                 class="w-8 h-8 rounded-full object-cover"
               />
-              <span class="flex gap-2 font-semibold theme-text whitespace-nowrap rank-team items-center">{{getTeamDetails(team?.teamId)?.team?.name}}
+              <span class="flex gap-2 font-semibold theme-text whitespace-nowrap rank-team items-center">{{getTeamDetails(team)?.team?.name}}
                 <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
                   <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
                   <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
@@ -192,15 +192,15 @@
             </a>
           </td>
           <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
-          <td class="px-4 theme-text py-4 text-center">{{team.points}}</td>
-          <td class="px-4 theme-text py-4 text-center">{{team?.matches}}</td>
-          <td class="px-4 theme-text py-4 text-center font-medium">{{team?.runs}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.battingPoints.toFixed(2)}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.played}}</td>
+          <td class="px-4 theme-text py-4 text-center font-medium">{{team?.runsFor}}</td>
           <td class="px-4 theme-text py-4 text-center font-medium">{{team?.strikeRate.toFixed(2)}}</td> 
-          <td class="px-4 theme-text py-4 text-center font-medium">{{ballsToOvers(team.ballsFaced)}}</td>
-          <td class="px-4 theme-text py-4 text-center">{{team.average.toFixed(2)}}</td>
+          <td class="px-4 theme-text py-4 text-center font-medium">{{team?.oversFaced}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.battingAverage.toFixed(2)}}</td>
           <td class="px-4 theme-text py-4 text-center">
             <div class="flex">
-              <p class="mb-0" *ngFor="let form of team?.recentForm" [class.lost]="form === 0" [class.win]="form === 1">{{form === 1 ? 'W' : 'L'}}</p>
+              <p class="mb-0" *ngFor="let form of team?.matches" [class.lost]="form === 'L'"  [class.draw]="form === 'D'" [class.win]="form === 'W'">{{form}}</p>
             </div>
           </td>
         </tr>

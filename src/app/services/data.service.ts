@@ -487,6 +487,7 @@ export class DataService {
         const id = docSnapshot.id;
         return { ...data, id };
       } else {
+        return {id: teamId}
         throw new Error('Performance data not found');
       }
     } catch (error) {
