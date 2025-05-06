@@ -232,8 +232,8 @@
                   <span class="theme-text-light league-venue">{{league?.venue}}</span>
                 </div>
 
-                <!-- *ngIf="(fixture?.status != 'completed') && fixture?.team_two?.id && fixture?.team_one?.id && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" -->
                 <button class="outline-btn update-btn flex gap-2 items-center hover:!bg-transparent"
+                *ngIf="(fixture?.status != 'completed') && fixture?.team_two?.id && fixture?.team_one?.id && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)"
                   (click)="openMatchResultModal(fixture)">
                   <!-- <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30"> -->
                   <iframe width="30px" height="30px"
@@ -482,8 +482,8 @@
                 <span class="theme-text-light league-venue">{{league?.venue}}</span>
               </div>
 
-              <!-- *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)" -->
               <button class="outline-btn update-btn flex gap-2 items-center !border-red-200 hover:!bg-transparent"
+              *ngIf="(fixture?.status != 'completed') && ((league?.userId === user?.uid) || fixture?.team_two?.id === user?.uid || fixture?.team_one?.id === user?.uid)"
                 (click)="openMatchResultModal(fixture)">
                 <!-- <img src="./assets/icons/cricket-ball.gif" alt="" width="30" width="30"> -->
                 <iframe width="30px" height="30px"
