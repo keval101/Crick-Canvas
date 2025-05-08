@@ -47,15 +47,15 @@
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('matches', sorting === 'matches' ? 'desc' : sorting === '-matches' ? 'asc' : 'desc' )">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('played', sorting === 'played' ? 'desc' : sorting === '-played' ? 'asc' : 'desc' )">
               Matches 
-              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('matches')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-matches'">
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('played')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-played'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('won', sorting === 'won' ? 'desc' : sorting === '-won' ? 'asc' : 'desc')">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('win', sorting === 'win' ? 'desc' : sorting === '-win' ? 'asc' : 'desc')">
               Won 
-              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('won')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-won'">
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('win')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-win'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
@@ -65,9 +65,9 @@
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('lose', sorting === 'lose' ? 'desc' : sorting === '-lose' ? 'asc' : 'desc')">
+            <div class="flex justify-center items-center gap-2 cursor-pointer" (click)="sortByTeams('loss', sorting === 'loss' ? 'desc' : sorting === '-loss' ? 'asc' : 'desc')">
               Lose 
-              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('lose')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-lose'">
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('loss')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-loss'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
@@ -131,21 +131,21 @@
               </div>
             </th>
           <th class="px-4 py-4 text-center">
-              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('points', sorting === 'points' ? 'desc' : sorting === '-points' ? 'asc' : 'desc' )">
+              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('battingPoints', sorting === 'battingPoints' ? 'desc' : sorting === '-battingPoints' ? 'asc' : 'desc' )">
                 Points
-                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('points')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-points'">
+                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('battingPoints')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-battingPoints'">
               </div>
             </th>
           <th class="px-4 py-4 text-center">
-              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('matches', sorting === 'matches' ? 'desc' : sorting === '-matches' ? 'asc' : 'desc' )">
+              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('played', sorting === 'played' ? 'desc' : sorting === '-played' ? 'asc' : 'desc' )">
                 Matches
-                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('matches')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-matches'">
+                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('played')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-played'">
               </div>
             </th>
           <th class="px-4 py-4 text-center">
-              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('runs', sorting === 'runs' ? 'desc' : sorting === '-runs' ? 'asc' : 'desc' )">
+              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('runsFor', sorting === 'runsFor' ? 'desc' : sorting === '-runsFor' ? 'asc' : 'desc' )">
                 Runs
-                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('runs')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-runs'">
+                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('runsFor')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-runsFor'">
               </div>
             </th>
           <th class="px-4 py-4 text-center">
@@ -155,15 +155,15 @@
               </div>
             </th>
           <th class="px-4 py-4 text-center">
-              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('ballsFaced', sorting === 'ballsFaced' ? 'desc' : sorting === '-ballsFaced' ? 'asc' : 'desc' )">
+              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('oversFaced', sorting === 'oversFaced' ? 'desc' : sorting === '-oversFaced' ? 'asc' : 'desc' )">
                 Overs Faced
-                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('ballsFaced')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-ballsFaced'">
+                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('oversFaced')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-oversFaced'">
               </div>
             </th>
           <th class="px-4 py-4 text-center">
-              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('average', sorting === 'average' ? 'desc' : sorting === '-average' ? 'asc' : 'desc' )">
+              <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBatsman('battingAverage', sorting === 'battingAverage' ? 'desc' : sorting === '-battingAverage' ? 'asc' : 'desc' )">
                 Avg
-                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('average')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-average'">
+                <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('battingAverage')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-battingAverage'">
               </div>
             </th>
           <th></th>
@@ -221,27 +221,27 @@
               </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('points', sorting === 'points' ? 'desc' : sorting === '-points' ? 'asc' : 'desc' )">
+            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('bowlingPoints', sorting === 'bowlingPoints' ? 'desc' : sorting === '-bowlingPoints' ? 'asc' : 'desc' )">
               Points
-              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('points')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-points'">
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('bowlingPoints')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-bowlingPoints'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('matches', sorting === 'matches' ? 'desc' : sorting === '-matches' ? 'asc' : 'desc' )">
+            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('played', sorting === 'played' ? 'desc' : sorting === '-played' ? 'asc' : 'desc' )">
               Matches 
-              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('matches')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-matches'">
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('played')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-played'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('ballsBowled', sorting === 'ballsBowled' ? 'desc' : sorting === '-ballsBowled' ? 'asc' : 'desc' )">
+            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('oversBowled', sorting === 'oversBowled' ? 'desc' : sorting === '-oversBowled' ? 'asc' : 'desc' )">
               Overs 
-              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('ballsBowled')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-ballsBowled'">
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('oversBowled')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-oversBowled'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">
-            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('wickets', sorting === 'wickets' ? 'desc' : sorting === '-wickets' ? 'asc' : 'desc' )">
+            <div class="flex items-center justify-center gap-2 cursor-pointer" (click)="sortByBowler('wicketsTaken', sorting === 'wicketsTaken' ? 'desc' : sorting === '-wicketsTaken' ? 'asc' : 'desc' )">
               Wickets 
-              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('wickets')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-wickets'">
+              <img src="./assets/icons/arrow-down.png" *ngIf="sorting.includes('wicketsTaken')" alt="" width="20" height="20" [class.rotate-180]="sorting === '-wicketsTaken'">
             </div>
           </th>
           <th class="px-4 py-4 text-center">

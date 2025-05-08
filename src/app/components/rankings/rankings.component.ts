@@ -641,16 +641,16 @@ export class RankingsComponent {
         return (b.rank - a.rank) * sortMultiplier;
       } else if (key.includes('points')) {
         return (b.points - a.points) * sortMultiplier;
-      } else if (key.includes('matches')) {
-        return (b.matches - a.matches) * sortMultiplier;
+      } else if (key.includes('played')) {
+        return (b.played - a.played) * sortMultiplier;
       } else if (key.includes('won')) {
         return (b.wins - a.wins) * sortMultiplier;
       } else if (key.includes('draw')) {
-        return (b.draws - a.draws) * sortMultiplier;
-      } else if (key.includes('lose')) {
-        return (b.losses - a.losses) * sortMultiplier;
+        return (b.draw - a.draw) * sortMultiplier;
+      } else if (key.includes('loss')) {
+        return (b.loss - a.loss) * sortMultiplier;
       } else if (key.includes('winp')) {
-        return (((b?.wins / b?.matches) * 100) - ((a?.wins / a?.matches) * 100)) * sortMultiplier;
+        return (((b?.win / b?.played) * 100) - ((a?.win / a?.played) * 100)) * sortMultiplier;  
       } else {
         // Default sorting by rank
         return (b.rank - a.rank) * sortMultiplier;
@@ -671,18 +671,18 @@ export class RankingsComponent {
 
       if (key.includes('rank')) {
         return (b.rank - a.rank) * sortMultiplier;
-      } else if (key.includes('matches')) {
-        return (b.matches - a.matches) * sortMultiplier;
-      } else if (key.includes('average')) {
-        return (b.average - a.average) * sortMultiplier;
+      } else if (key.includes('played')) {
+        return (b.played - a.played) * sortMultiplier;
+      } else if (key.includes('battingAverage')) {
+        return (b.battingAverage - a.battingAverage) * sortMultiplier;
       } else if (key.includes('strikeRate')) {
         return (b.strikeRate - a.strikeRate) * sortMultiplier;
-      } else if (key.includes('runs')) {
-        return (b.runs - a.runs) * sortMultiplier;
-      } else if (key.includes('ballsFaced')) {
-        return (b.ballsFaced - a.ballsFaced) * sortMultiplier;
-      } else if (key.includes('points')) {
-        return (b.points - a.points) * sortMultiplier;
+      } else if (key.includes('runsFor')) {
+        return (b.runsFor - a.runsFor) * sortMultiplier;
+      } else if (key.includes('oversFaced')) {
+        return (this.oversToBall(b.oversFaced) - this.oversToBall(a.oversFaced)) * sortMultiplier;
+      } else if (key.includes('battingPoints')) {
+        return (b.battingPoints - a.battingPoints) * sortMultiplier;
       } else {
         // Default sorting by rank
         return (b.rank - a.rank) * sortMultiplier; 
@@ -703,16 +703,16 @@ export class RankingsComponent {
 
       if (key.includes('rank')) {
         return (b.rank - a.rank) * sortMultiplier;
-      } else if (key.includes('wickets')) {
-        return (b.wickets - a.wickets) * sortMultiplier;
+      } else if (key.includes('wicketsTaken')) {
+        return (b.wicketsTaken - a.wicketsTaken) * sortMultiplier;
       } else if (key.includes('economy')) {
         return (b.economy - a.economy) * sortMultiplier;
-      } else if (key.includes('matches')) {
-        return (b.matches - a.matches) * sortMultiplier;
+      } else if (key.includes('played')) {
+        return (b.played - a.played) * sortMultiplier;
       } else if (key.includes('points')) {
         return (b.points - a.points) * sortMultiplier;
-      } else if (key.includes('ballsBowled')) {
-        return (b.ballsBowled - a.ballsBowled) * sortMultiplier;
+      } else if (key.includes('oversBowled')) {
+        return (this.oversToBall(b.oversBowled) - this.oversToBall(a.oversBowled)) * sortMultiplier;
       } else {
         // Default sorting by rank
         return (b.rank - a.rank) * sortMultiplier;
@@ -733,6 +733,16 @@ export class RankingsComponent {
       ...match,
     }));
   }
+
+  oversToBall(overs: number | string): number {
+      if(overs) {
+        const fullOvers = Math.floor(+overs);
+        const balls = Math.round((+overs - fullOvers) * 10); // e.g. 0.4 => 4 balls
+        return (fullOvers * 6) + balls;
+      } else {
+        return 0;
+      }
+  };
 
   getAbsValue(value) {
     return Math.abs(value);
