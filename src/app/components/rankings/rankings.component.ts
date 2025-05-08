@@ -66,6 +66,8 @@ export class RankingsComponent {
   players: any[] = []
 
   sorting = '-rank';
+  allTimeMostRuns: any[] = []
+  allTimeMostWickets: any[] = []
 
   constructor(
     private dataService: DataService,
@@ -85,6 +87,8 @@ export class RankingsComponent {
       this.runnerUps = [];
       this.orangecap = [];
       this.purplecap = [];
+      let totalOrangeCaps = []
+      let totalPurpleCaps = []
       leagues.map(league => {
         if(league?.winner) {
           delete league.winner.logo
@@ -98,18 +102,26 @@ export class RankingsComponent {
         if(league?.orangecap) {
           delete league.orangecap.logo
           this.orangecap.push({...league.orangecap, league: league.name})
+          totalOrangeCaps.push(league.orangecap)
         }
 
         if(league?.purplecap) {
           delete league.purplecap.logo
           this.purplecap.push({...league.purplecap, league: league.name})
+          totalPurpleCaps.push(league.purplecap)
         }
       })
+      
+      totalOrangeCaps = totalOrangeCaps.sort((a, b) => b.runsFor - a.runsFor)
+      totalOrangeCaps = totalOrangeCaps.sort((a, b) => b.wicketsTaken - a.wicketsTaken)
+      
+      console.log(totalOrangeCaps, totalPurpleCaps)
 
       this.winners = this.calculateWins(this.winners, 'wonTitle')
       this.orangecap = this.calculateWins(this.orangecap, 'orangecap')
       this.purplecap = this.calculateWins(this.purplecap, 'purplecap')
       this.players = this.mergeAwards(this.winners, this.orangecap, this.purplecap)
+
     })
     // this.dataService.getAllLeagueMatches().subscribe(matches => {
       
