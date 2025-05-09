@@ -43,8 +43,13 @@ export class MatchResultComponent {
     if(this.match?.team_one?.id && this.match?.team_two?.id) {
       this.team_one_performance = await this.dataService.getPlayerPerformance(this.match.league_id, this.match.team_one.id)
       this.team_two_performance = await this.dataService.getPlayerPerformance(this.match.league_id, this.match.team_two.id)
-      this.team_one.patchValue(this.match.team_one)
-      this.team_two.patchValue(this.match.team_two)
+
+      if(this.match.team_one.runs > 0) {
+        this.team_one.patchValue(this.match.team_one)
+      }
+      if(this.match.team_two.runs > 0) {
+        this.team_two.patchValue(this.match.team_two)
+      }
       console.log(this.team_one_performance, this.team_two_performance)
     }
   }
