@@ -533,7 +533,6 @@ calculateEconomy(runsConceded: number, ballsBowled: number): number {
                   id: sortedTable[0].id,
                   name: sortedTable[0].team,
                   runs: 0,
-                  logo: sortedTable[0].team_logo,
                   wickets: 0
                 },
                 league_id: this.league.id,
@@ -543,7 +542,6 @@ calculateEconomy(runsConceded: number, ballsBowled: number): number {
                   id: sortedTable[1].id,
                   name: sortedTable[1].team,
                   runs: 0,
-                  logo: sortedTable[1].team_logo,
                   wickets: 0
                 },
                 id: `${this.league.id}_q1`,
@@ -558,7 +556,6 @@ calculateEconomy(runsConceded: number, ballsBowled: number): number {
                   id: sortedTable[2].id,
                   name: sortedTable[2].team,
                   runs: 0,
-                  logo: sortedTable[2].team_logo,
                   wickets: 0
                 },
                 league_id: this.league.id,
@@ -568,7 +565,6 @@ calculateEconomy(runsConceded: number, ballsBowled: number): number {
                   id: sortedTable[3].id,
                   name: sortedTable[3].team,
                   runs: 0,
-                  logo: sortedTable[3].team_logo,
                   wickets: 0
                 },
                 id: `${this.league.id}_eliminator`,
