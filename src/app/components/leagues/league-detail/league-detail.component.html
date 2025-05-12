@@ -430,13 +430,30 @@
 
           <div class="p-6">
             <div class="flex items-center gap-2 mb-4">
-              <i class="ri-trophy-line text-primary"></i>
+              <i class="ri-trophy-line theme-text"></i>
               <span class="font-medium theme-text">{{league?.name}}: Match {{fixture?.match_number}}</span>
             </div>
             <div
               class="flex sm:items-center items-start justify-center sm:justify-between mb-8 flex-wrap gap-2 sm:gap-1"
               [class.!items-center]="fixture?.status != 'completed' || fixture?.result !== 'draw'">
-              <div>
+                <div class="flex items-center gap-4 flex-1 match-team-info">
+                  <img
+                    [src]="getTeamDetails(fixture?.team_one)?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png'"
+                    class="w-12 h-12 rounded-full object-cover team-logo" alt="New Zealand">
+                  <div>
+                    <a [routerLink]="['/stats', fixture?.team_one?.id]"
+                      class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name
+                      ?? 'TBD'}}</a>
+                    <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'"
+                      [class.!text-red-500]="fixture?.team_two?.runs > fixture?.team_one?.runs"
+                      [class.!text-green-500]="fixture?.team_one?.runs > fixture?.team_two?.runs"
+                      class="text-2xl font-bold match-team-score theme-text">
+                      {{fixture?.team_one?.runs}}/{{fixture?.team_one?.wickets}}</div>
+                    <div *ngIf="fixture?.status !== 'upcoming' && fixture?.result !== 'abandoned'"
+                      class="text-sm text-gray-500">{{ballsToOvers(fixture?.team_one?.balls)}} overs</div>
+                  </div>
+                </div>
+              <!-- <div>
                 <a [routerLink]="['/stats', fixture?.team_one?.id]"
                   class="team-name font-semibold text-lg theme-text">{{getTeamDetails(fixture?.team_one)?.team?.name}}</a>
                 <div class="flex items-center gap-4 flex-1">
@@ -453,7 +470,7 @@
                       class="text-sm theme-text-light">{{ballsToOvers(fixture?.team_one?.balls)}} overs</div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="px-6">
                 <!-- <div class="text-gray-400 font-medium text-lg mb-2">VS</div> -->
                 <img src="https://scores.bcci.tv/matchcentre/mcv3/images/versus-v2.png?v=1" alt=""
@@ -478,7 +495,7 @@
             </div>
             <div class="flex items-center justify-between sm:flex-row gap-3 flex-col">
               <div class="flex items-center gap-2">
-                <i class="ri-map-pin-line"></i>
+                <i class="ri-map-pin-line theme-text"></i>
                 <span class="theme-text-light league-venue">{{league?.venue}}</span>
               </div>
 

@@ -70,19 +70,21 @@ export class LeagueDetailComponent {
   ) {}
 
   ngOnInit() {
+    this.leagueId = this.route.snapshot.paramMap.get('id');
+
+    this.dataService.getLeagueDetails(this.leagueId).then(async (league) => {
+      this.league = league;
+      this.title.setTitle(`${this.league.name} - League Details`);
+      await this.getTeams();
+    });
     this.title.setTitle(`League Details`);
     this.view = localStorage.getItem('view') || 'list';
     this.authService.getCurrentUserDetail().pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.user = user;
     });
 
-    this.leagueId = this.route.snapshot.paramMap.get('id');
     this.getLeagueMatches()
-    this.dataService.getLeagueDetails(this.leagueId).then((league) => {
-      this.league = league;
-      this.title.setTitle(`${this.league.name} - League Details`);
-      this.getTeams();
-    });
+
   }
 
   copyToClipBoard() {
@@ -104,12 +106,9 @@ export class LeagueDetailComponent {
     }
   }
 
-  getTeams() {
+  async getTeams() {
     const teams = this.league.teams;
-    this.dataService.getUserTeams(teams).then((teams) => {
-      this.teams = teams;
-      this.fixturesLoading = false;
-    });
+    this.teams = await this.dataService.getUserTeams(teams)
   }
 
   async generateFixtures() {
@@ -161,8 +160,6 @@ export class LeagueDetailComponent {
 
   getTeamDetails(team: any) {
     const teamData = this.teams.find((x) => x.id === team?.id);
-    team['name'] = teamData?.team?.name ?? 'TBD';
-    team['logo'] = teamData?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png';
     const dummyTeam = {
       id: teamData?.id ?? 'TBD',
       name: teamData?.team?.name ?? 'TBD',
@@ -171,7 +168,13 @@ export class LeagueDetailComponent {
       wickets: 0,
       balls: 0,
     }
-    return teamData?.id ? teamData : dummyTeam;
+    if(teamData) {
+      team['name'] = teamData?.team?.name ?? 'TBD';
+      team['logo'] = teamData?.team?.logo ?? 'https://i.postimg.cc/65sS9ZdX/pngwing-com.png';
+      return teamData?.id ? teamData : dummyTeam;
+    } else {
+      return dummyTeam;
+    }
   }
 
   getLeagueMatches() {
