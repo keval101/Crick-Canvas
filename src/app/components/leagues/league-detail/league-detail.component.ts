@@ -263,8 +263,18 @@ export class LeagueDetailComponent {
         const finalLoser = finalMatch.team_one.runs > finalMatch.team_two.runs ? finalMatch.team_two : finalMatch.team_one;
         finalMatch['runner-up'] = finalLoser;
         if(this.totalMatches === this.completedMatches) {
-          this.league['orangecap'] = this.orangecap
-          this.league['purplecap'] = this.purplecap
+
+          const orangecap = _.cloneDeep(this.orangecap);
+          const purplecap = _.cloneDeep(this.purplecap);
+
+          delete orangecap.team_logo;
+          delete purplecap.team_logo;
+
+          delete orangecap.matches;
+          delete purplecap.matches;
+
+          this.league['orangecap'] = orangecap
+          this.league['purplecap'] = purplecap
           this.league['winner'] = finalWinner
           this.dataService.updateLeague(this.league, this.league.id)
         }
@@ -491,8 +501,16 @@ async generatePointsTable() {
   // );
 
   if(this.totalMatches === this.completedMatches) {
-    this.league['orangecap'] = this.orangecap
-    this.league['purplecap'] = this.purplecap
+    const orangecap = _.cloneDeep(this.orangecap);
+    const purplecap = _.cloneDeep(this.purplecap);
+
+    delete orangecap.team_logo;
+    delete purplecap.team_logo;
+    delete orangecap.matches;
+    delete purplecap.matches;
+
+    this.league['orangecap'] = orangecap
+    this.league['purplecap'] = purplecap
     this.dataService.updateLeague(this.league, this.league.id)
   }
 }
