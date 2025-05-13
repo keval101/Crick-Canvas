@@ -377,11 +377,14 @@ export class RankingsComponent {
 
     })
 
-    batsmanRanking = batsmanRanking.sort((a, b) => b.battingPoints - a.battingPoints);
 
-    batsmanRanking.map((x, i) => {
-      x['rank'] = i + 1;
-    })
+    setTimeout(() => {      
+      batsmanRanking = batsmanRanking.sort((a, b) => b.battingPoints - a.battingPoints);
+  
+      batsmanRanking.map((x, i) => {
+        x['rank'] = i + 1;
+      })
+    }, 500);
 
     return batsmanRanking;
   }
@@ -407,11 +410,13 @@ export class RankingsComponent {
 
     })
 
-    bowlersRanking = bowlersRanking.sort((a, b) => b.bowlingPoints - a.bowlingPoints);
+    setTimeout(() => {
+      bowlersRanking = bowlersRanking.sort((a, b) => b.bowlingPoints - a.bowlingPoints);
 
-    bowlersRanking.map((x, i) => {
-      x['rank'] = i + 1;
-    })
+      bowlersRanking.map((x, i) => {
+        x['rank'] = i + 1;
+      })
+    }, 500);
 
     return bowlersRanking;
   }
