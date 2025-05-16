@@ -1,9 +1,9 @@
 <h1 class="text-4xl font-bold theme-text mb-12 text-left">Rankings</h1>
 <div class="max-w-7xl mx-auto" *ngIf="!isLoading">
     <div class="flex gap-4 menus justify-center mb-8">
-      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Team'" (click)="ranking = 'Team'"> Team </button>
-      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Batting'"  (click)="ranking = 'Batting'"> Batting </button>
-      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Bowling'" (click)="ranking = 'Bowling'" > Bowling </button>
+      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Team'" (click)="sortByRank('Team');ranking = 'Team'"> Team </button>
+      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Batting'"  (click)="sortByRank('Batting');ranking = 'Batting'"> Batting </button>
+      <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Bowling'" (click)="sortByRank('Bowling');ranking = 'Bowling'" > Bowling </button>
       <button class="text-gray-900 font-medium hover:text-primary transition-colors" [class.active]="ranking === 'Players'" (click)="ranking = 'Players'" > Players </button>
     </div>
   </div>
