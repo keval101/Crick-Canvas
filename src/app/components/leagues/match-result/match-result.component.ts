@@ -44,12 +44,12 @@ export class MatchResultComponent {
       this.team_one_performance = await this.dataService.getPlayerPerformance(this.match.league_id, this.match.team_one.id)
       this.team_two_performance = await this.dataService.getPlayerPerformance(this.match.league_id, this.match.team_two.id)
 
-      if(this.match.team_one.runs > 0) {
-        this.team_one.patchValue(this.match.team_one)
-      }
-      if(this.match.team_two.runs > 0) {
-        this.team_two.patchValue(this.match.team_two)
-      }
+      // if(this.match.team_one.runs > 0) {
+      //   this.team_one.patchValue(this.match.team_one)
+      // }
+      // if(this.match.team_two.runs > 0) {
+      //   this.team_two.patchValue(this.match.team_two)
+      // }
       console.log(this.team_one_performance, this.team_two_performance)
     }
   }
@@ -144,8 +144,8 @@ export class MatchResultComponent {
     if(this.isH2H) {
       await this.dataService.updateH2HResult(payload, this.match.id)
     } else {
-      team_one_performance.scores = team_one_performance.scores?.length > 5 ? team_one_performance.scores.slice(0, 5) : team_one_performance.scores
-      team_two_performance.scores = team_two_performance.scores?.length > 5 ? team_two_performance.scores.slice(0, 5) : team_two_performance.scores
+      team_one_performance.scores = team_one_performance.scores?.length > 10 ? team_one_performance.scores.slice(0, 10) : team_one_performance.scores
+      team_two_performance.scores = team_two_performance.scores?.length > 10 ? team_two_performance.scores.slice(0, 10) : team_two_performance.scores
       await this.dataService.updatePlayerPerformance(this.match.league_id, this.team_one_performance.id, team_one_performance)
       await this.dataService.updatePlayerPerformance(this.match.league_id, this.team_two_performance.id, team_two_performance)
       await this.dataService.updateMatchResult(payload, this.match.id)
