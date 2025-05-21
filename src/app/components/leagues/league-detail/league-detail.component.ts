@@ -385,7 +385,7 @@ async generatePointsTable() {
         };
       }
 
-      if (match?.team_one?.balls > 0 || match?.team_two?.balls > 0) {
+      if ((match?.team_one?.balls > 0 || match?.team_two?.balls > 0) && match?.result != 'abandoned') {
         table[team.id].played++;
         table[team.id].matches.push(match);
       }
@@ -397,13 +397,15 @@ async generatePointsTable() {
       table[team.id].wicketsFallen += team.wickets;
 
       // Win/Loss/Draw calculation
-      if (match.status === 'completed') {
-        if (team.runs > opponent.runs) {
-          table[team.id].win++;
-        } else if (team.runs < opponent.runs) {
-          table[team.id].loss++;
-        } else {
-          table[team.id].draw++;
+      if(match?.result != 'abandoned') {
+        if (match.status === 'completed') {
+          if (team.runs > opponent.runs) {
+            table[team.id].win++;
+          } else if (team.runs < opponent.runs) {
+            table[team.id].loss++;
+          } else {
+            table[team.id].draw++;
+          }
         }
       }
     }
@@ -875,6 +877,11 @@ calculateEconomy(runsConceded: number, ballsBowled: number): number {
 
   sortPointsTable(pointsTable: any[]) {
     return pointsTable.sort((a, b) => {
+      // If either team hasn't played, move it to the bottom
+      if (a.played === 0 && b.played === 0) return 0;
+      if (a.played === 0) return 1;
+      if (b.played === 0) return -1;
+
       if (b.pts === a.pts) {
         return b.nrr - a.nrr; // Sort by NRR if points are equal
       }
