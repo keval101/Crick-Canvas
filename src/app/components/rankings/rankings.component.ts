@@ -141,7 +141,6 @@ export class RankingsComponent {
 
   mergePerformanceData(data: any[]) {
     const mergedMap = new Map();
-  
     data.forEach(item => {
       const key = item.id; // or use item.team if you want to group by team name
   
@@ -291,11 +290,13 @@ export class RankingsComponent {
     const teamRankings = teams.sort((a, b) => {
       a['points'] = a.win * 2 + a.draw - a.loss;
       b['points'] = b.win * 2 + b.draw - b.loss;
-      a['recentForm'] = a.scores[0].map(x => x.result)
-      b['recentForm'] = b.scores[0].map(x => x.result)
       a.matches.length = a.matches.length > 10 ? 10 : a.matches.length;
       b.matches.length = b.matches.length > 10 ? 10 : b.matches.length;
+      a['recentForm'] = [...a.scores[0], ...a.scores[1]]
+      a['recentForm'] = [...a.scores[0], ...a.scores[1]]
 
+      a['recentForm'] = a['recentForm'].length > 5 ? a['recentForm'].slice(0, 5) : a['recentForm'];
+      b['recentForm'] = b['recentForm'].length > 5 ? b['recentForm'].slice(0, 5) : b['recentForm'];
       return b.points - a.points;
     })
 
@@ -374,8 +375,9 @@ export class RankingsComponent {
         x['matches'] = x.matches.length > 10 ? x.matches.reverse().slice(0, 10) : x.matches;
         const winning = x.matches.map(x => x.result == 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
         x['battingAverage'] = average;
-        x['recentForm'] = x.matches.length > 5 ? x.matches.reverse().slice(0, 5) : x.matches;
-
+        
+        x['recentForm'] = [...x.scores[0], ...x.scores[1]]
+        x['recentForm'] = x['recentForm'].length > 5 ? x['recentForm'].slice(0, 5) : x['recentForm'];
   
         x['battingPoints'] = (average * 0.30) + (strikeRate * 0.30) + (runs * 0.20) - (x.wicketsFallen * 0.20) + winning; 
 
@@ -402,6 +404,8 @@ export class RankingsComponent {
         const winning = x.scores[0].map(x => x.result == 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
 
         x['bowlingPoints'] = (average * 0.40) + (strikeRate * 0.40) + (totalWickets * 0.20) + winning; 
+        x['recentForm'] = [...x.scores[0], ...x.scores[1]]
+        x['recentForm'] = x['recentForm'].length > 5 ? x['recentForm'].slice(0, 5) : x['recentForm'];
 
         return x;
       } 

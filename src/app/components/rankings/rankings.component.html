@@ -110,7 +110,7 @@
           <td class="px-4 theme-text py-4 text-center">{{((team?.win / team?.played) * 100).toFixed(0)}}%</td>
           <td class="px-4 py-4 text-center">
             <div class="flex">
-              <p class="mb-0" *ngFor="let form of team?.recentForm" [class.lost]="form === 'L'"  [class.draw]="form === 'D'" [class.win]="form === 'W'">{{form}}</p>
+              <p class="mb-0" *ngFor="let form of team.recentForm" [class.lost]="form?.result === 'L'"  [class.draw]="form?.result === 'D'" [class.win]="form?.result === 'W'">{{form?.result}}</p>
             </div>
           </td>
         </tr>
@@ -200,7 +200,7 @@
           <td class="px-4 theme-text py-4 text-center">{{team?.battingAverage.toFixed(2)}}</td>
           <td class="px-4 theme-text py-4 text-center">
             <div class="flex">
-              <p class="mb-0" *ngFor="let form of team?.recentForm" [class.lost]="form === 'L'"  [class.draw]="form === 'D'" [class.win]="form === 'W'">{{form}}</p>
+              <p class="mb-0" *ngFor="let form of team.recentForm" [class.lost]="form?.result === 'L'"  [class.draw]="form?.result === 'D'" [class.win]="form?.result === 'W'">{{form?.result}}</p>
             </div>
           </td>
         </tr>
@@ -283,7 +283,7 @@
           <td class="px-4 theme-text py-4 text-center">{{team.economy.toFixed(2)}}</td>
           <td class="px-4 theme-text py-4 text-center">
             <div class="flex">
-              <p class="mb-0" *ngFor="let form of team?.recentForm" [class.lost]="form === 'L'"  [class.draw]="form === 'D'" [class.win]="form === 'W'">{{form}}</p>
+              <p class="mb-0" *ngFor="let form of team.recentForm" [class.lost]="form?.result === 'L'"  [class.draw]="form?.result === 'D'" [class.win]="form?.result === 'W'">{{form?.result}}</p>
             </div>
           </td>
         </tr>
