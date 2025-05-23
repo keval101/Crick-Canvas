@@ -182,7 +182,13 @@ export class RankingsComponent {
     const mergedRecords = Array.from(mergedMap.values());
     this.mockData.teams = this.calculateTeamRankingsV2(mergedRecords)
 
-    setTimeout(() => {      
+    setTimeout(() => {
+      this.mockData.teams = this.mockData.teams.sort((a, b) => {
+        return b.points - a.points;
+      });
+      this.mockData.teams.map((x, i) => {
+        x['rank'] = i + 1;
+      })
       this.sortByRank('Team');
     }, 1000);
 
@@ -287,13 +293,17 @@ export class RankingsComponent {
   calculateTeamRankingsV2(teams: any[]) {
     teams = teams.filter(x => x?.scores?.length);
 
+    console.log(teams)
+
     const teamRankings = teams.sort((a, b) => {
       a['points'] = a.win * 2 + a.draw - a.loss;
       b['points'] = b.win * 2 + b.draw - b.loss;
       a.matches.length = a.matches.length > 10 ? 10 : a.matches.length;
       b.matches.length = b.matches.length > 10 ? 10 : b.matches.length;
       a['recentForm'] = [...a.scores[0], ...a.scores[1]]
-      a['recentForm'] = [...a.scores[0], ...a.scores[1]]
+      b['recentForm'] = [...b.scores[0], ...b.scores[1]]
+
+      console.log(a['recentForm'], b['recentForm'])
 
       a['recentForm'] = a['recentForm'].length > 5 ? a['recentForm'].slice(0, 5) : a['recentForm'];
       b['recentForm'] = b['recentForm'].length > 5 ? b['recentForm'].slice(0, 5) : b['recentForm'];
