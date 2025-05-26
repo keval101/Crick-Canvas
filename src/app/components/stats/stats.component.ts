@@ -58,7 +58,6 @@ export class StatsComponent {
       this.purplecap = this.participatedLeagues.filter(league => league.purplecap?.id === this.playerId);
       this.purplecap = this.purplecap.length ? this.purplecap.map(league => {return {id: league.id, name: league.name, wickets: league.purplecap.wicketsTaken}}) : [];
 
-      console.log(this.orangecap, this.purplecap, this.participatedLeagues)
     })
   }
 
@@ -223,7 +222,6 @@ export class StatsComponent {
 
     headToHeadArray = headToHeadArray.sort((a, b) => (b.totalRuns || 0) - (a.totalRuns || 0));
     recentMatches = this.sortAndLimitMatches(recentMatches)
-    console.log(this.finalTitles)
 
     const leaguePerformanceArray = Object.values(leaguePerformance);
 

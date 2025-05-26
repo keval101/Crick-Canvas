@@ -115,7 +115,6 @@ export class RankingsComponent {
       totalOrangeCaps = totalOrangeCaps.sort((a, b) => b.runsFor - a.runsFor)
       totalOrangeCaps = totalOrangeCaps.sort((a, b) => b.wicketsTaken - a.wicketsTaken)
       
-      console.log(totalOrangeCaps, totalPurpleCaps)
 
       this.winners = this.calculateWins(this.winners, 'wonTitle')
       this.orangecap = this.calculateWins(this.orangecap, 'orangecap')
@@ -194,6 +193,17 @@ export class RankingsComponent {
 
     this.mockData.batsmen = this.calculateBatsmanRankings(mergedRecords)
     this.mockData.bowlers = this.calculateBowlerRankings(mergedRecords)
+
+    setTimeout(() => {
+      this.mockData.bowlers = this.mockData.teams.sort((a, b) => {
+        return b.bowlingPoints - a.bowlingPoints;
+      });
+      this.mockData.bowlers.map((x, i) => {
+        x['rank'] = i + 1;
+      })
+      this.sortByRank('Bowling');
+    }, 1000);
+
     this.getTeams();
     return mergedRecords;
   }
@@ -293,7 +303,6 @@ export class RankingsComponent {
   calculateTeamRankingsV2(teams: any[]) {
     teams = teams.filter(x => x?.scores?.length);
 
-    console.log(teams)
 
     const teamRankings = teams.sort((a, b) => {
       a['points'] = a.win * 2 + a.draw - a.loss;
@@ -303,7 +312,6 @@ export class RankingsComponent {
       a['recentForm'] = [...a.scores[0], ...a.scores[1]]
       b['recentForm'] = [...b.scores[0], ...b.scores[1]]
 
-      console.log(a['recentForm'], b['recentForm'])
 
       a['recentForm'] = a['recentForm'].length > 5 ? a['recentForm'].slice(0, 5) : a['recentForm'];
       b['recentForm'] = b['recentForm'].length > 5 ? b['recentForm'].slice(0, 5) : b['recentForm'];
@@ -372,7 +380,6 @@ export class RankingsComponent {
 
   calculateBatsmanRankings(teams: any[]) {
     teams = teams.filter(x => x?.scores?.length);
-    console.log(teams);
     let batsmanRanking = teams.map((x, i) => {
       if(x.scores?.length) {
         const totalBallsFaced = this.oversToBall(x.oversFaced);
@@ -738,8 +745,8 @@ export class RankingsComponent {
         return (b.economy - a.economy) * sortMultiplier;
       } else if (key.includes('played')) {
         return (b.played - a.played) * sortMultiplier;
-      } else if (key.includes('points')) {
-        return (b.points - a.points) * sortMultiplier;
+      } else if (key.includes('bowlingPoints')) {
+        return (b.bowlingPoints - a.bowlingPoints) * sortMultiplier;
       } else if (key.includes('oversBowled')) {
         return (this.oversToBall(b.oversBowled) - this.oversToBall(a.oversBowled)) * sortMultiplier;
       } else {
@@ -866,7 +873,6 @@ export class RankingsComponent {
         }
       })
 
-      console.log(recentForm, b.name);
 
       const ballsFaced = b.recentMatches.map(match => {
         if(match.team_one.id === b.teamId) {
@@ -939,7 +945,6 @@ export class RankingsComponent {
       const economy = this.calculateEconomy(runsConceded, ballsBowled);
       const winning = recentForm.map(x => x == 1 ? 1 : -2).reduce((a, b) => a + b, 0);
       
-      console.log(average, strikeRate, wickets, runsConceded, b.name)
       
       // const points = (average * 0.10) + (strikeRate * 0.35) + (wickets * 0.45) - ((runsConceded / 50) * 0.05);
       const points = (average * 0.40) + (strikeRate * 0.40) + (wickets * 0.20) + winning; 
@@ -961,8 +966,6 @@ export class RankingsComponent {
       x['rank'] = i;
     })
 
-    console.log('Batsmen Rankings:', this.mockData.batsmen);
-    console.log('Bowlers Rankings:', this.mockData.bowlers);
   }
 
 }

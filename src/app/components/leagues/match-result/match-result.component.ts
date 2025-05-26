@@ -39,7 +39,6 @@ export class MatchResultComponent {
   }
 
   async ngOnChanges() {
-    console.log(this.match)
     if(this.match?.team_one?.id && this.match?.team_two?.id) {
       this.team_one_performance = await this.dataService.getPlayerPerformance(this.match.league_id, this.match.team_one.id)
       this.team_two_performance = await this.dataService.getPlayerPerformance(this.match.league_id, this.match.team_two.id)
@@ -50,7 +49,6 @@ export class MatchResultComponent {
       // if(this.match.team_two.runs > 0) {
       //   this.team_two.patchValue(this.match.team_two)
       // }
-      console.log(this.team_one_performance, this.team_two_performance)
     }
   }
 
@@ -139,7 +137,6 @@ export class MatchResultComponent {
 
     team_two_performance.scores.unshift(teamTwoScore)
 
-    console.log(team_one_performance, team_two_performance)
 
     if(this.isH2H) {
       await this.dataService.updateH2HResult(payload, this.match.id)
