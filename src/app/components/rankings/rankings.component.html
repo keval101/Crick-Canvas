@@ -90,14 +90,14 @@
                 class="w-8 h-8 rounded-full object-cover"
               />
               <span class="flex gap-2 font-semibold theme-text whitespace-nowrap rank-team items-center">{{getTeamDetails(team)?.team?.name}}
-                <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
+                <!-- <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
                   <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
                   <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
                   <span class="text-sm"
                   [class.!text-green-600]="team.curr_rank < team.prev_rank"
                   [class.!text-red-600]="team.curr_rank > team.prev_rank"
                   >{{getAbsValue(team.prev_rank - team.curr_rank)}}</span>
-                </div>
+                </div> -->
               </span>
             </a>
           </td>
@@ -180,14 +180,14 @@
                 class="w-8 h-8 rounded-full object-cover"
               />
               <span class="flex gap-2 font-semibold theme-text whitespace-nowrap rank-team items-center">{{getTeamDetails(team)?.team?.name}}
-                <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
+                <!-- <div class="flex gap-2 items-center" *ngIf="team.prev_rank !== team.curr_rank">
                   <img src="./assets/icons/up.png" alt="" width="14" height="14" *ngIf="team.curr_rank < team.prev_rank">
                   <img src="./assets/icons/down.png" alt="" width="14" height="14" *ngIf="team.curr_rank > team.prev_rank">
                   <span class="text-sm"
                     [class.!text-green-600]="team.curr_rank < team.prev_rank"
                     [class.!text-red-600]="team.curr_rank > team.prev_rank"
                     >{{getAbsValue(team.prev_rank - team.curr_rank)}}</span>
-                </div>
+                </div> -->
               </span>
             </a>
           </td>
@@ -276,11 +276,11 @@
             </a>
           </td>
           <td class="px-4 theme-text py-4 text-center">{{team.rank}}</td>
-          <td class="px-4 theme-text py-4 text-center">{{team.bowlingPoints.toFixed(2)}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.bowlingPoints?.toFixed(2)}}</td>
           <td class="px-4 theme-text py-4 text-center">{{team?.played}}</td>
           <td class="px-4 theme-text py-4 text-center font-medium">{{team?.oversBowled}}</td> 
           <td class="px-4 theme-text py-4 text-center font-medium">{{team.wicketsTaken}}</td>
-          <td class="px-4 theme-text py-4 text-center">{{team.economy.toFixed(2)}}</td>
+          <td class="px-4 theme-text py-4 text-center">{{team?.economy?.toFixed(2)}}</td>
           <td class="px-4 theme-text py-4 text-center">
             <div class="flex">
               <p class="mb-0" *ngFor="let form of team.recentForm" [class.lost]="form?.result === 'L'"  [class.draw]="form?.result === 'D'" [class.win]="form?.result === 'W'">{{form?.result}}</p>
