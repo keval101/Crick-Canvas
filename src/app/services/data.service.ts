@@ -313,8 +313,8 @@ export class DataService {
   }
 
   saveMatches(matches: any[]): Promise<void> {
-    // Assuming you want to save to a 'league-matches' collection
-    const collectionRef = this.firestore.collection('league-matches');
+    // Assuming you want to save to a 'league-matchesv2' collection
+    const collectionRef = this.firestore.collection('league-matchesv2');
     
     // Create a batch to save all matches in one atomic operation
     const batch = this.firestore.firestore.batch();
@@ -330,7 +330,7 @@ export class DataService {
   }
 
   getLeagueMatches(leagueId: string) {
-    return this.firestore.collection('league-matches', ref => ref.where('league_id', '==', leagueId).limit(100))
+    return this.firestore.collection('league-matchesv2', ref => ref.where('league_id', '==', leagueId).limit(100))
       .snapshotChanges()
       .pipe(
         map((actions) => {
@@ -345,7 +345,7 @@ export class DataService {
 
   
   updateMatchResult(payload: any, fixtureId: string) {
-    return this.firestore.collection('league-matches').doc(fixtureId).set(payload, {merge: true});
+    return this.firestore.collection('league-matchesv2').doc(fixtureId).set(payload, {merge: true});
   }
 
   updateH2HResult(payload: any, fixtureId: string) {
@@ -353,7 +353,7 @@ export class DataService {
   }
 
   getAllLeagueMatches() {
-    return this.firestore.collection('league-matches', ref =>
+    return this.firestore.collection('league-matchesv2', ref =>
       ref.where('status', '==', 'completed')
     ).valueChanges();
   }
@@ -378,13 +378,13 @@ export class DataService {
       return allMatches;
   }
 
-  // Get league-matches where playerId is in either team_one.id or team_two.id
+  // Get league-matchesv2 where playerId is in either team_one.id or team_two.id
   async getPlayerMatches(playerId: string) {
-    const teamOneQuery = this.firestore.collection('league-matches', ref => 
+    const teamOneQuery = this.firestore.collection('league-matchesv2', ref => 
       ref.where('team_one.id', '==', playerId)
     ).get().toPromise();;
 
-    const teamTwoQuery = this.firestore.collection('league-matches', ref => 
+    const teamTwoQuery = this.firestore.collection('league-matchesv2', ref => 
       ref.where('team_two.id', '==', playerId)
     ).get().toPromise();;
 
@@ -399,7 +399,7 @@ export class DataService {
     return allMatches;
   }
 
-    // Get league-matches where playerId is in either team_one.id or team_two.id
+    // Get league-matchesv2 where playerId is in either team_one.id or team_two.id
     async getPlayerH2HMatches(playerId: string) {
       const teamOneQuery = this.firestore.collection('matches', ref => 
         ref.where('team_one.id', '==', playerId)
@@ -422,7 +422,7 @@ export class DataService {
 
   deleteLeagueMatches(leagueId: string) {
     // Delete all matches first
-    this.firestore.collection('league-matches', ref => ref.where('league_id', '==', leagueId))
+    this.firestore.collection('league-matchesv2', ref => ref.where('league_id', '==', leagueId))
       .get()
       .subscribe(snapshot => {
         const batch = this.firestore.firestore.batch();
