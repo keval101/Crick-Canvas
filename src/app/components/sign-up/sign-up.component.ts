@@ -43,7 +43,9 @@ export class SignUpComponent {
       //   data['uid'] = user.uid
       //   this.authService.storeUserData(user.uid, data)
       //   this.messageService.add({ severity: 'success', summary: 'Register', detail: 'Register Successfully!' });
-      //   this.router.navigate(['/dashboard']);
+      //   setTimeout(() => {
+      //     this.router.navigate(['/dashboard']);
+      //   }, 3000);
       // }).catch(error => {
       //   if(error.message.includes('weak-password')) {
       //     this.messageService.add({ severity: 'error', summary: 'Week Password', detail: 'Password should be at least 6 characters' });
