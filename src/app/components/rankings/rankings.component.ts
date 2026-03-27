@@ -299,8 +299,8 @@ export class RankingsComponent {
       b['points'] = b.win * 2 + b.draw - b.loss;
       a.matches.length = a.matches.length > 10 ? 10 : a.matches.length;
       b.matches.length = b.matches.length > 10 ? 10 : b.matches.length;
-      a['recentForm'] = [...a.scores[0], ...a.scores[1]]
-      b['recentForm'] = [...b.scores[0], ...b.scores[1]]
+      a['recentForm'] = [...a.scores]
+      b['recentForm'] = [...b.scores]
 
 
       a['recentForm'] = a['recentForm'].length > 5 ? a['recentForm'].slice(0, 5) : a['recentForm'];
@@ -374,7 +374,7 @@ calculateBatsmanRankings(teams: any[]) {
   let batsmanRanking = teams.reduce((acc: any[], x) => {
     if (x.scores?.length) {
       const totalBallsFaced = this.oversToBall(x.oversFaced || '0');
-      const runs = x.scores[0]?.reduce((a, b) => a + (b.runs || 0), 0) || 0;
+      const runs = x.scores?.reduce((a, b) => a + (b.runs || 0), 0) || 0;
       const totalRuns = x.runsFor || 0;
       const average = totalBallsFaced > 0 ? totalRuns / (x.played || 1) : 0;
       const strikeRate = totalBallsFaced > 0 ? (totalRuns / totalBallsFaced) * 100 : 0;
@@ -384,7 +384,7 @@ calculateBatsmanRankings(teams: any[]) {
       const winning = recentMatches.map(m => m.result === 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
       const wicketsFallen = x.wicketsFallen || 0;
 
-      const recentForm = [...(x.scores[0] || []), ...(x.scores[1] || [])].slice(0, 5);
+      const recentForm = [...(x.scores || []), ...(x.scores || [])].slice(0, 5);
 
       const battingPoints = (average * 0.30) + (strikeRate * 0.30) + (runs * 0.20) - (wicketsFallen * 0.20) + winning;
 
@@ -418,8 +418,7 @@ calculateBowlerRankings(teams: any[]) {
 
   let bowlersRanking = teams.reduce((acc: any[], x) => {
     if (x.scores?.length) {
-      const scores0 = x.scores[0] || [];
-      const scores1 = x.scores[1] || [];
+      const scores0 = x.scores || [];
 
       const totalBallsBowled = scores0.reduce((a, b) => a + (b.ballsBowled || 0), 0);
       const totalWickets = scores0.reduce((a, b) => a + (b.wicketsTaken || 0), 0);
@@ -430,7 +429,7 @@ calculateBowlerRankings(teams: any[]) {
       const strikeRate = totalBallsBowled > 0 ? (totalWickets / totalBallsBowled) * 100 : 0;
       const economy = this.calculateEconomy(x.runsAgainst || 0, balls);
 
-      const recentForm = [...scores0, ...scores1].slice(0, 5);
+      const recentForm = [...scores0].slice(0, 5);
       const winning = scores0.map(m => m.result === 'W' ? 1 : -2).reduce((a, b) => a + b, 0);
 
       const bowlingPoints = (average * 0.40) + (strikeRate * 0.40) + (totalWickets * 0.20) + winning;
